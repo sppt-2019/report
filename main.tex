@@ -1,0 +1,49 @@
+\documentclass[12pt,a4paper,openright]{report}
+\input{00-preliminary/preamble.tex}% package inclusion and set up of the document
+\input{00-preliminary/macros.tex}% my new macros
+\input{00-preliminary/glossary.tex}
+
+\begin{document}
+% Sætter vores listing environment til C# kode ordentligt op.
+%\lstset{basicstyle=\tiny, tabsize = 2, xleftmargin = 5pt, keepspaces = true, numbersep = 5pt }
+%frontmatter
+
+\pagestyle{empty} %disable headers and footers
+\pagenumbering{roman} %use roman page numbering in the frontmatter
+\input{00-setup/frontpage.tex}
+\input{00-setup/titlepage.tex}
+\cleardoublepage
+\pdfbookmark[0]{Table of contents}{label:contents}
+\pagestyle{fancy} %enable headers and footers again
+\setcounter{tocdepth}{1}
+{
+    \setlength\parskip{0em}
+    \tableofcontents
+}
+\input{00-setup/preface.tex}
+
+%mainmatter
+\pagenumbering{arabic} %use arabic page numbering in the mainmatter
+\input{chapters/01-introduction/introduction.tex}
+\input{chapters/02-related-work/related-work.tex}
+\input{chapters/03-research/research.tex}
+\input{chapters/04-parallelism/parallelism.tex}
+\input{chapters/05-usability/usability.tex}
+\input{chapters/06-discussion/discussion.tex}
+\input{chapters/07-conclusion/conclusion.tex}
+\input{chapters/08-future-work/future-work.tex}
+
+\addcontentsline{toc}{chapter}{Bibliography}
+\printbibliography
+
+\addcontentsline{toc}{chapter}{List of Figures}
+\listoffigures
+\addcontentsline{toc}{chapter}{List of Tables}
+\listoftables
+\addcontentsline{toc}{chapter}{List of Listings}
+\lstlistoflistings
+
+\appendix
+\input{chapters/99-appendix/appendix.tex}
+
+\end{document}

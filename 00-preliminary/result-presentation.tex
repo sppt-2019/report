@@ -1,0 +1,92 @@
+\newcommand{\symbolicsStrat}{%
+symbolic x coords={,
+    Problem,
+    10,
+    100,
+    1000,
+    10000,
+    100000,
+}
+}
+
+\newcommand{\symbolic}[1]{symbolic x coords={,#1}}
+\NewDocumentCommand\lnm{O{y}O{2}}{%
+\begin{switch}{#1}%
+    \case{x}{xmode=log, log basis x={#2}}%
+    \case{y}{ymode=log, log basis y={#2}}%
+\end{switch}%
+}
+\newcommand{\plotData}[2]{
+    \addplot table [y={#1}] {#2};
+    \addlegendentry{#1};
+}
+
+\newcommand{\plotDataWithError}[2]{
+    \addplot+[error bars/.cd, y dir=both,y explicit] table [y={#1}, y error={#1 Error}] {#2};
+    \addlegendentry{#1};
+}
+
+\NewDocumentCommand\lineChart{O{}mmm}{%
+\begin{figure}[H]
+\makebox[\textwidth][c]{
+\begin{tikzpicture}
+    \begin{axis}[
+        ylabel={Logarithmic Run Time (ns)},
+        xlabel={Lower is better},
+        width=1.2\textwidth,
+        height=8cm,
+        ymajorgrids,
+        xtick=data,
+        #1,
+        xticklabel style={rotate=45, anchor=east},
+        legend columns = -1,
+        legend style={
+            draw=none,
+            at={(0.5,1.05)},
+            anchor=south,
+            column sep=1ex,
+            font=\tiny
+        }
+    ]
+    #4
+    \end{axis}
+\end{tikzpicture}}
+\caption{#2}
+\label{fig:#3}
+\end{figure}
+}
+
+\newcommand{\barChart}[5][12]{
+    \begin{figure}[H]
+    \makebox[\textwidth][c]{
+    \begin{tikzpicture}
+        \begin{axis}[
+            ylabel={Run Time (ns)},
+            xlabel={Number of leaves},
+            width=1.2\textwidth,
+            height=8cm,
+            ymode = log,
+            ymajorgrids,
+            xtick=data,
+            ybar=0.4pt,
+            bar width=#1pt,
+            log basis y={2},
+            xticklabel style={rotate=45, anchor=east},
+            #4,
+            legend columns = -1,
+            legend style={
+                draw=none,
+                at={(0.5,1.05)},
+                anchor=south,
+                column sep=1ex,
+                font=\tiny
+            }
+        ]
+        #5
+        \end{axis}
+    \end{tikzpicture}}
+    \caption{#2}
+    \label{fig:#3}
+\end{figure}
+}
+

@@ -1,0 +1,7 @@
+\chapter{Experimenting with Parallelism}
+In this chapter we conduct a series of experiments with parallel programs. First and foremost \cite{DBLP:journals/cl/Tremblay-parallel} claims that the lenient evaluation strategy provides high implicit parallelism by evaluating function arguments in parallel with the function body. This claim is put to the test using two binary tree benchmarks that was presented in the same article.
+
+The results from the benchmarks indicate that there is a certain threshold of task-sizes, which must be exceeded before parallelisation has a positive effect on execution time. We attempt to estimate this threshold in \secref{crit:work} using two tests; a busy-wait delay estimation and matrix summation.
+
+\input{chapters/04-parallelism/benchmarks.tex}
+\input{chapters/04-parallelism/crit-work.tex}

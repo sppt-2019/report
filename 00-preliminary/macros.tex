@@ -1,0 +1,121 @@
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% An example environment
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\theoremheaderfont{\normalfont\bfseries}
+\theorembodyfont{\normalfont}
+\theoremstyle{break}
+\def\theoremframecommand{{\color{aaublue!50}\vrule width 5pt \hspace{5pt}}}
+\newshadedtheorem{exa}{Example}[chapter]
+\newenvironment{example}[1]{%
+		\begin{exa}[#1]
+}{%
+		\end{exa}
+}
+
+% Table macro.
+% 1: Table Latex
+% 2: Caption
+% 3: Label
+\definecolor{lightgray}{gray}{0.95}
+\newcommand{\makeTable}[3]{
+    \rowcolors{1}{}{lightgray}
+    \begin{table}[H]
+        \sisetup{round-mode=places}
+        \makebox[\textwidth][c]{
+        \begin{tabular}
+            #1
+        \end{tabular}}
+        \caption{#2}
+        \label{tab:#3}
+    \end{table}
+    \rowcolors{0}{}{}
+}
+
+% Table macro.
+% 1: Table Latex
+% 2: Caption
+% 3: Label
+\newcommand{\makeTablePB}[3]{
+    \centering
+    \rowcolors{1}{}{lightgray}
+    \begin{longtable}
+        #1
+        \caption{#2}
+        \label{table:#3}
+    \end{longtable}
+    \rowcolors{0}{}{}
+}
+
+\newcommand{\tableref}[1]{Table \ref{tab:#1}}
+\newcommand{\figureref}[1]{Figure \ref{fig:#1}}
+\newcommand{\figref}[1]{Figure \ref{fig:#1}}
+\newcommand{\coderef}[1]{Code \ref{code:#1}}
+\newcommand{\lstref}[1]{Listing \ref{lst:#1}}
+\newcommand{\secref}[1]{Section \ref{sec:#1}}
+\newcommand{\chapref}[1]{Chapter \ref{chap:#1}}
+\newcommand{\charef}[1]{\chapref{#1}}
+\newcommand{\appendixref}[1]{Appendix \ref{app:#1}}
+\newcommand{\apxref}[1]{\appendixref{#1}}
+%\newcommand{\lineref}[1]{Line \ref{line:#1}}
+
+%\newcommand{\acrfull}[1]{\acrlong{#1} (\acrshort{#1})}
+
+\newcommand{\dquote}[1]{``{#1}''}
+\newcommand{\squote}[1]{`{#1}'}
+
+\newcommand{\quoteWithCite}[3]{
+  \begin{quotation}
+  \noindent \textit{"#1"}
+  \begin{flushright}
+    -#2 \cite{#3}
+  \end{flushright}
+  \end{quotation}
+}
+
+\newcommand{\quoteWithoutCite}[2]{
+  \begin{quotation}
+  \noindent \textit{"#1"}
+  \begin{flushright}
+  -#2
+  \end{flushright}
+  \end{quotation}
+}
+
+\definecolor{morell}{rgb}{213,0,96}
+\newcommand{\tmc}[1]{\todo[color=morell]{#1}\xspace}
+\newcommand{\btc}[1]{\todo[color=red!75]{#1}\xspace}
+\newcommand{\tmcc}[1]{\todo[color=cyan]{#1}\xspace}
+\newcommand{\needcite}{\todo{Citation needed}\xspace}
+\newcommand{\inline}[1]{\todo[inline]{#1}}
+\newcommand{\ttt}[1]{\texttt{#1}}
+\newcommand{\unity}{Unity\xspace}
+\newcommand{\unreal}{Unreal Engine\xspace}
+\newcommand{\cryengine}{CryEngine\xspace}
+
+%%%%%%%% Column types
+\newcolumntype{L}[1]{>{\raggedright\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+\newcolumntype{C}[1]{>{\centering\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+\newcolumntype{R}[1]{>{\raggedleft\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+\newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1}}
+
+\input{00-preliminary/result-presentation.tex}
+
+\newcommand{\metasheep}{
+    \begin{figure}[H]
+        \begin{center}
+            {\LARGE \setstretch{0.75}
+                \hspace{5em}        \ttt{,ww}\\
+                \hspace{1.5em}      \ttt{wWWWWWWW\textbackslash\_)}\\
+                \hspace{1em}        \ttt{`WWWWWW'}\\
+                \hspace{1em}        \ttt{II}
+                \hspace{1ex}        \ttt{II}\\
+            }
+            \caption{{\color{red} \ttt{"Beep beep, I'm a meta sheep. Replace me with meta text!"}}}
+        \end{center}
+    \end{figure}
+}
+
+\newcommand{\cpp}{C++\xspace}
+\newcommand{\csh}{C\#\xspace}

@@ -1,0 +1,97 @@
+\section{Parallel Overhead \& Performance}\label{sec:crit:work}
+In this section we present results from an experiment that estimates the critical workload for each task. We also implement a matrix summation benchmark to determine how different parallelisation strategies handle matrices of increasing sizes.
+
+\subsection{Estimating Critical Workload}
+In this experiment we estimate the critical workload of C\#'s \ttt{Task}-system. By critical workload we mean the time each task must execute before it is worthwhile to spawn it, compared to a sequential solution. The reason for this exploration is that we found the sequential solution to be faster in the binary tree benchmarks presented in the previous section.
+
+\subsubsection{Test Setup}
+We use the Binary Tree Summation benchmark presented in the previous section with a minor modification: Every time the algorithm finds a \ttt{Node}, it busy-waits for a given amount of time to simulate work. The busy-wait was implemented with a loop, whose number of iterations is gradually halved until the sequential solution executes faster than the parallel. The hypothesis here is that the parallel solutions will be faster, because it is capable of busy-waiting multiple tasks at the same time. 
+
+The Binary Summation test case from the previous section was reused in this experiment, but implemented in two variations. The first variation emulates a data dependency between the wait and the results the subtrees, i.e. the wait is intended to emulate a computation that must be carried out after the results of both subtrees have been computed. The other variation emulates a situation where the left and right subtree can be computed in parallel with the wait, i.e. no data dependency between the delay and the subtrees. The tree has a total of 60 leaf nodes. In addition to the binary tree summation, we also implemented a N-ary tree summation in the same variations as that of binary.
+
+\subsubsection{Results}
+The results are plotted in \figureref{crit-work-dep} and \figureref{crit-work-no-dep} (and listed in \tableref{binary:tree:with:bias:dependency} and \tableref{binary:tree:with:bias:no:dependency} in \apxref{crit:work:data}).
+
+\newcommand{\workBiasSymbolics}{\symbolic{Work Bias (iterations),134217728,67108864,33554432,16777216,8388608,4194304,2097152,1048576,524288,262144,131072,65536,32768,16384,8192,4096,2048,1024}}
+\lineChart{Critical workload with data dependency.}{crit-work-dep}{
+    \plotData{Sequential}{\workWithDependencyData}
+    \plotData{Fork Join}{\workWithDependencyData}
+    \plotData{Lenient}{\workWithDependencyData}
+}
+\lineChart{Critical workload without data dependency.}{crit-work-no-dep}{
+    \plotData{Sequential}{\workWithoutDependencyData}
+    \plotData{Fork Join}{\workWithoutDependencyData}
+    \plotData{Lenient}{\workWithoutDependencyData}
+}
+\lineChart{Critical workload with data dependency, N-ary tree.}{crit-work-dep-nary}{
+    \plotData{Sequential}{\workWithDependencyDataNary}
+    \plotData{Fork Join}{\workWithDependencyDataNary}
+    \plotData{Lenient}{\workWithDependencyDataNary}
+}
+\lineChart{Critical workload with data dependency, N-ary tree.}{crit-work-no-dep-nary}{
+    \plotData{Sequential}{\workWithoutDependencyDataNary}
+    \plotData{Fork Join}{\workWithoutDependencyDataNary}
+    \plotData{Lenient}{\workWithoutDependencyDataNary}
+}
+
+\tmc{Vi skal lave lidt analyse her og snakke om vores fund.}
+
+\subsection{Matrix Summation}
+In this section we execute a matrix summation benchmark. This benchmark measures the time it takes to sum all indices of a random $N x N$ matrix. This benchmark was implemented in different parallelisation strategies to explore how well they scale to increasing sizes of $N$:
+
+\begin{labeling}{\quad\quad}
+    \item[Sequential] utilises a double-nested for-loop to iterate over the matrix and sum the values. This benchmark provides a baseline value for running the computation on one thread.
+    \item[Map Reduce] maps a function that sums each column over the matrix. The resulting list of column sums is then reduced to the overall sum of the matrix. In C\# we utilise the \gls{LINQ}-methods \ttt{Select}, \ttt{Sum} and \ttt{Aggregate}.
+    \item[Parallel Foreach] uses a parallel loop to iterate over the columns of the matrix that may execute the summation of each column in parallel. 
+    \item[Tasks] is similar to parallel foreach, with the only exception that we manually spawn a \ttt{Task} that calculates the sum of each column.
+\end{labeling}
+
+We have not included a lenient-variation in this experiment, as an implementation in our C\# mapping would be largely equivalent to the Tasks-implementation (see \lstref{matrix-sum-csharp}). The most notable difference being that a lenient-evaluation strategy would most likely also construct the matrix in parallel with the summation. As the time it takes to construct a matrix is not included in the results here, this should have little to no effect on the validity of the results.
+\begin{listing}
+\begin{minted}{csharp}
+public static async Task<long> SumTask(long[,] matrix)
+{
+    //Create an enumerable over the columns of the matrix
+    var columns  = Enumerable.Range(0, matrix.GetLength(0));
+    //Sum each column in parallel
+    var sums = columns.Select(c => Task.Run(() =>
+    {
+        var sum = 0L;
+        for(var i = 0; i < matrix.GetLength(1); i++)
+        {
+            sum = unchecked(sum + matrix[c, i]);
+        }
+
+        return sum;
+    })).ToList();
+
+    //Join the resuls and sum the sums of each column
+    await Task.WhenAll(sums);
+    return sums.SumUnchecked();
+}
+\end{minted}
+\caption{Tasks implementation of Matrix Sum, largely equal to a lenient C\# mapping.} \label{lst:matrix-sum-csharp}
+\end{listing}
+
+As the matrices are of size $N x N$, they contain a total of $N^2$ elements with random values between \ttt{Int64.Minvalue} and \ttt{Int64.MaxValue}. When running the test with large matrices we found that even 64-bit integers would overflow, which throws an exception because C\# and F\# are managed languages. In order to avoid this, we used the \ttt{unchecked}-keyword, which disables bounds-checking on an integral arithmetic operation \cite{csharp:unchecked}. \cite{csharp:unchecked} states that using \ttt{unchecked} \textit{\dquote{might improve performance}}, compared to checked integral arithmetic operations.
+
+\subsubsection{Results}
+The results are plotted in \figureref{linpack-summation}. The first thing to notice is that Map Reduce seems to be roughly equal to the sequential in running time. This could indicate that the \ttt{Select}-method of C\#'s \gls{LINQ}, which was used to implement Map Reduce, does not parallelise its iterations. We will thus treat Map Reduce as a sequential solution for the rest of this result discussion. 
+
+\newcommand{\linpackSymbolics}{\symbolic{Problem Size,2,4,8,16,32,64,128,256,512,1024,2048,4096}}
+\barChart[7]{Matrix Summation}{linpack-summation}{\linpackSymbolics}{
+    \plotDataWithError{Sequential}{\linpackData}
+    \plotDataWithError{Map Reduce}{\linpackData}
+    \plotDataWithError{Parallel Foreach}{\linpackData}
+    \plotDataWithError{Tasks}{\linpackData}
+}
+In general, the results from this experiment is in alignment with those of the previous, in that there is an initial overhead associated with parallelisation. In this case, it seems the sequential and parallel solutions evens out at parallel job sizes of around 256 summations, after which point the parallel solutions are faster.
+
+After overcoming the initial overhead, the parallel solutions handle increasing matrix sizes much better than their sequential counterparts. This is even more notable in \figureref{linpack-summation-line}, which plots the same data as a line and without logarithmic y-axis. As the matrix sizes continue to grow, it may be possible to split the columns in multiple separate tasks, possibly making parallel faster yet.
+
+\lineChart{Matrix Summation}{linpack-summation-line}{
+    \plotData{Sequential}{\linpackData}
+    \plotData{Map Reduce}{\linpackData}
+    \plotData{Parallel Foreach}{\linpackData}
+    \plotData{Tasks}{\linpackData}
+}
