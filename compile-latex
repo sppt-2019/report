@@ -19,7 +19,7 @@ else
 fi
 
 build="build"
-args="-interaction=nonstopmode -output-directory=$build"
+args="-shell-escape -interaction=nonstopmode -output-directory=$build"
 
 if [ -e latex.log ] ; then
     rm "latex.log"
