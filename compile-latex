@@ -1,0 +1,57 @@
+#! /bin/bash
+
+#set -e
+#pwd
+
+build="build"
+
+zero="|                    | (00%)      \r"
+twentyfive="|#####               | (25%)      \r"
+thirty="|#######             | (33%)      \r"
+fifty="|##########          | (50%)      \r"
+sixtysix="|#############       | (66%)      \r"
+seventyfive="|###############     | (75%)      \r"
+hundred="|####################| (100%)     \n"
+
+if [ -e "$build" ] ; then
+    rm -rf $build
+    mkdir $build
+else
+    mkdir $build
+fi
+
+args="-shell-escape -interaction=nonstopmode -output-directory=$build"
+
+if [ -e latex.log ] ; then
+    rm "latex.log"
+fi
+touch "latex.log"
+
+if [ $# == 2 ] ; then
+    if [ $2 == "-q" ] ; then
+	echo -ne "Compiling $zero"
+	pdflatex $args "$1.tex" >> "latex.log"
+	echo -ne "Compiling $thirty"
+	pdflatex $args "$1.tex" >> "latex.log"
+	echo -ne "Compiling $sixtysix"
+	pdflatex $args "$1.tex" >> "latex.log"
+	echo -ne "Compiling $hundred"
+    fi
+else
+    echo -ne "Compiling $zero" 
+    pdflatex $args "$1.tex" >> "latex.log"
+    echo -ne "Compiling $twentyfive"
+    biber "$build/$1.bcf" >> "latex.log"
+    echo -ne "Compiling $fifty"
+    pdflatex $args "$1.tex" >> "latex.log"
+    echo -ne "Compiling $seventyfive"
+    pdflatex $args "$1.tex" >> "latex.log"
+    echo -ne "Compiling $hundred"
+fi
+
+if [ -e "$build/$1.pdf" ] ; then
+	cp "$build/$1.pdf" .
+else
+	cat latex.log
+fi
+
