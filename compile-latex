@@ -3,6 +3,8 @@
 #set -e
 #pwd
 
+build="build"
+
 zero="|                    | (00%)      \r"
 twentyfive="|#####               | (25%)      \r"
 thirty="|#######             | (33%)      \r"
@@ -11,22 +13,19 @@ sixtysix="|#############       | (66%)      \r"
 seventyfive="|###############     | (75%)      \r"
 hundred="|####################| (100%)     \n"
 
-if [ -e "build" ] ; then
-    rm -rf build
-    mkdir build
+if [ -e "$build" ] ; then
+    rm -rf $build
+    mkdir $build
 else
-    mkdir build
+    mkdir $build
 fi
 
-build="build"
 args="-shell-escape -interaction=nonstopmode -output-directory=$build"
 
 if [ -e latex.log ] ; then
     rm "latex.log"
 fi
 touch "latex.log"
-   
-
 
 if [ $# == 2 ] ; then
     if [ $2 == "-q" ] ; then
@@ -48,7 +47,11 @@ else
     echo -ne "Compiling $seventyfive"
     pdflatex $args "$1.tex" >> "latex.log"
     echo -ne "Compiling $hundred"
-fi  
+fi
 
-cp "$build/$1.pdf" .
+if [ -e "$build/$1.pdf" ] ; then
+	cp "$build/$1.pdf" .
+else
+	cat latex.log
+fi
 
