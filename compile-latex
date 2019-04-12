@@ -3,6 +3,13 @@
 #set -e
 #pwd
 
+IFS='.' read -r target extension _ <<<"$1"
+[[ $target ]] || { echo "File name invalid." >&2; exit 1; }
+if [[ $extension && $extension != "tex" ]] ; then
+	echo "File extensions: $extension not supported." >&2
+	exit 1
+fi
+
 build="build"
 
 zero="|                    | (00%)      \r"
@@ -30,27 +37,27 @@ touch "latex.log"
 if [ $# == 2 ] ; then
     if [ $2 == "-q" ] ; then
 	echo -ne "Compiling $zero"
-	pdflatex $args "$1.tex" >> "latex.log"
+	pdflatex $args "$target.tex" >> "latex.log"
 	echo -ne "Compiling $thirty"
-	pdflatex $args "$1.tex" >> "latex.log"
+	pdflatex $args "$target.tex" >> "latex.log"
 	echo -ne "Compiling $sixtysix"
-	pdflatex $args "$1.tex" >> "latex.log"
+	pdflatex $args "$target.tex" >> "latex.log"
 	echo -ne "Compiling $hundred"
     fi
 else
     echo -ne "Compiling $zero" 
-    pdflatex $args "$1.tex" >> "latex.log"
+    pdflatex $args "$target.tex" >> "latex.log"
     echo -ne "Compiling $twentyfive"
-    biber "$build/$1.bcf" >> "latex.log"
+    biber "$build/$target.bcf" >> "latex.log"
     echo -ne "Compiling $fifty"
-    pdflatex $args "$1.tex" >> "latex.log"
+    pdflatex $args "$target.tex" >> "latex.log"
     echo -ne "Compiling $seventyfive"
-    pdflatex $args "$1.tex" >> "latex.log"
+    pdflatex $args "$target.tex" >> "latex.log"
     echo -ne "Compiling $hundred"
 fi
 
-if [ -e "$build/$1.pdf" ] ; then
-	cp "$build/$1.pdf" .
+if [ -e "$build/$target.pdf" ] ; then
+	cp "$build/$target.pdf" .
 else
 	cat latex.log
 fi
