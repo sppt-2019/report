@@ -37,22 +37,22 @@ touch "latex.log"
 if [ $# == 2 ] ; then
     if [ $2 == "-q" ] ; then
 	echo -ne "Compiling $zero"
-	pdflatex $args "$target.tex" >> "latex.log"
+	pdflatex $args "$target.tex" > "latex.log"
 	echo -ne "Compiling $thirty"
-	pdflatex $args "$target.tex" >> "latex.log"
+	pdflatex $args "$target.tex" > "latex.log"
 	echo -ne "Compiling $sixtysix"
-	pdflatex $args "$target.tex" >> "latex.log"
+	pdflatex $args "$target.tex" > "latex.log"
 	echo -ne "Compiling $hundred"
     fi
 else
-    echo -ne "Compiling $zero" 
-    pdflatex $args "$target.tex" >> "latex.log"
+    echo -ne "Compiling $zero"
+    pdflatex $args "$target.tex" > "latex.log"
     echo -ne "Compiling $twentyfive"
-    biber "$build/$target.bcf" >> "latex.log"
+    biber "$build/$target.bcf" > "latex.log"
     echo -ne "Compiling $fifty"
-    pdflatex $args "$target.tex" >> "latex.log"
+    pdflatex $args "$target.tex" > "latex.log"
     echo -ne "Compiling $seventyfive"
-    pdflatex $args "$target.tex" >> "latex.log"
+    pdflatex $args "$target.tex" > "latex.log"
     echo -ne "Compiling $hundred"
 fi
 
