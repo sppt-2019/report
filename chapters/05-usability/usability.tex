@@ -29,7 +29,31 @@ The tasks fall into the categories as follows: the two controller-tasks fall int
 As we want to explore how suitable Carmack's and Sweeney's approaches are to game development, we have decided to use a fixed ordering of the test categories for each participant. The participant will always be given one of the tasks from the controller category as the first task. As we have six test participants, we distribute the remaining three categories, such that two participants start with each of the three. This ordering allow us to compare each of the participants' the solutions to tasks of the same category, and thus evaluate for each participant whether one language is better suited than the other. Furthermore, the controller test case is implemented by all participants, allowing us to compare the different solutions.
 
 \subsection{Participants}
-The participants for this experiment was gathered by sending emails to game studios and other game-related companies in Denmark, asking if their employees were interested in participating in the experiment. The participants were required to have experience with C\# and Unity in the game-development industry. We gathered a total of six participants, two participants with Indie game-development experience, three from a company that creates \gls{AR}/\gls{VR} applications and one who teaches children game development.
+The participants for this experiment where gathered by sending emails to game studios and other game-related companies in Denmark, asking if their employees were interested in participating in the experiment. The participants were required to have experience with C\# and Unity in the game-development industry. We gathered a total of six participants, two participants with Indie game-development experience, three from a company that creates \gls{AR}/\gls{VR} applications and one who teaches children game development.
+
+For selection criteria we looked for potential participants that had developed games, significant experience with Unity and C\#. In addition the participants should not have experience with F\#. The criteria where ranked as follows:
+\begin{enumerate}
+	\item Game development experience.
+	\item Unity \& C\# experience.
+	\item No F\# experience.
+\end{enumerate}
+
+All participants where asked to estimate their own skill levels in these categories and give a ballpark estimate of how many Unity applications they had developed. The results can be seen in \tableref{participant-scores}.
+
+\begin{table}[H]
+\begin{tabular}{| c | r | r | r | r | r |}
+	\hline
+	\textbf{Participant}&\textbf{C\#}&\textbf{Unity}&\textbf{Game Dev}&\textbf{F\#}&\textbf{Unity Apps} \\ \hline
+	1 & 9 & 9 & 5 & 3 & 25 \\ \hline
+	2 & 8 & 8 & 7 & 2 & 10 \\ \hline
+	3 & 8 & 8 & 2 & 1 & 12 \\ \hline
+	4 & 10 & 10 & 8 & 1 & 10 \\ \hline
+	5 & & & & & \\ \hline
+	6 & & & & & \\ \hline
+\end{tabular}
+\caption{Participants Self Evaluations}
+\label{tab:participant-scores}
+\end{table}
 
 \subsection{Parameters}
 In this experiment we first and foremost wish to test how well-suited F\# is in the context of game development. There are many parameters to choose from when evaluating what \textit{\dquote{good code}} is, but in this particular experiment we choose writability, readability, modularity and execution speed. The writability parameter is evaluated by examining the participants' reactions during the test and the readability by reading through the code in the subsequent analysis. Modularity is included because functional programming allow the participants to write generalised code to carry out multiple different actions when treating data collections \cite{hughes1989functional}. For instance, in the test cases of this experiment a generalised tree walker could be used in the talents task to both calculate the user's current bonus as well as the maximum achievable bonus. Finally, execution speed is included because of the sentiment among game developers, that functional programming is too slow to even consider \cite{pop:functional:slow, pop:functional:sucks}. By comparing the execution speeds of the solutions in C\# and F\# we can give a more scientific opinion is this discussion.
