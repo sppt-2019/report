@@ -1,19 +1,19 @@
-\section{Usability Evaluation of Programming Languages}
+\section{Usability Evaluation of Programming Languages} \label{sec:prog-usability}
 \metasheep
 
 In this section we present usability evaluation methods for programming languages. \todo{Noget mere her når afsnittet tager mere form}
 
-\subsection{Instant Data Analysis}
+\subsection{Instant Data Analysis} \label{sec:ida}
 \gls{IDA}, presented in \cite{kjeldskov2004instant}, is an analysis strategy, which is meant to be used with think-aloud based usability evaluation techniques. \cite{kjeldskov2004instant} suggests conducting between 4 and 6 usability evaluation sessions, which are followed by a one hour \gls{IDA} brainstorming session. During the brainstorming session the data-logger and test monitor discusses the usability problems found during the sessions. Meanwhile, the facilitator takes notes, categorises the problems, asks questions for clarification and directs the discussion. After the brainstorming session, the facilitator writes down a prioritised list of usability problems, which ranks their severity, placement in the software system and gives a short description of the problem. The \gls{IDA} method has the advantage that a full-scale usability evaluation can be conducted in a single day, while still discovering a majority of the problems \cite{kjeldskov2004instant}. 
 
-\subsection{Discount Method for Language Evaluation}
+\subsection{Discount Method for Language Evaluation} \label{sec:discount-method}
 Discount Method for Language Evaluation is a work-in-progress method based on \gls{IDA}, presented in \cite{kurtev2016discount}. It is a technique intended for low-cost evaluation of a programming language during its development. The method builds on \gls{IDA} \cite{kjeldskov2004instant} and the Discount Usability Evaluation Method \cite{benyon2014designing}. The technique requires very limited setup and can be used even before the language's compiler has been written. The method requires the test participant to implement a set of programming problems in the language. The test participants are equipped with a sample sheet, that gives code examples and brief explanations of how the language is structured. All the programs are written either in a text-editor or using pen and paper. These tools present no error-checking and code-completion. This leaves all errors present in the code for subsequent evaluation. The authors suggest classifying errors according to how much work it would require to fix them, as time is a poor measure because the test participant will most likely not notice his errors.
 
-\subsection{Cognitive Dimensions}
+\subsection{Cognitive Dimensions} \label{sec:cog-dim}
 In order to talk about notation systems and their usability features in general, these features must be generalised to their fundamental dimensions. These dimensions are the cognitive dimensions, which dictate the usefulness of design strategies for various design problems. One such vocabulary is the cognitive dimensions framework \cite{green1996usability}. The framework itself consists of a list of dimensions, each of which represent a generic usability problem area.
 We have have this framework in our earlier work where a more detailed explanation of each of the dimensions is available \cite{p92018gameplay}.
 
-\subsection{Attention Investment Models}
+\subsection{Attention Investment Models} \label{sec:attention-investment}
 In order to understand how users interact with a programming system, their problem solving approach needs to be examined. This can be done by analysing the generic nature of a user's first programming steps. From this analysis the  cognitive  demands can be explored and mapped \cite{blackwell2002first}.
 
 The cognitive demands consists of \textit{cost}, \textit{investment}, \textit{payoff} and \textit{risk}. The cost is the number of attention "units" required by a programming activity to be completed. The actual attention spent by the user is called the investment and it may be greater then the cost. The payoff is the reduced cost of undertaking the task in future, due to the assistance of the program. Finally, the risk is the chance that the program is not completed and the investment wasted.
@@ -31,7 +31,7 @@ The Champagne Prototyping method was developed for the testing of Microsoft Exce
 \end{itemize}
 A small number of credible participants are selected. It is important that these participants are experts in the relevant field and that they have no programming experience (unless it is relevant for the field). The participants are asked to perform some task in the prototype. The nature of the task should be dependent on the question being answered. Following task completion, the participants are subjected to a scenario-based interview. Finally the results are analysed using attention investment models and cognitive dimensions.
 
-\subsection{Expert Review Method}
+\subsection{Expert Review Method} \label{sec:expert-review}
 Another approach to usability evaluation of programming languages was presented in \cite{nanz2013examining} in their analysis of four parallel programming languages. There are two different roles in the test; the test participant and the expert. The test participant must be an experienced programmer who have no experience in the language under test. The expert in this case, is a prominent member of the languages' compiler team.
 
 In this method a test participant solves a series of problems in each of the languages under test. In \cite{nanz2013examining} the authors use the Cowichan problems \cite{wilson1995assessing}. The method consists of four phases for each language. In the first phase the test participant implements solutions to each of the problems in the languages under test. In phase two the experts review the programs and write a list of comments and suggestions for improvements. In phase three the test participant incorporates the feedback from the expert and in phase four the expert reviews the solutions again to check that the feedback was not misunderstood. The experts' feedback from phases two and four presents valuable feedback for possible pitfalls in the language and places for improvement.
