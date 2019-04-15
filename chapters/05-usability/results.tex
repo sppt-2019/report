@@ -1,2 +1,36 @@
 \section{Results}
+The result of the tests was six git branches with source code written by the participants along with five video-files. Sadly the video-recording program broke down during one of the tests and we were unable to recover the file. We took notes during the tests and will refer to those instead. Whenever we quote the notes rather than the participant, we will clearly indicate that.
 
+In general the participants were able to complete roughly one test case, some didn't and some started the second as well. This was the case for both F\# and C\#.
+
+\subsection{Questionaire}
+All participants where asked to estimate their own skill levels in these categories and give a ballpark estimate of how many Unity applications they had developed. The results can be seen in \tableref{participant-scores}.
+
+\begin{table}[H]
+\begin{tabular}{| c | r | r | r | r | r |}
+	\hline
+	\textbf{Participant}&\textbf{C\#}&\textbf{Unity}&\textbf{Game Dev}&\textbf{F\#}&\textbf{Unity Apps} \\ \hline
+	1 & 9 & 9 & 5 & 3 & 25 \\ \hline
+	2 & 8 & 8 & 7 & 2 & 10 \\ \hline
+	3 & 8 & 8 & 2 & 1 & 12 \\ \hline
+	4 & 10 & 10 & 8 & 1 & 10 \\ \hline
+	5 & & & & & \\ \hline
+	6 & & & & & \\ \hline
+\end{tabular}
+\caption{Participants Self Evaluations}
+\label{tab:participant-scores}
+\end{table}
+
+\subsection{Data Processing}
+In the following section we will process the data from the tests. We have decided to do so using three approaches; a side-by-side cognitive dimensions analysis, Champagne Protoyping's Attention Model and measuring the execution speed of the solutions.
+
+\subsubsection{Side-By-Side Cognitive Dimensions}
+In this experiment we first and foremost wish to test how well-suited F\# is in the context of game development. In the side-by-side cognitive dimensions analysis we compare the participants' solutions in F\# with those in C\#, as they were given test cases from the same category. This allow us to use a well-established vocabilary to discuss whether or not functional programming is suitable for game development.
+
+
+% The writability parameter is evaluated by examining the participants' reactions during the test and the readability by reading through the code in the subsequent analysis. Modularity is included because functional programming allow the participants to write generalised code to carry out multiple different actions when treating data collections \cite{hughes1989functional}. For instance, in the test cases of this experiment a generalised tree walker could be used in the talents task to both calculate the user's current bonus as well as the maximum achievable bonus.
+
+\subsubsection{Champagne Prototyping's Attention Model}
+
+\subsubsection{Execution Speed}
+Execution speed is included because of the sentiment among game developers, that functional programming is too slow to even consider \cite{pop:functional:slow, pop:functional:sucks}. By comparing the execution speeds of the solutions we can compare how actual game-code in C\# and F\# compare to one another and thus give a more scientific opinion is this discussion.
