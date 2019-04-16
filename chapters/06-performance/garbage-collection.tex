@@ -67,4 +67,29 @@ The question then arises if the (potentially) increased overhead from \gls{GC} c
 We compared this implementation with a more straight-forward implementation, where each unit has its own state machine. This has the advantage that we can exploit caching and generate less garbage, as suggested by Unity Technologies\cite{unity:optimisation}. It comes at the disadvantage that each unit must have its own \ttt{Update}-method, potentially introducing a large overhead\cite{unity:runtime:calls}.
 
 \subsubsection{Methodology}
-We decided to implement the two approaches in both C\# and F\#, as it also gives us information about whether or not the use of F\# comes with an additional overhead. In all test cases we used a \ttt{MonoBehaviour} written in C\# to measure the time between each \ttt{Update}-call, i.e. the time it takes to generate a frame. We decided to generate 10,800 frames, as that corresponds to 3 minutes of gameplay at 60 \gls{FPS}. Each measurement was added to a \ttt{HashSet}, which was written to a CSV file after the test. This means that the measurements include all game-related code, both including rendering, physics and so alike. However, as this system is ultimately going to be used to develop games, we feel that delta time (or equivalently \gls{FPS}) is a good metric, as that is of utmost importance to the player.  
+We decided to implement the two approaches in both C\# and F\#, as it also gives us information about whether or not the use of F\# comes with an additional overhead. In this case we use the Mono runtime under Unity 2018.2.12f1. In all test cases we used a \ttt{MonoBehaviour} written in C\# to measure the time between each \ttt{Update}-call, i.e. the time it takes to generate a frame. We decided to run the test in five setups with 50, 100, 150, 200 and 250 units. For each setup we generated 900 frames, as that corresponds to 15 seconds of gameplay at 60 \gls{FPS}. Each measurement was added to a \ttt{HashSet}, which was written to a CSV file after the test. This means that the measurements include all game-related code, both including rendering, physics and so alike. However, as this system is ultimately going to be used to develop games, we feel that delta time (or equivalently \gls{FPS}) is a good metric, as that is of utmost importance to the player.
+
+Furhtermore, we also run the test with 250 units in il2cpp to ascertain whether it is more or less performant than Mono.
+
+\section{Results}
+% 56 FPS on C# and F# Normal
+% 28 FPS declining to 6 FPS in F# Inverse
+% Very notable spike (~20 times higher than normal) at third frame
+% 
+\barChart{15}{Average \gls{FPS} in Unit Management benchmark}{ai:benchmark}{\symbolic{Strategy,50,100,150,200,250}}{
+    \plotData{Csharp Normal}{\aiBenchmarkData}
+    \plotData{Csharp Inverse}{\aiBenchmarkData}
+    \plotData{FRP Normal}{\aiBenchmarkData}
+    \plotData{FRP Inverse}{\aiBenchmarkData}
+}
+
+\barChart{15}{Average \gls{FPS} in Unit Management benchmark}{ai:benchmark}{\symbolic{Strategy,FPS}}{
+    \plotData{Csharp Normal}{\aiBenchmarkData}
+    \plotData{Csharp Inverse}{\aiBenchmarkData}
+    \plotData{FRP Normal}{\aiBenchmarkData}
+    \plotData{FRP Inverse}{\aiBenchmarkData}
+    \plotData{il2cpp Csharp Normal}{\benchmarkRuntimesData}
+    \plotData{il2cpp Csharp Inverse}{\benchmarkRuntimesData}
+    \plotData{il2cpp FRP Normal}{\benchmarkRuntimesData}
+    \plotData{il2cpp FRP Inverse}{\benchmarkRuntimesData}
+}
