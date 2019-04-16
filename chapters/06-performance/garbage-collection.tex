@@ -2,10 +2,11 @@
 In this section we first examine best pratices for developing applications in Unity with a particular focus on garbage. We then list different \gls{GC} algorithms, briefly characterise them and investigate which algorithms are used in Mono, dotnet and Unity. Finally we measure the running times of F\# against C\# in Unity and a functional map-based approach against an imperative one.
 
 \subsection{Best Practices}
-Unity recommends careful memory management when writing in C\# and avoiding unnecessary heap allocations\cite{unity:optimisation}. The performance optimisation guideline in \cite{unity:optimisation} lists many common performance bottlenecks for Unity developers. The most notable of those are lack of caching and extensive use of boxing. Unity provides many method and properties that allow developers to access collections of components, such as \ttt{GameObject.FindObjectsWithTag} and \ttt{Mesh.vertices}\cite{unity:optimisation, unity:heap}. Each of those methods allocate a new array for the objects at every invocation, meaning that the code in \lstref{unity:array:prop} allocates four arrays in every iteration of the loop. This puts a huge burden on the \gls{GC} and will, according to \cite{unity:heap}, result in notisable performance degredation.
+Unity recommends careful memory management when writing in C\# and avoiding unnecessary heap allocations\cite{unity:optimisation}. The performance optimisation guideline in \cite{unity:optimisation} lists many common performance bottlenecks for Unity developers. The most notable of those are lack of caching and extensive use of boxing. Unity provides many methods and properties that allow developers to access collections of components, such as the \ttt{GameObject.FindObjectsWithTag} method and \ttt{Mesh.vertices} property\cite{unity:optimisation, unity:heap}. Each of those methods and properties allocate a new array for the objects at every invocation, meaning that the code listed as \ttt{Wrong} in \lstref{unity:array:prop} allocates four arrays in every iteration of the loop. This puts a huge burden on the \gls{GC} and will, according to \cite{unity:heap}, result in notisable performance degredation. Instead, developers should use the code listed as \ttt{Correct} in \lstref{unity:array:prop}, which does the exact same, but with better use of caching.
 
 \begin{listing}
     \begin{minted}{csharp}
+        //Wrong
         for(int i = 0; i < mesh.vertices.Length; i++)
         {
             float x, y, z;
@@ -15,6 +16,13 @@ Unity recommends careful memory management when writing in C\# and avoiding unne
             z = mesh.vertices[i].z;
         
             DoSomething(x, y, z);
+        }
+
+        //Correct
+        var verts = mesh.vertices;
+        for (var i = 0; i < verts.Length; i++) {
+            var v = verts[i];
+            DoSomething(v.x, v.y, v.z);
         }
     \end{minted}
     \caption{Common performance bottleneck in Unity \cite{unity:heap}. \ttt{mesh.vertices} should be cached.} \label{lst:unity:array:prop}
@@ -27,26 +35,34 @@ Unity uses the Boehm–Demers–Weiser \gls{GC}, which is a conservative mark-sw
 
 The dotnet runtime uses a generational \gls{GC} with three generations for smaller objects and a single generation for large objects\cite{dotnet:gc}. The younger generations are collected more often than the higher and all surviving objects are moved to the older generations. Each time an older generation is collected, all younger generations are also collected. Generational \glspl{GC} have the advantage that short-lived object allocations has a smaller performance penalty, but the disadvantage that they introduce additional overhead if old objects contain references to young objects\cite{sestoft2017programming}. Depending on the system the dotnet runtime may use different \gls{GC} strategies, including concurrent versions\cite{dotnet:gc}. Concurrent \glspl{GC} can collect garbage concurenly with the computation, meaning that \gls{GC} pauses are minimised or entirely removed\cite{dotnet:gc}.
 
-Mono has previously used the Boehm–Demers–Weiser \gls{GC}, but has since moved to a concurrent, generational \gls{GC} called sgen\cite{mono:gc}. We have previously mentioned that Unity uses the Mono runtime, which may cause some confusion, so a clarification is due. The Unity Engine supports two different runtimes: Mono and IL2CPP. The Mono runtime is a fork of the Mono runtime\cite{unity:mono:github}, meaning that updates to the official Mono is not necessarily applied to the Unity Engine's Mono runtime. The IL2CPP runtime converts code in \gls{IL} to C++ and at the time of writing also uses the Boehm–Demers–Weiser \gls{GC}\cite{il2cpp:gc}. However, an \textit{\dquote{incremental \gls{GC}, which should reduce stutters and time spikes}} is listed on the roadmap for Unity's 2019.1.0 release\cite{unity:roadmap}.
+Mono has previously used the Boehm–Demers–Weiser \gls{GC}, but has since moved to a concurrent, generational \gls{GC} called sgen\cite{mono:gc}. We have previously mentioned that Unity uses the Mono runtime, which may cause some confusion, so a clarification is due. The Unity Engine supports two different runtimes: Mono and IL2CPP. The Mono runtime is a fork of the Mono runtime\cite{unity:mono:github}, meaning that updates to the official Mono is not necessarily applied to the Unity Engine's Mono runtime. The IL2CPP runtime \gls{AoT} compiles code in \gls{IL} to C++ and at the time of writing also uses the Boehm–Demers–Weiser \gls{GC}\cite{il2cpp:gc}. However, an \textit{\dquote{incremental garbage collector, which should reduce stutters and time spikes}} is listed on the roadmap for Unity's 2019.1.0 release\cite{unity:roadmap}.
 
 \subsection{Functional Programming and Garbage Collection}
-All these recommendations stand in direct contrast to the common practices employed in the functional programming paradigm \needcite. In functional programming it's typical to map over collections, which has two problems compared to this Unity performance guideline:
+All these recommendations stand in direct contrast to the common practices employed in the pure functional programming paradigm. In functional programming it's typical to map over collections, which has two problems compared to this Unity performance guideline:
 \begin{enumerate}
     \item map allocates a new collection instead of mutating the existing collection.
     \item map requires a function as one of the arguments, which defines what should happen to each of the elements in the collection.
 \end{enumerate}
-This practise also extends to other generalised constructs, such as the tree-walker employed in talents test case. These guidelines explains why Unity Technologies does not want to add F\# support despite the over 3500 votes in April 2018\cite{unity:fsharp}. The vote was later closed by Unity, without any explanation\footnote{In previous work \cite{p92018gameplay} he have cited the Unity forums to support this claim, but as of Feburary 2019 Unity has closed their feedback forums, meaning that this citation is no longer valid.}.
+This practise also extends to other generalised constructs, such as the tree-walker employed in talents test case. These guidelines explain why Unity Technologies does not want to add F\# support despite over 3500 votes on their feedback forums in April 2018\cite{unity:fsharp}. The vote was later closed by Unity, without any explanation\footnote{In previous work \cite{p92018gameplay} he have cited the Unity forums to support this claim, but as of Feburary 2019 Unity has closed their feedback forums, meaning that this citation is no longer valid.}.
 
 \subsection{Investigating Performance}
-Unity's performance guidelines regarding \gls{GC} seems to convey the message that functional languages should be avoided in Unity. However, an investigation of Unity's integration with the runtime shows that a there is a considerable overhead in calling \ttt{MonoBehaviour}-methods\cite{unity:runtime:calls}. In \cite{unity:runtime:calls} the author setups up two different scenes:
+Unity's performance guidelines regarding \gls{GC} seems to convey the message that functional-style programming should be avoided in Unity. However, an investigation of Unity's integration with the runtime shows that a there is a considerable overhead in calling the pre-defined \ttt{MonoBehaviour}-methods (such as \ttt{Update})\cite{unity:runtime:calls}. In \cite{unity:runtime:calls} the author setups up two different scenes:
 \begin{enumerate}
     \item A scene containing 10,000 separate \ttt{MonoBehaviours} with an \ttt{Update}-method that increments a variable.
-    \item A scene containing one \ttt{MonoBehaviour}, which contains an array of 10,000 objects. Each time the \ttt{Update}-method is called, the \ttt{MonoBehaviour} iterates through the 10,000 objects and calls their \ttt{Update}-method.
+    \item A scene containing one \ttt{MonoBehaviour}, which contains an array of 10,000 objects. Each time the \ttt{Update}-method is called, the \ttt{MonoBehaviour} iterates through the 10,000 objects and calls a custom \ttt{MyUpdate}-method.
 \end{enumerate}
 On an iPhone 6 the first approach took an average of 5.4ms to update the 10,000 objects, whereas the second took 0.22ms\cite{unity:runtime:calls}. In the first approach only 0.4\% of the time is spent actually executing the \ttt{Update}-code, the remaining 99.6\% is spent doing sanity checks, iterating \ttt{MonoBehaviours} and instrumenting calls from the native code into the runtime. 
 
 \subsubsection{Test Setup}
-The question then arises if the (potentially) increased overhead from \gls{GC} can be outweighed by having a single \ttt{FRPManager} manage all \ttt{FRPBehaviour}s in a scene? In order to investigate, we reused the implementation of the Unit Management test case from the usability test. This test case is most easily solved by creating a collection of tuples containing the scene's \ttt{GameObject}s and their associated state. At each iteration the corresponding states' update methods are mapped over the collection to create a new collection of game objects and their updated state, which is stored for subsequent updates. This approach avoids dealing with the problems of updating the list while iterating and potentially applying two updates to one \ttt{GameObject}. The advantage is that a single \ttt{MonoBehaviour} is in charge of updating all units in the \dquote{Realtime Strategy Game} and the disadvantage is that it generates substantially more garbage, as a new collection is allocated at each \ttt{Update}.
+The question then arises if the (potentially) increased overhead from \gls{GC} can be outweighed by having a single \ttt{FRPManager} manage all \ttt{FRPBehaviour}s in a scene? In order to investigate, we reused the implementation of the Unit Management test case from the usability test (see \secref{usability:test:cases}). This solution is listed in \lstref{test:case:ai}. This test case may be solved by creating a collection of tuples: \ttt{(Unit, State)}. The state machine contains a series of unit management methods; one for each state. These methods take a unit as argument and returns a state. At each iteration the corresponding state's methods are mapped over the collection to create a new collection of game objects and their updated state, which is stored for subsequent updates. This approach avoids dealing with the problems of updating the list while iterating and potentially applying two updates to one \ttt{GameObject}. The advantage is that a single \ttt{MonoBehaviour} is in charge of updating all units in the \dquote{Realtime Strategy Game} and the disadvantage is that it generates substantially more garbage, as a new collection is allocated at each \ttt{Update}.
+
+\begin{listing}
+    \begin{minted}{csharp}
+        
+    \end{minted}
+    \caption{Possible solution for the Unit Management test cases.}
+    \label{lst:test:case:ai}
+\end{listing}
 
 We compared this implementation with a more straight-forward implementation, where each unit has its own state machine. This has the advantage that we can exploit caching and generate less garbage, as suggested by Unity Technologies\cite{unity:optimisation}. It comes at the disadvantage that each unit must have its own \ttt{Update}-method, potentially introducing a large overhead\cite{unity:runtime:calls}.
 
