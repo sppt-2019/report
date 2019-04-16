@@ -4,8 +4,8 @@ This section analyses the data presentation in \secref{test-results}, using meth
 \subsection{Syntax Comparison}
 Test participants encountered problems with various aspects of F\#'s syntax. Such issues are to be expected when developing in a new programming language, furthermore, syntactical errors are not the main focus of this inquiry. Therefore these issues are discussed in this section.
 
-\subsubsection{Declarations and Operators}
-In F\# the \ttt{=} symbol is used to denote two different operators; the declaration operator, and the equality operator. Notably the symbol is not used for assignments, which it is in C\#. A comparison of the two different assignment styles can be seen in \lstref{ass-comp}.
+\subsubsection{Bindings and Operators}
+In F\# the \ttt{=} symbol is used to denote two different operators; the value-binding operator, and the equality operator. Notably the symbol is not used for rebinding, F\# equivalent of assignments which it is in C\#. A comparison of the two different rebinding/assignment styles can be seen in \lstref{ass-comp}. Rebindings are only allowed on \ttt{mutable} variables, which should be limited to a scope.
 
 \begin{listing}[H]
 \begin{minipage}{.45\textwidth}
@@ -27,17 +27,38 @@ x = 1;
 
 Furthermore, since \ttt{x = 1} is valid F\#, no errors where encountered immediately. Instead the program behaved unexpectedly and they received a warning, that the value of a boolean expression was being ignored. None of the participants where able to deduce the source of the error without assistance from the monitor. The degree of assistance required ranged from a hint to the monitor explaining the problem so that the test could continue.
 
-\subsubsection{Scopes and Scoping}
+Some participants encountered minor errors when declaring variables, because variables are implicitly immutable in F\#. This is the opposite of C\#, where the \ttt{const} keyword is used to explicitly declare a variable immutable. However, once the participants realised this, they had no issue using it.
+
+\subsubsection{Scopes and Indentation}
+Several of the participants did not connect indentation with scope. This meant that the scoping of variables at times presented a challenge. In most test cases the solutions are implemented in a class, therefore when test participants indented their function bodies incorrectly the code would work initially. This was because the function body would be part of the class instead of the function and could therefore still be called within the scope, this can be seen in \lstref{scope-prob}.
+
+\begin{listing}[H]
+\begin{minted}{fsharp}
+type FRP_FPSController() =
+    inherit FRPBehaviour()
+
+    [<SerializeField>]
+    let mutable _velocity = 5.0f;
+
+    [...]
+
+    member this.HandleMoveForward() =
+    let newPosition = this.transform.position + new Vector3(0.0f, 0.0f, _velocity)
+    this.transform.position <- newPosition
+\end{minted}
+\caption{Incorrect Indentation}
+\label{lst:scope-prob}
+\end{listing}
+
+Lines 10 and 11 are indented correctly, but the code compiles and behaves as expected. The \gls{IDE} gives a warning on both lines, but no errors are thrown until new \ttt{member} functions are defined.
 
 \subsubsection{Types and Type Inference}
+
 
 \subsubsection{Function Definitions}
 
 
-\subsection{Readability Comparison}
-
-\subsubsection{Verbosity}
-
-\subsubsection{Naming}
-
-\subsubsection{Modularity}
+%\subsection{Readability Comparison}
+%\subsubsection{Verbosity}
+%\subsubsection{Naming}
+%\subsubsection{Modularity}
