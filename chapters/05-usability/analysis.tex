@@ -37,9 +37,6 @@ Several of the participants did not connect indentation with scope. This meant t
 type FRP_FPSController() =
     inherit FRPBehaviour()
 
-    [<SerializeField>]
-    let mutable _velocity = 5.0f;
-
     [...]
 
     member this.HandleMoveForward() =
@@ -50,10 +47,10 @@ type FRP_FPSController() =
 \label{lst:scope-prob}
 \end{listing}
 
-Lines 10 and 11 are indented correctly, but the code compiles and behaves as expected. The \gls{IDE} gives a warning on both lines, but no errors are thrown until new \ttt{member} functions are defined.
+Lines 7 and 8 are indented incorrectly, but the code compiles and behaves as expected. The \gls{IDE} gives a warning on both lines, but no errors are thrown until new \ttt{member} functions are defined.
 
 \subsubsection{Types and Type Inference}
-
+Many participants had problems with the type system and type inference. The functions provided in the sample sheets had explicitly typed parameters, which the participants 
 
 \subsubsection{Function Definitions}
 
