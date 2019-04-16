@@ -1,6 +1,43 @@
 \section{Analysis}
-This section analyses the data presentation in \secref{test-results}, using methodology presented in \secref{prog-usability}. In order to guage the difficulty of using F\# in comparison to C\# we use the coginitive dimensions framework and the attention investment model. These methodologies are used to estimate the ease-of-use of both programming languages, we call this metric writability. Furthermore, the cognitive dimensions framework can be utilised to estimate the readability or maintainability of the code written during the test.
+This section analyses the data presentation in \secref{test-results}, using methodology presented in \secref{prog-usability}. In order to gauge the difficulty of using F\# in comparison to C\# we use the cognitive dimensions framework and the attention investment model. These methodologies are used to estimate the ease-of-use of both programming languages, we call this metric writability. Furthermore, the cognitive dimensions framework can be utilised to estimate the readability or maintainability of the code written during the test.
 
-\subsection{Writability Comparison}
+\subsection{Syntax Comparison}
+Test participants encountered problems with various aspects of F\#'s syntax. Such issues are to be expected when developing in a new programming language, furthermore, syntactical errors are not the main focus of this inquiry. Therefore these issues are discussed in this section.
 
-\subsection{Readbility Comparison}
+\subsubsection{Declarations and Operators}
+In F\# the \ttt{=} symbol is used to denote two different operators; the declaration operator, and the equality operator. Notably the symbol is not used for assignments, which it is in C\#. A comparison of the two different assignment styles can be seen in \lstref{ass-comp}.
+
+\begin{listing}[H]
+\begin{minipage}{.45\textwidth}
+\begin{minted}{fsharp}
+let mutable x = 0
+x <- 1
+\end{minted}
+\end{minipage}
+\hfill
+\begin{minipage}{.45\textwidth}
+\begin{minted}{csharp}
+int x = 0;
+x = 1;
+\end{minted}
+\end{minipage}
+\caption{Assignment Comparison}
+\label{lst:ass-comp}
+\end{listing}
+
+Furthermore, since \ttt{x = 1} is valid F\#, no errors where encountered immediately. Instead the program behaved unexpectedly and they received a warning, that the value of a boolean expression was being ignored. None of the participants where able to deduce the source of the error without assistance from the monitor. The degree of assistance required ranged from a hint to the monitor explaining the problem so that the test could continue.
+
+\subsubsection{Scopes and Scoping}
+
+\subsubsection{Types and Type Inference}
+
+\subsubsection{Function Definitions}
+
+
+\subsection{Readability Comparison}
+
+\subsubsection{Verbosity}
+
+\subsubsection{Naming}
+
+\subsubsection{Modularity}

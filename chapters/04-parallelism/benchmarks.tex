@@ -14,7 +14,7 @@ The difference between the two test cases is that there are no data-dependencies
 \subsection{Implementations}
 In this benchmark we decided to use C\#, as we were familiar with the language. Furthermore, we discovered in previous work that C\#'s performance in the .NET Core runtime in many cases was faster than that of C++ in the context of microbenchmarks \cite{p92018gameplay}. We are well aware that C\# is not lenient, but we wanted to compare the strategies within the same language runtime and therefore attempted to map the lenient evaluation strategy onto C\#'s task system. \lstref{lenient:to:task} gives a code example how to do so.
 
-\begin{listing}
+\begin{listing}[H]
 \begin{minted}{csharp}
 //Lenient function, body evaluated asynchronously from caller
 //parameters evaluated asynchronously from function body
@@ -42,7 +42,7 @@ We implemented the test cases in three different synchronisation models:
 \end{labeling}
 
 \subsection{Test Setup}
-According to \cite{sestoft2013microbenchmarks} the most reliable results are obtained when the tests are repeated multiple times and the average and standard deviation calculated for the results. We therefore decided to take the average execution speed over 100 repetitions for varying problem sizes, starting with 10 leaf nodes and gradually increasing the number up to a total of 10,000 leaves. 
+According to \cite{sestoft2013microbenchmarks} the most reliable results are obtained when the tests are repeated multiple times and the average and standard deviation calculated for the results. We therefore decided to take the average execution speed over 100 repetitions for varying problem sizes, starting with 10 leaf nodes and gradually increasing the number up to a total of 10,000 leaves.
 
 The tests were run on a laptop, of which the specifications are listed in \tableref{sys-specs}.
 
