@@ -60,9 +60,6 @@ The other approach, here referred to as \dquote{Normal}, creates a \ttt{MonoBeha
 
 \begin{listing}
     \begin{minted}{csharp}
-<<<<<<< Updated upstream
-
-=======
         public void Update()
         {
             //Apply updates and store the updated states in a list
@@ -92,7 +89,6 @@ The other approach, here referred to as \dquote{Normal}, creates a \ttt{MonoBeha
                 }
             }
         }
->>>>>>> Stashed changes
     \end{minted}
     \caption{Possible solution for the Unit Management test cases.}
     \label{lst:test:case:ai}
@@ -126,37 +122,30 @@ Another interesting observation we made during the test is that there is a very 
     F\# Normal & 56.1 & 57.9\\\hline
     FRP Inverse & 6.2 & 5.9 \\
 }{Average framerate in Unity's two runtimes measured with 250 unites in the scene.}{unity:ai:runtime}
+
+
 % 56 FPS on C# and F# Normal
 % 28 FPS declining to 6 FPS in F# Inverse
 % Very notable spike (~20 times higher than normal) at third frame
-<<<<<<< Updated upstream
 %
-\newcommand{\fpsSyms}{\symbolic{Strategy,50,100,150,200,250}}
-\barChart[15][\fpsSyms]{Average FPS in Unit Management benchmark}{ai:benchmark}{
-=======
-% 
-\barChart{}{}{Average FPS}{Number of Units}{\symbolic{Strategy,50,100,150,200,250}}{Average \gls{FPS} in Unit Management benchmark}{ai:benchmark}{\symbolic{Strategy,50,100,150,200,250}}
-{
->>>>>>> Stashed changes
+\barChart[12][\symbolic{Strategy,50,100,150,200,250}][Average FPS]{Average FPS in Unit Management benchmark}{ai:benchmark}{
     \plotData{Csharp Normal}{\aiBenchmarkData}
     \plotData{Csharp Inverse}{\aiBenchmarkData}
     \plotData{Fsharp Normal}{\aiBenchmarkData}
     \plotData{FRP Inverse}{\aiBenchmarkData}
 }
 
-<<<<<<< Updated upstream
-\barChart[15][\symbolic{Strategy,FPS}]{Average FPS in Unit Management benchmark}{ai:benchmark}{
+\barChart[12][\symbolic{Strategy,50,100,150,200,250}]{Average FPS in Unit Management benchmark}{ai:benchmark}{
     \plotData{Csharp Normal}{\aiBenchmarkData}
     \plotData{Csharp Inverse}{\aiBenchmarkData}
-    \plotData{FRP Normal}{\aiBenchmarkData}
+    \plotData{Fsharp Normal}{\aiBenchmarkData}
     \plotData{FRP Inverse}{\aiBenchmarkData}
-    \plotData{il2cpp Csharp Normal}{\benchmarkRuntimesData}
-    \plotData{il2cpp Csharp Inverse}{\benchmarkRuntimesData}
-    \plotData{il2cpp FRP Normal}{\benchmarkRuntimesData}
-    \plotData{il2cpp FRP Inverse}{\benchmarkRuntimesData}
+    %\plotData{il2cpp Csharp Normal}{\benchmarkRuntimesData}
+    %\plotData{il2cpp Csharp Inverse}{\benchmarkRuntimesData}
+    %\plotData{il2cpp FRP Normal}{\benchmarkRuntimesData}
+    %\plotData{il2cpp FRP Inverse}{\benchmarkRuntimesData}
 }
-=======
-\barChart{}{}{Average FPS}{Strategy}{\symbolic{Strategy,Mono,il2cpp}}{Average \gls{FPS} in Unit Management benchmark}{ai:benchmark:runtime}{
+\barChart[12][\symbolic{Strategy,Mono,il2cpp}][Average FPS]{Average FPS in Unit Management benchmark}{ai:benchmark:runtime}{
     \plotData{Csharp Normal}{\aiBenchmarkRuntimesData}
     \plotData{Csharp Inverse}{\aiBenchmarkRuntimesData}
     \plotData{Fsharp Normal}{\aiBenchmarkRuntimesData}
@@ -164,4 +153,3 @@ Another interesting observation we made during the test is that there is a very 
 }
 
 \subsection{Performance of the FRP-system}
->>>>>>> Stashed changes
