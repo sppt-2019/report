@@ -1,3 +1,12 @@
+%%%%%%%%%%%%%%%%%%% Packages %%%%%%%%%%%%%%%%%%%
+\usepackage{xifthen}
+\usepackage{xparse}
+
+%%%%%%%%%%%%%%%%%%% Commands %%%%%%%%%%%%%%%%%%%
+\newcommand{\ifequals}[3]{\ifthenelse{\equal{#1}{#2}}{#3}{}}
+\newcommand{\case}[2]{#1 #2} % Dummy, so \renewcommand has something to overwrite...
+\newenvironment{switch}[1]{\renewcommand{\case}{\ifequals{#1}}}{}
+
 \newcommand{\symbolicsStrat}{%
 symbolic x coords={,
     Problem,

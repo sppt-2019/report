@@ -24,12 +24,6 @@
 \usepackage{floatrow}
 \usepackage{booktabs}
 \usepackage{multicol}
-% Macro management package and a switch case definition
-\usepackage{xifthen}
-\newcommand{\ifequals}[3]{\ifthenelse{\equal{#1}{#2}}{#3}{}}
-\newcommand{\case}[2]{#1 #2} % Dummy, so \renewcommand has something to overwrite...
-\newenvironment{switch}[1]{\renewcommand{\case}{\ifequals{#1}}}{}
-\usepackage{xparse}
 
 \usepackage{siunitx}
 \usepackage{csvsimple}
@@ -69,11 +63,11 @@
 % The framed package is used in the example environment
 \usepackage{framed}
 
-\usepackage{tikz}
-\usetikzlibrary{arrows,arrows.meta, fit, backgrounds, positioning, automata, shapes}
 \usepackage{pgfplots}
 \usepackage{pgfplotstable}
 \pgfplotsset{compat=1.15}
+\usepackage{tikz}
+\usetikzlibrary{arrows,arrows.meta, fit, backgrounds, positioning, automata, shapes}
 \usepackage{enumitem}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Mathematics
@@ -213,6 +207,8 @@
 \input{00-preliminary/minted-options.tex}
 % Quotations package
 \usepackage[autostyle]{csquotes}
+
+\input{00-preliminary/result-presentation.tex}
 
 \pgfplotstableread[col sep = comma]{00-data/accumulation.csv}\accumulationData
 \pgfplotstableread[col sep = comma]{00-data/summation.csv}\summationData
