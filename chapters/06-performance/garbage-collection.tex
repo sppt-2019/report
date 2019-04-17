@@ -54,11 +54,45 @@ Unity's performance guidelines regarding \gls{GC} seems to convey the message th
 On an iPhone 6 the first approach took an average of 5.4ms to update the 10,000 objects, whereas the second took 0.22ms\cite{unity:runtime:calls}. In the first approach only 0.4\% of the time is spent actually executing the \ttt{Update}-code, the remaining 99.6\% is spent doing sanity checks, iterating \ttt{MonoBehaviours} and instrumenting calls from the native code into the runtime.
 
 \subsubsection{Test Setup}
-The question then arises if the (potentially) increased overhead from \gls{GC} can be outweighed by having a single \ttt{FRPManager} manage all \ttt{FRPBehaviour}s in a scene? In order to investigate, we reused the implementation of the Unit Management test case from the usability test (see \secref{usability:test:cases}). This solution is listed in \lstref{test:case:ai}. This test case may be solved by creating a collection of tuples: \ttt{(Unit, State)}. The state machine contains a series of unit management methods; one for each state. These methods take a unit as argument and returns a state. At each iteration the corresponding state's methods are mapped over the collection to create a new collection of game objects and their updated state, which is stored for subsequent updates. This approach avoids dealing with the problems of updating the list while iterating and potentially applying two updates to one \ttt{GameObject}. The advantage is that a single \ttt{MonoBehaviour} is in charge of updating all units in the \dquote{Realtime Strategy Game} and the disadvantage is that it generates substantially more garbage, as a new collection is allocated at each \ttt{Update}.
+The question then arises if the (potentially) increased overhead from \gls{GC} can be outweighed by having a single \ttt{MonoBehaviour} manage several other behaviours in the same scene? In order to investigate, we reused the implementation of the Unit Management test case from the usability test (see \secref{usability:test:cases}). This solution is listed in \lstref{test:case:ai}. This test case may be solved by creating a collection of tuples: \ttt{(Unit, State)}. The state machine contains a series of unit management methods; one for each state. These methods take a unit as argument and returns a state. At each iteration the corresponding state's methods are mapped over the collection to create a new collection of game objects and their updated state, which is stored for subsequent updates. This approach avoids dealing with the problems of updating the list while iterating and potentially applying two updates to one \ttt{GameObject}. The advantage is that a single \ttt{MonoBehaviour} is in charge of updating all units in the \dquote{Realtime Strategy Game} and the disadvantage is that it generates substantially more garbage, as a new collection is allocated at each \ttt{Update}. We refer to this method as \dquote{Inverse} in the remainder of this section.
+
+The other approach, here referred to as \dquote{Normal}, creates a \ttt{MonoBehaviour} for each unit, which contains it's own state machine. This approach generates much less garbage, but has a higher number of calls from the native code to the managed code.
 
 \begin{listing}
     \begin{minted}{csharp}
+<<<<<<< Updated upstream
 
+=======
+        public void Update()
+        {
+            //Apply updates and store the updated states in a list
+            var newStates = _stateList.Select(s =>
+            {
+                switch (s.state)
+                {
+                    case State.Fleeing:
+                        return Flee(s.entity);
+                    case State.Moving:
+                        return Move(s.entity);
+                    case State.Attacking:
+                        return Attack(s.entity);
+                    default: return (State.Moving, s.entity);
+                }
+            }).ToList();
+
+            //zip the list with the old states to create tuples: (new state, old state)
+            foreach (var statePair in newStates.Zip(_stateList, (sNew, sOld) => (sNew,sOld)))
+            {
+                //Compare old state and new state, initialise the unit for the new state if changed
+                if (statePair.sNew.Item1 != statePair.sOld.state)
+                {
+                    _initialiseState(statePair.sNew.Item1, statePair.sNew.entity);
+                    //Create a new list containing the updated unit
+                    _stateLise = _stateList.Select(s => s.entity == shooter ? (state, shooter) ? s);
+                }
+            }
+        }
+>>>>>>> Stashed changes
     \end{minted}
     \caption{Possible solution for the Unit Management test cases.}
     \label{lst:test:case:ai}
@@ -67,23 +101,50 @@ The question then arises if the (potentially) increased overhead from \gls{GC} c
 We compared this implementation with a more straight-forward implementation, where each unit has its own state machine. This has the advantage that we can exploit caching and generate less garbage, as suggested by Unity Technologies\cite{unity:optimisation}. It comes at the disadvantage that each unit must have its own \ttt{Update}-method, potentially introducing a large overhead\cite{unity:runtime:calls}.
 
 \subsubsection{Methodology}
-We decided to implement the two approaches in both C\# and F\#, as it also gives us information about whether or not the use of F\# comes with an additional overhead. In this case we use the Mono runtime under Unity 2018.2.12f1. In all test cases we used a \ttt{MonoBehaviour} written in C\# to measure the time between each \ttt{Update}-call, i.e. the time it takes to generate a frame. We decided to run the test in five setups with 50, 100, 150, 200 and 250 units. For each setup we generated 900 frames, as that corresponds to 15 seconds of gameplay at 60 \gls{FPS}. Each measurement was added to a \ttt{HashSet}, which was written to a CSV file after the test. This means that the measurements include all game-related code, both including rendering, physics and so alike. However, as this system is ultimately going to be used to develop games, we feel that delta time (or equivalently \gls{FPS}) is a good metric, as that is of utmost importance to the player.
+We decided to implement the two approaches in both C\# and F\#, as it also gives us information about whether or not the use of F\# comes with an additional overhead. The  In this case we use the Mono runtime under Unity 2018.2.12f1. In all test cases we used a \ttt{MonoBehaviour} written in C\# to measure the time between each \ttt{Update}-call, i.e. the time it takes to generate a frame. We decided to run the test in five setups with 50, 100, 150, 200 and 250 units. For each setup we generated 900 frames, as that corresponds to 15 seconds of gameplay at 60 \gls{FPS}. Each measurement was added to a \ttt{HashSet}, which was written to a CSV file after the test. This means that the measurements include all game-related code, both including rendering, physics and so alike. However, as this system is ultimately going to be used to develop games, we feel that delta time (or equivalently \gls{FPS}) is a good metric, as that is of utmost importance to the player.
 
-Furhtermore, we also run the test with 250 units in il2cpp to ascertain whether it is more or less performant than Mono.
+Furhtermore, we also run the test with 250 units in il2cpp to ascertain whether it is more or less performant than Mono. Both runtimes were tested in Development-mode in the Unity Editor.
 
 \section{Results}
+The average \gls{FPS} over the 900 frames are listed in \tableref{unity:ai} and \tableref{unity:ai:runtime}. The results indicate first and foremost that the Normal approach (i.e. separate \ttt{MonoBehaviour}s with their own statemachine and \ttt{Update}-method) in C\# and F\# are comparable in these problem sizes. The results also suggest that the inverse state-machine approach is comparable to normal C\#. These results may be interpreted as meaning that extensive garbage generation has the same penalty as Unity's call from native code into managed code. We also observe that the inverse FRP state machine performs notably worse than the other approaches. We will go into greater depth as to why in the following section. Finally the resutls also show that il2cpp provides a speed up that results in roughly 2-4 more \gls{FPS} in C\# Normal, Inverse and F\# Normal.
+
+Another interesting observation we made during the test is that there is a very large spike in the time it takes to generate the third frame. This spike is around 20 times the time it takes to generate the other scenes. One could explain this spike in Mono as runtime-optimisation, but as it is also present in il2cpp, which is \gls{AoT}, that cannot be the case. We do therefore not know what causes the spike.
+
+\makeTable{
+    { c | c | c | c | c | c }
+    \textbf{Strategy} & \textbf{50 Units} & \textbf{100 Units} & \textbf{150 Units} & \textbf{200 Units} & \textbf{250 Units} \\\hline
+    C\# Normal & 56.1 & 56.5 & 56.3 & 56.7 & 56.3 \\\hline
+    C\# Inverse & 56.4 & 56.5 & 55.9 & 56.7 & 55.7 \\\hline
+    F\# & 56.5 & 56.1 & 53.4 & 56.1 & 56.1 \\\hline
+    FRP Inverse & 28.6 & 16.1 & 10.0 & 7.7 & 6.2 \\
+    }{Average framerate when simulating the given number of units in Unity's Mono runtime.}{unity:ai}
+\makeTable{
+    { c | c | c }
+    \textbf{Strategy} & \textbf{Mono} & \textbf{il2cpp} \\\hline
+    C\# Normal & 56.3 & 59.4 \\\hline
+    C\# Inverse & 55.7 & 59.4 \\\hline
+    F\# Normal & 56.1 & 57.9\\\hline
+    FRP Inverse & 6.2 & 5.9 \\
+}{Average framerate in Unity's two runtimes measured with 250 unites in the scene.}{unity:ai:runtime}
 % 56 FPS on C# and F# Normal
 % 28 FPS declining to 6 FPS in F# Inverse
 % Very notable spike (~20 times higher than normal) at third frame
+<<<<<<< Updated upstream
 %
 \newcommand{\fpsSyms}{\symbolic{Strategy,50,100,150,200,250}}
 \barChart[15][\fpsSyms]{Average FPS in Unit Management benchmark}{ai:benchmark}{
+=======
+% 
+\barChart{}{}{Average FPS}{Number of Units}{\symbolic{Strategy,50,100,150,200,250}}{Average \gls{FPS} in Unit Management benchmark}{ai:benchmark}{\symbolic{Strategy,50,100,150,200,250}}
+{
+>>>>>>> Stashed changes
     \plotData{Csharp Normal}{\aiBenchmarkData}
     \plotData{Csharp Inverse}{\aiBenchmarkData}
-    \plotData{FRP Normal}{\aiBenchmarkData}
+    \plotData{Fsharp Normal}{\aiBenchmarkData}
     \plotData{FRP Inverse}{\aiBenchmarkData}
 }
 
+<<<<<<< Updated upstream
 \barChart[15][\symbolic{Strategy,FPS}]{Average FPS in Unit Management benchmark}{ai:benchmark}{
     \plotData{Csharp Normal}{\aiBenchmarkData}
     \plotData{Csharp Inverse}{\aiBenchmarkData}
@@ -94,3 +155,13 @@ Furhtermore, we also run the test with 250 units in il2cpp to ascertain whether 
     \plotData{il2cpp FRP Normal}{\benchmarkRuntimesData}
     \plotData{il2cpp FRP Inverse}{\benchmarkRuntimesData}
 }
+=======
+\barChart{}{}{Average FPS}{Strategy}{\symbolic{Strategy,Mono,il2cpp}}{Average \gls{FPS} in Unit Management benchmark}{ai:benchmark:runtime}{
+    \plotData{Csharp Normal}{\aiBenchmarkRuntimesData}
+    \plotData{Csharp Inverse}{\aiBenchmarkRuntimesData}
+    \plotData{Fsharp Normal}{\aiBenchmarkRuntimesData}
+    \plotData{FRP Inverse}{\aiBenchmarkRuntimesData}
+}
+
+\subsection{Performance of the FRP-system}
+>>>>>>> Stashed changes
