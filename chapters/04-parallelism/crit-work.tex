@@ -5,7 +5,7 @@ In this section we present results from an experiment that estimates the critica
 In this experiment we estimate the critical workload of C\#'s \ttt{Task}-system. By critical workload we mean the time each task must execute before it is worthwhile to spawn it, compared to a sequential solution. The reason for this exploration is that we found the sequential solution to be faster in the binary tree benchmarks presented in the previous section.
 
 \subsubsection{Test Setup}
-We use the Binary Tree Summation benchmark presented in the previous section with a minor modification: Every time the algorithm finds a \ttt{Node}, it busy-waits for a given amount of time to simulate work. The busy-wait was implemented with a loop, whose number of iterations is gradually halved until the sequential solution executes faster than the parallel. The hypothesis here is that the parallel solutions will be faster, because it is capable of busy-waiting multiple tasks at the same time. 
+We use the Binary Tree Summation benchmark presented in the previous section with a minor modification: Every time the algorithm finds a \ttt{Node}, it busy-waits for a given amount of time to simulate work. The busy-wait was implemented with a loop, whose number of iterations is gradually halved until the sequential solution executes faster than the parallel. The hypothesis here is that the parallel solutions will be faster, because it is capable of busy-waiting multiple tasks at the same time.
 
 The Binary Summation test case from the previous section was reused in this experiment, but implemented in two variations. The first variation emulates a data dependency between the wait and the results the subtrees, i.e. the wait is intended to emulate a computation that must be carried out after the results of both subtrees have been computed. The other variation emulates a situation where the left and right subtree can be computed in parallel with the wait, i.e. no data dependency between the delay and the subtrees. The tree has a total of 60 leaf nodes. In addition to the binary tree summation, we also implemented a N-ary tree summation in the same variations as that of binary.
 
@@ -42,7 +42,7 @@ In this section we execute a matrix summation benchmark. This benchmark measures
 \begin{labeling}{\quad\quad}
     \item[Sequential] utilises a double-nested for-loop to iterate over the matrix and sum the values. This benchmark provides a baseline value for running the computation on one thread.
     \item[Map Reduce] maps a function that sums each column over the matrix. The resulting list of column sums is then reduced to the overall sum of the matrix. In C\# we utilise the \gls{LINQ}-methods \ttt{Select}, \ttt{Sum} and \ttt{Aggregate}.
-    \item[Parallel Foreach] uses a parallel loop to iterate over the columns of the matrix that may execute the summation of each column in parallel. 
+    \item[Parallel Foreach] uses a parallel loop to iterate over the columns of the matrix that may execute the summation of each column in parallel.
     \item[Tasks] is similar to parallel foreach, with the only exception that we manually spawn a \ttt{Task} that calculates the sum of each column.
 \end{labeling}
 
@@ -76,10 +76,10 @@ public static async Task<long> SumTask(long[,] matrix)
 As the matrices are of size $N x N$, they contain a total of $N^2$ elements with random values between \ttt{Int64.Minvalue} and \ttt{Int64.MaxValue}. When running the test with large matrices we found that even 64-bit integers would overflow, which throws an exception because C\# and F\# are managed languages. In order to avoid this, we used the \ttt{unchecked}-keyword, which disables bounds-checking on an integral arithmetic operation \cite{csharp:unchecked}. \cite{csharp:unchecked} states that using \ttt{unchecked} \textit{\dquote{might improve performance}}, compared to checked integral arithmetic operations.
 
 \subsubsection{Results}
-The results are plotted in \figureref{linpack-summation}. The first thing to notice is that Map Reduce seems to be roughly equal to the sequential in running time. This could indicate that the \ttt{Select}-method of C\#'s \gls{LINQ}, which was used to implement Map Reduce, does not parallelise its iterations. We will thus treat Map Reduce as a sequential solution for the rest of this result discussion. 
+The results are plotted in \figureref{linpack-summation}. The first thing to notice is that Map Reduce seems to be roughly equal to the sequential in running time. This could indicate that the \ttt{Select}-method of C\#'s \gls{LINQ}, which was used to implement Map Reduce, does not parallelise its iterations. We will thus treat Map Reduce as a sequential solution for the rest of this result discussion.
 
 \newcommand{\linpackSymbolics}{\symbolic{Problem Size,2,4,8,16,32,64,128,256,512,1024,2048,4096}}
-\barChart[7]{Matrix Summation}{linpack-summation}{\linpackSymbolics}{
+\barChart[7][\linpackSymbolics]{Matrix Summation}{linpack-summation}{
     \plotDataWithError{Sequential}{\linpackData}
     \plotDataWithError{Map Reduce}{\linpackData}
     \plotDataWithError{Parallel Foreach}{\linpackData}

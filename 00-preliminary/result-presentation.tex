@@ -26,13 +26,19 @@ symbolic x coords={,
     \addlegendentry{#1};
 }
 
-\NewDocumentCommand\lineChart{O{}mmm}{%
+% O #1 PGFPlot options
+% O #2 Y label
+% O #3 X label
+% m #4 Caption
+% m #5 Label
+% m #6 Plots
+\NewDocumentCommand\lineChart{O{}O{Logarithmic Run Time (ns)}O{Lower is better}mmm}{%
 \begin{figure}[H]
 \makebox[\textwidth][c]{
 \begin{tikzpicture}
     \begin{axis}[
-        ylabel={Logarithmic Run Time (ns)},
-        xlabel={Lower is better},
+        ylabel={#2},
+        xlabel={#3},
         width=1.2\textwidth,
         height=8cm,
         ymajorgrids,
@@ -48,31 +54,38 @@ symbolic x coords={,
             font=\tiny
         }
     ]
-    #4
+    #6
     \end{axis}
 \end{tikzpicture}}
-\caption{#2}
-\label{fig:#3}
+\caption{#4}
+\label{fig:#5}
 \end{figure}
 }
 
-\newcommand{\barChart}[5][12]{
+% O #1 bar width
+% O #2 PGFPlot options
+% O #3 Y label
+% O #4 X label
+% O #5 Extra PGFPlot options, defaults to logarithmic mode
+% m #6 Caption
+% m #7 Label
+% m #8 Plots
+\NewDocumentCommand\barChart{O{12}O{}O{Run Time (ns)}O{Lower is better}O{ymode = log,log basis y={2}}mmm}{%
     \begin{figure}[H]
     \makebox[\textwidth][c]{
     \begin{tikzpicture}
         \begin{axis}[
-            ylabel={Run Time (ns)},
-            xlabel={Number of leaves},
+            ylabel={#3},
+            xlabel={#4},
             width=1.2\textwidth,
             height=8cm,
-            ymode = log,
             ymajorgrids,
             xtick=data,
             ybar=0.4pt,
             bar width=#1pt,
-            log basis y={2},
             xticklabel style={rotate=45, anchor=east},
-            #4,
+            #2,
+            #5,
             legend columns = -1,
             legend style={
                 draw=none,
@@ -82,11 +95,10 @@ symbolic x coords={,
                 font=\tiny
             }
         ]
-        #5
+        #8
         \end{axis}
     \end{tikzpicture}}
-    \caption{#2}
-    \label{fig:#3}
+    \caption{#6}
+    \label{fig:#7}
 \end{figure}
 }
-
