@@ -124,30 +124,37 @@ Another interesting observation we made during the test is that there is a very 
 }{Average framerate in Unity's two runtimes measured with 250 unites in the scene.}{unity:ai:runtime}
 
 
-% 56 FPS on C# and F# Normal
-% 28 FPS declining to 6 FPS in F# Inverse
-% Very notable spike (~20 times higher than normal) at third frame
-\barChart[12][\symbolic{Strategy,50,100,150,200,250}][Average FPS][Higher is better][]{Average FPS in Unit Management benchmark}{ai:benchmark}{
+\barChart[12][][Average FPS][Number of Units][\symbolic{Strategy,50,100,150,200,250}]{Average FPS in Unit Management benchmark}{ai:benchmark}{
     \plotData{Csharp Normal}{\aiBenchmarkData}
     \plotData{Csharp Inverse}{\aiBenchmarkData}
     \plotData{Fsharp Normal}{\aiBenchmarkData}
     \plotData{FRP Inverse}{\aiBenchmarkData}
 }
 
-\barChart[12][\symbolic{Strategy,50,100,150,200,250}][Average FPS][Higher is better][]{Average FPS in Unit Management benchmark}{ai:benchmark}{
-    \plotData{Csharp Normal}{\aiBenchmarkData}
-    \plotData{Csharp Inverse}{\aiBenchmarkData}
-    \plotData{Fsharp Normal}{\aiBenchmarkData}
-    \plotData{FRP Inverse}{\aiBenchmarkData}
-    %\plotData{il2cpp Csharp Normal}{\benchmarkRuntimesData}
-    %\plotData{il2cpp Csharp Inverse}{\benchmarkRuntimesData}
-    %\plotData{il2cpp FRP Normal}{\benchmarkRuntimesData}
-    %\plotData{il2cpp FRP Inverse}{\benchmarkRuntimesData}
-}
-
-\barChart[12][\symbolic{Strategy,Csharp Normal,Csharp Inverse,Fsharp Normal,FRP Inverse}][Average FPS][Higher is better][]{Average FPS in Unit Management benchmark}{ai:benchmark:runtime}{
+\barChart[12][\symbolic{Strategy,Csharp Normal,Csharp Inverse,Fsharp Normal,FRP Inverse}][Average FPS][Strategy][]{Average FPS in Unit Management benchmark}{ai:benchmark:runtime}{
     \plotData{Mono}{\aiBenchmarkRuntimesData}
     \plotData{il2cpp}{\aiBenchmarkRuntimesData}
 }
 
 \subsection{Performance of the FRP-system}
+The results from the benchmark showed that the \gls{FRP}-system that was developed in F\# has a large performance penalty. In this section we wish to clarify from where that performance penalty stems and how to resolve it in future work. 
+
+\begin{figure}
+    \includegraphics[width=\textwidth]{00-images/FRP-profiling.png}
+    \caption{Distribution of execution time for a invocation of \ttt{Update} in a random frame in the Unit Management test with 250 units. Screenshot taken from Unity's Profiling Tool.}
+    \label{fig:frp:profiling}
+\end{figure}
+
+\figref{frp:profiling} shows a screenshot of Unity's profiling tool after running it on the Unit Management scene with 250 units. This screenshot shows the distribution of execution time for a single frame. A total of 2.30 ms is spent in the \ttt{Update}-method of which 2.25 ms is used in the \ttt{FRPBehaviour.AnyKeyboardKey()}-method. This method is a part of the \gls{FRP}-system and iterates through all keyboard-keys to check if they are held down. This means that only 0.05 ms is spent executing code that updates the scene.
+
+There are two problems with the strategy employed here:
+\begin{enumerate}
+    \item Each call to \ttt{FRPBehaviour.AnyKeyboardKey()} allocates a list of keyboard key ids with \ttt{Enum.GetValues()}, which takes 1.81ms.
+    \item Each \ttt{FRPBehaviour} is actually a full-blown \gls{FRP}-system, which could very well be refactored into a singleton.
+\end{enumerate}
+
+The first problem is very simple to solve. We simply move the statement that alloces the list to a \ttt{static let}-field on the class, which ensures that a single list is shared among all instances of \ttt{FRPBehaviour}. This poses no problems as the list never assigned to.
+
+The second problem requires a larger refactoring, as this relates to the Unity lifecycle of \ttt{GameObject}s. First and foremost some Unity methods are required to be tied to the \ttt{GameObject} they belong to. Examples of such methods are \ttt{OnCollisionEnter} and \ttt{OnTriggerExit}. Other methods, such as \ttt{Update} and reacting to keyboard strokes could, on the other hand, be tied to a \ttt{FRPEngine}. The problem here arises when \ttt{GameObject}s are destroyed. We have not added support to remove \ttt{FRPBehaviour}s from the \gls{FRP}-system, as the current version \dquote{cleans} up after itself when \ttt{GameObject}s are destroyed. This is to be understood in the sense that the whole system is deallocated and thus never risks invoking event handlers on objects that have been destroyed.
+
+In order to truely determine whether or not \gls{FRP} comes with a performance penalty, these changes would have to be incorporated.
