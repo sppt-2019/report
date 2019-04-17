@@ -24,7 +24,8 @@ seventyfive="|###############     | (75%)      \r"
 hundred="|####################| (100%)     \n"
 
 # General pretty printing
-line="---------------------------------------"
+dashed="---------------------------------------"
+solid="_______________________________________"
 
 # Clear output directory
 if [ -e "$build" ] ; then
@@ -71,11 +72,13 @@ if [ -e "$build/$target.pdf" ] ; then
 	cp "$build/$target.pdf" .
 fi
 
-echo "$line"
+echo "$solid"
 echo "Errors"
+echo "$dashed"
 cat latex.log | grep -n "Error"
 
-echo "$line"
+echo "$solid"
 echo "Warnings"
+echo "$dashed"
 cat latex.log | grep -n "Warning"
-echo "$line"
+echo "$solid"
