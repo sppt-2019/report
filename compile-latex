@@ -3,6 +3,7 @@
 #set -e
 #pwd
 
+# Separate the filename and extension
 IFS='.' read -r target extension _ <<<"$1"
 [[ $target ]] || { echo "File name invalid." >&2; exit 1; }
 if [[ $extension && $extension != "tex" ]] ; then
@@ -10,8 +11,10 @@ if [[ $extension && $extension != "tex" ]] ; then
 	exit 1
 fi
 
+# Output directory
 build="build"
 
+# Progress pretty printing
 zero="|                    | (00%)      \r"
 twentyfive="|#####               | (25%)      \r"
 thirty="|#######             | (33%)      \r"
@@ -20,6 +23,10 @@ sixtysix="|#############       | (66%)      \r"
 seventyfive="|###############     | (75%)      \r"
 hundred="|####################| (100%)     \n"
 
+# General pretty printing
+line="---------------------------------------"
+
+# Clear output directory
 if [ -e "$build" ] ; then
     rm -rf $build
     mkdir $build
@@ -27,13 +34,16 @@ else
     mkdir $build
 fi
 
+# pdflatex arguements
 args="-shell-escape -interaction=nonstopmode -output-directory=$build"
 
+# Clear log file, maybe this is unnecessary
 if [ -e latex.log ] ; then
     rm "latex.log"
 fi
 touch "latex.log"
 
+# Check program arguements, if -q is passed run short, else run long
 if [ $# == 2 ] ; then
     if [ $2 == "-q" ] ; then
 	echo -ne "Compiling $zero"
@@ -56,9 +66,16 @@ else
     echo -ne "Compiling $hundred"
 fi
 
+# Move generated pdf to calling directory
 if [ -e "$build/$target.pdf" ] ; then
 	cp "$build/$target.pdf" .
-else
-	cat latex.log
 fi
 
+echo "$line"
+echo "Errors"
+cat latex.log | grep -n "Error"
+
+echo "$line"
+echo "Warnings"
+cat latex.log | grep -n "Warning"
+echo "$line"
