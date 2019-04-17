@@ -50,7 +50,17 @@ type FRP_FPSController() =
 Lines 7 and 8 are indented incorrectly, but the code compiles and behaves as expected. The \gls{IDE} gives a warning on both lines, but no errors are thrown until new \ttt{member} functions are defined.
 
 \subsubsection{Types and Type Inference}
-Many participants had problems with the type system and type inference. The functions provided in the sample sheets had explicitly typed parameters, which the participants partially mimicked when declaring their own functions, however participants did specify function return types nor did they utilise typing of their variables.
+Many participants had problems with the type system and type inference. The functions provided in the sample sheets had explicitly typed parameters, which the participants partially mimicked when declaring their own functions, however participants did not specify function return types nor did they utilise typing of their variables. An example of such a function can be seen in \lstref{part-func}.
+
+\begin{listing}[H]
+\begin{minted}{fsharp}
+[...]
+let getTotalWithMod (items:Item list) (attribute:Item->int) (attributeMod:Item->float32) =
+[...]
+\end{minted}
+\caption{Participant Function with Type Annotations}
+\label{lst:part-func}
+\end{listing}
 
 \subsubsection{Function Definitions}
 
