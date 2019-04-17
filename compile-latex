@@ -49,6 +49,7 @@ fi
 touch "latex.log"
 
 # Check program arguements, if -q is passed run short, else run long
+echo "$solid"
 if [ $# == 2 ] ; then
     if [ $2 == "-q" ] ; then
 	echo -ne "Compiling $zero"
