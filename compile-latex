@@ -26,6 +26,9 @@ hundred="|####################| (100%)     \n"
 # General pretty printing
 dashed="---------------------------------------"
 solid="_______________________________________"
+red="\033[0;31m"
+yellow="\033[1;33m"
+clear="\033[0m"
 
 # Clear output directory
 if [ -e "$build" ] ; then
@@ -73,12 +76,16 @@ if [ -e "$build/$target.pdf" ] ; then
 fi
 
 echo "$solid"
+printf "${red}"
 echo "Errors"
 echo "$dashed"
 cat latex.log | grep -n "Error"
+printf "${clear}"
 
 echo "$solid"
+printf "${yellow}"
 echo "Warnings"
 echo "$dashed"
 cat latex.log | grep -n "Warning"
+printf "${clear}"
 echo "$solid"
