@@ -68,12 +68,12 @@ C\# runtime & \multicolumn{2}{| c |}{dotnet 2.2.104} \\ \hline
 The results are plotted in \figref{binary-accumulation} and \figref{binary-summation} (and listed in \tableref{accumulation:res} and \tableref{summation:res} in \apxref{benchmark:data}).
 
 \newcommand{\binAcumSymbolics}{\symbolic{Problem,10,100,1000,10000,100000}}
-\barChart[15][\binAcumSymbolics]{Binary Accumulation}{binary-accumulation}{
+\barChart*[15][\binAcumSymbolics]{Binary Accumulation}{binary-accumulation}{
     \plotDataWithError{Sequential}{\accumulationData}
     \plotDataWithError{Fork Join}{\accumulationData}
     \plotDataWithError{Lenient}{\accumulationData}
 }\btc{?? -in reference to problem size 100}
-\barChart[15][\binAcumSymbolics]{Binary Summation}{binary-summation}{
+\barChart*[15][\binAcumSymbolics]{Binary Summation}{binary-summation}{
     \plotDataWithError{Sequential}{\summationData}
     \plotDataWithError{Fork Join}{\summationData}
     \plotDataWithError{Lenient}{\summationData}

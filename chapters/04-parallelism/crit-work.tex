@@ -79,7 +79,7 @@ As the matrices are of size $N x N$, they contain a total of $N^2$ elements with
 The results are plotted in \figureref{linpack-summation}. The first thing to notice is that Map Reduce seems to be roughly equal to the sequential in running time. This could indicate that the \ttt{Select}-method of C\#'s \gls{LINQ}, which was used to implement Map Reduce, does not parallelise its iterations. We will thus treat Map Reduce as a sequential solution for the rest of this result discussion.
 
 \newcommand{\linpackSymbolics}{\symbolic{Problem Size,2,4,8,16,32,64,128,256,512,1024,2048,4096}}
-\barChart[7][\linpackSymbolics]{Matrix Summation}{linpack-summation}{
+\barChart*[7][\linpackSymbolics]{Matrix Summation}{linpack-summation}{
     \plotDataWithError{Sequential}{\linpackData}
     \plotDataWithError{Map Reduce}{\linpackData}
     \plotDataWithError{Parallel Foreach}{\linpackData}

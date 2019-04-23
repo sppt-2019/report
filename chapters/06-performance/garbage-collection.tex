@@ -124,22 +124,22 @@ Another interesting observation we made during the test is that there is a very 
 }{Average framerate in Unity's two runtimes measured with 250 unites in the scene.}{unity:ai:runtime}
 
 
-\barChart[12][][Average FPS][Number of Units][\symbolic{Strategy,50,100,150,200,250}]{Average FPS in Unit Management benchmark}{ai:benchmark}{
+\barChart*[12][\symbolic{Strategy,50,100,150,200,250}][Average FPS][Number of Units]{Average FPS in Unit Management benchmark}{ai:benchmark}{
     \plotData{Csharp Normal}{\aiBenchmarkData}
     \plotData{Csharp Inverse}{\aiBenchmarkData}
     \plotData{Fsharp Normal}{\aiBenchmarkData}
     \plotData{FRP Inverse}{\aiBenchmarkData}
 }
 
-\barChart[12][\symbolic{Strategy,Csharp Normal,Csharp Inverse,Fsharp Normal,FRP Inverse}][Average FPS][Strategy][]{Average FPS in Unit Management benchmark}{ai:benchmark:runtime}{
+\barChart*[12][\symbolic{Strategy,Csharp Normal,Csharp Inverse,Fsharp Normal,FRP Inverse}][Average FPS][Strategy]{Average FPS in Unit Management benchmark}{ai:benchmark:runtime}{
     \plotData{Mono}{\aiBenchmarkRuntimesData}
     \plotData{il2cpp}{\aiBenchmarkRuntimesData}
 }
 
 \subsection{Performance of the FRP-system}
-The results from the benchmark showed that the \gls{FRP}-system that was developed in F\# has a large performance penalty. In this section we wish to clarify from where that performance penalty stems and how to resolve it in future work. 
+The results from the benchmark showed that the \gls{FRP}-system that was developed in F\# has a large performance penalty. In this section we wish to clarify from where that performance penalty stems and how to resolve it in future work.
 
-\begin{figure}
+\begin{figure}[H]
     \includegraphics[width=\textwidth]{00-images/FRP-profiling.png}
     \caption{Distribution of execution time for a invocation of \ttt{Update} in a random frame in the Unit Management test with 250 units. Screenshot taken from Unity's Profiling Tool.}
     \label{fig:frp:profiling}
