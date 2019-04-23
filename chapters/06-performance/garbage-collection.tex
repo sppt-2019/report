@@ -105,27 +105,7 @@ The following research questions outlines the intend of the experiment:
 \end{itemize}
 
 \section{Results}
-The average \gls{FPS} over the 900 frames are listed in \tableref{unity:ai} and \tableref{unity:ai:runtime}. The results indicate first and foremost that the Normal approach (i.e. separate \ttt{MonoBehaviour}s with their own statemachine and \ttt{Update}-method) in C\# and F\# are comparable in these problem sizes. The results also suggest that the inverse state-machine approach is comparable to normal C\#. These results may be interpreted as meaning that extensive garbage generation has the same penalty as Unity's call from native code into managed code. We also observe that the inverse FRP state machine performs notably worse than the other approaches. We will go into greater depth as to why in the following section. Finally the resuls also show that il2cpp provides a speed up that results in roughly 2-4 more \gls{FPS} in C\# Normal, Inverse and F\# Normal.
-
-Another interesting observation we made during the test is that there is a very large spike in the time it takes to generate the third frame. This spike is around 20 times the time it takes to generate the other scenes. One could explain this spike in Mono as runtime-optimisation, but as it is also present in il2cpp, which is \gls{AoT}, that cannot be the case. We do therefore not know what causes the spike.
-
-\makeTable{
-    { c | c | c | c | c | c }
-    \textbf{Strategy} & \textbf{50 Units} & \textbf{100 Units} & \textbf{150 Units} & \textbf{200 Units} & \textbf{250 Units} \\\hline
-    C\# Normal & 56.1 & 56.5 & 56.3 & 56.7 & 56.3 \\\hline
-    C\# Inverse & 56.4 & 56.5 & 55.9 & 56.7 & 55.7 \\\hline
-    F\# & 56.5 & 56.1 & 53.4 & 56.1 & 56.1 \\\hline
-    FRP Inverse & 28.6 & 16.1 & 10.0 & 7.7 & 6.2 \\
-    }{Average framerate when simulating the given number of units in Unity's Mono runtime.}{unity:ai}
-\makeTable{
-    { c | c | c }
-    \textbf{Strategy} & \textbf{Mono} & \textbf{il2cpp} \\\hline
-    C\# Normal & 56.3 & 59.4 \\\hline
-    C\# Inverse & 55.7 & 59.4 \\\hline
-    F\# Normal & 56.1 & 57.9\\\hline
-    FRP Inverse & 6.2 & 5.9 \\
-}{Average framerate in Unity's two runtimes measured with 250 unites in the scene.}{unity:ai:runtime}
-
+\metasheep
 
 \subsection{Performance Penalty from Extensive Garbage Generation}
 The results are listed in \tableref{unity:ai} and plotted in \figref{ai:benchmark}. The results indicate that the Normal approach (i.e. separate \ttt{MonoBehaviour}s with their own state machine and \ttt{Update}-method) in C\# and F\# are comparable in these problem sizes. The results also suggest that the inverse state-machine approach is comparable to normal C\#. These results may be interpreted as meaning that extensive garbage generation has the same penalty as Unity's call from native code into managed code. We also observe that the inverse FRP state machine performs notably worse than the other approaches as the number of units grow. We will go into greater depth as to why in the following section.
@@ -176,7 +156,6 @@ Another interesting observation we made during the test is that there is a very 
 }
 
 \subsection{Performance of the FRP-system}
-
 The results are plotted in \figref{ai:benchmark:overhead}. The results show that \gls{FRP} introduces additional overhead. This overhead results in a decrease of ten \gls{FPS} on average over the 900 frames. On the other hand, the \gls{FRP}-system yields a smoother curve, which means that the game will be subject to less stuttering and fewer lag spikes.
 
 \lineChart[xtick={100, 200, 300, 400, 500, 600, 700, 800}][FPS][Frame No.]{FPS for each frame in FRP and C\# Inverse}{ai:benchmark:overhead}{
