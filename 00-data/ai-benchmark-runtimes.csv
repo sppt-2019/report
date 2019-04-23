@@ -1,5 +1,5 @@
-Strategy,Mono,il2cpp
-Csharp Normal,56.33092784,59.369055
-Csharp Inverse,55.69579413,59.40097074
-Fsharp Normal,56.12089598,57.92159617
-FRP Inverse,6.175942494,5.854799132
+Strategy,il2cpp,Mono
+Csharp Normal,19.15,19.82
+Csharp Inverse,21.17,18.54
+Fsharp Normal,18.90,17.42
+FRP Inverse,12.34,12.23
