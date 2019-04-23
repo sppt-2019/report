@@ -56,7 +56,7 @@ On an iPhone 6 the first approach took an average of 5.4ms to update the 10,000 
 \subsubsection{Test Setup}
 The question then arises if the (potentially) increased overhead from \gls{GC} can be outweighed by having a single \ttt{MonoBehaviour} manage several other behaviours in the same scene? In order to investigate, we reused the implementation of the Unit Management test case from the usability test (see \secref{usability:test:cases}). This solution is listed in \lstref{test:case:ai}. This test case may be solved by creating a collection of tuples: \ttt{(Unit, State)}. The state machine contains a series of unit management methods; one for each state. These methods take a unit as argument and returns a state. At each iteration the corresponding state's methods are mapped over the collection to create a new collection of game objects and their updated state, which is stored for subsequent updates. This approach avoids dealing with the problems of updating the list while iterating and potentially applying two updates to one \ttt{GameObject}. The advantage is that a single \ttt{MonoBehaviour} is in charge of updating all units in the \dquote{Realtime Strategy Game} and the disadvantage is that it generates substantially more garbage, as a new collection is allocated at each \ttt{Update}. We refer to this method as \dquote{Inverse} in the remainder of this section.
 
-The other approach, here referred to as \dquote{Normal}, creates a \ttt{MonoBehaviour} for each unit, which contains it's own state machine. This approach generates much less garbage, but has a higher number of calls from the native code to the managed code.
+The other approach, here referred to as \dquote{Normal}, creates a \ttt{MonoBehaviour} for each unit, which contains it's own state machine. This has the advantage that we can exploit caching and generate less garbage, as suggested by Unity Technologies\cite{unity:optimisation}. It comes at the disadvantage that each unit must have its own \ttt{Update}-method, potentially introducing a large overhead\cite{unity:runtime:calls}.
 
 \begin{listing}
     \begin{minted}{csharp}
@@ -94,17 +94,21 @@ The other approach, here referred to as \dquote{Normal}, creates a \ttt{MonoBeha
     \label{lst:test:case:ai}
 \end{listing}
 
-We compared this implementation with a more straight-forward implementation, where each unit has its own state machine. This has the advantage that we can exploit caching and generate less garbage, as suggested by Unity Technologies\cite{unity:optimisation}. It comes at the disadvantage that each unit must have its own \ttt{Update}-method, potentially introducing a large overhead\cite{unity:runtime:calls}.
-
 \subsubsection{Methodology}
-We decided to implement the two approaches in both C\# and F\#, as it also gives us information about whether or not the use of F\# comes with an additional overhead. The  In this case we use the il2cpp runtime under Unity 2019.1.0f2. In all test cases we used a \ttt{MonoBehaviour} written in C\# to measure the time between each \ttt{Update}-call, i.e. the time it takes to generate a frame. We decided to run the test in five setups with 500, 1000, 1500, 2000 and 2500 units. For each setup we generated 900 frames, as that corresponds to 15 seconds of gameplay at 60 \gls{FPS}. Each measurement was added to a \ttt{HashSet}, which was written to a CSV file after the test. This means that the measurements include all game-related code, both including rendering, physics and so alike. However, as this system is ultimately going to be used to develop games, we feel that delta time (or equivalently \gls{FPS}) is a good metric, as that is of utmost importance to the player.
+We decided to implement the two approaches in both C\# and F\#. We run the test using the il2cpp runtime under Unity 2019.1.0f2. In all test cases we used a \ttt{MonoBehaviour} written in C\# to measure the time between each \ttt{Update}-call, i.e. the time it takes to generate a frame. We decided to run the test in five setups with 500, 1000, 1500, 2000 and 2500 units. For each setup we generated 900 frames, as that corresponds to 15 seconds of gameplay at 60 \gls{FPS}. Each measurement was added to a \ttt{HashSet}, which was written to a CSV file after the test. This means that the measurements include all game-related code, both including rendering, physics and so alike. However, as this system is ultimately going to be used to develop games, we feel that delta time (or equivalently \gls{FPS}) is a good metric, as that is of utmost importance to the player.
 
-Furthermore, we also run the test with 1500 units in Mono to ascertain whether it is more or less performant than Mono. Both runtimes were tested in Development-mode in the Unity Editor.
+The following research questions outlines the intend of the experiment:
+\begin{itemize}
+    \item How does the performance penalty from extensive garbage generation compare to the performance penalty from an incresed number of calls between unmanaged and managed runtimes?
+    \item Does \gls{AoT}-compilation in the il2cpp runtime actually provide a speed up? 
+    \item Does the use of F\# (and \gls{FRP}) introduce an additional overhead.
+\end{itemize}
 
 \section{Results}
-The average \gls{FPS} over the 900 frames are listed in \tableref{unity:ai} and \tableref{unity:ai:runtime}. The results indicate first and foremost that the Normal approach (i.e. separate \ttt{MonoBehaviour}s with their own state machine and \ttt{Update}-method) in C\# and F\# are comparable in these problem sizes. The results also suggest that the inverse state-machine approach is comparable to normal C\#. These results may be interpreted as meaning that extensive garbage generation has the same penalty as Unity's call from native code into managed code. We also observe that the inverse FRP state machine performs notably worse than the other approaches as the number of units grow. We will go into greater depth as to why in the following section. Finally the results also show that il2cpp does not necessarily provide a speed up, as C\# Normal is faster in Mono and il2cpp provides roughly 2 more \gls{FPS} in C\# Inverse and F\# Normal.
+\metasheep
 
-Another interesting observation we made during the test is that there is a very large spike in the time it takes to generate the third frame. This spike is around 20 times the time it takes to generate the other frames. One could explain this spike in Mono as runtime-optimisation, but as it is also present in il2cpp, which is \gls{AoT}, that cannot be the case. We do therefore not know what causes the spike.
+\subsection{Performance Penalty from Extensive Garbage Generation}
+The results are listed in \tableref{unity:ai} and plotted in \figref{ai:benchmark}. The results indicate that the Normal approach (i.e. separate \ttt{MonoBehaviour}s with their own state machine and \ttt{Update}-method) in C\# and F\# are comparable in these problem sizes. The results also suggest that the inverse state-machine approach is comparable to normal C\#. These results may be interpreted as meaning that extensive garbage generation has the same penalty as Unity's call from native code into managed code. We also observe that the inverse FRP state machine performs notably worse than the other approaches as the number of units grow. We will go into greater depth as to why in the following section.
 
 \begin{table}[H]
     \sisetup{round-mode=places}
@@ -120,6 +124,18 @@ Another interesting observation we made during the test is that there is a very 
     \label{tab:unity:ai}
 \end{table}
 
+\barChart[12][][Average FPS][Number of Units][\symbolic{Strategy,500,1000,1500,2000,2500}]{Average FPS in Unit Management benchmark}{ai:benchmark}{
+    \plotData{Csharp Normal}{\aiBenchmarkData}
+    \plotData{Csharp Inverse}{\aiBenchmarkData}
+    \plotData{Fsharp Normal}{\aiBenchmarkData}
+    \plotData{FRP Inverse}{\aiBenchmarkData}
+}
+
+\subsection{Performance of Runtimes}
+The results, listed in \tableref{unity:ai:runtime} and plotted in \figref{ai:benchmark:runtime}, show that il2cpp does not necessarily provide a speed up, as C\# Normal is faster in Mono and il2cpp provides roughly 2 more \gls{FPS} in C\# Inverse and F\# Normal.
+
+Another interesting observation we made during the test is that there is a very large spike in the time it takes to generate the third frame. This spike is around 20 times the time it takes to generate the other frames. One could explain this spike in Mono as runtime-optimisation, but as it is also present in il2cpp, which is \gls{AoT}, that cannot be the case. We do therefore not know what causes the spike.
+
 \begin{table}[H]
     \sisetup{round-mode=places}
     \rowcolors{1}{}{lightgray}
@@ -134,23 +150,23 @@ Another interesting observation we made during the test is that there is a very 
     \label{tab:unity:ai:runtime}
 \end{table}
 
-\barChart[12][][Average FPS][Number of Units][\symbolic{Strategy,500,1000,1500,2000,2500}]{Average FPS in Unit Management benchmark}{ai:benchmark}{
-    \plotData{Csharp Normal}{\aiBenchmarkData}
-    \plotData{Csharp Inverse}{\aiBenchmarkData}
-    \plotData{Fsharp Normal}{\aiBenchmarkData}
-    \plotData{FRP Inverse}{\aiBenchmarkData}
-}
-
 \barChart[12][\symbolic{Strategy,Csharp Normal,Csharp Inverse,Fsharp Normal,FRP Inverse}][Average FPS][Strategy][]{Average FPS in Unit Management benchmark}{ai:benchmark:runtime}{
     \plotData{Mono}{\aiBenchmarkRuntimesData}
     \plotData{il2cpp}{\aiBenchmarkRuntimesData}
 }
 
 \subsection{Performance of the FRP-system}
-The results from the benchmark showed that the \gls{FRP}-system that was developed in F\# has a large performance penalty. In this section we wish to clarify from where that performance penalty stems and how to resolve it in future work.
+The results are plotted in \figref{ai:benchmark:overhead}. The results show that \gls{FRP} introduces additional overhead. This overhead results in a decrease of ten \gls{FPS} on average over the 900 frames. On the other hand, the \gls{FRP}-system yields a smoother curve, which means that the game will be subject to less stuttering and fewer lag spikes.
+
+\lineChart[xtick={100, 200, 300, 400, 500, 600, 700, 800}][FPS][Frame No.]{FPS for each frame in FRP and C\# Inverse}{ai:benchmark:overhead}{
+    \plotData{Csharp}{\aiBenchmarkOverheadData}
+    \plotData{FRP}{\aiBenchmarkOverheadData}
+}
 
 The problems with the \gls{FRP}-system is that each \ttt{FRPBehaviour} is actually a full-blown \gls{FRP}-system, which could very well be refactored into a singleton.
 
 Solving this problem would require a larger refactoring, as this relates to the Unity lifecycle of \ttt{GameObject}s. First and foremost some Unity methods are required to be tied to the \ttt{GameObject} they belong to. Examples of such methods are \ttt{OnCollisionEnter} and \ttt{OnTriggerExit}. Other methods, such as \ttt{Update} and reacting to keyboard strokes could, on the other hand, be tied to a \ttt{FRPEngine}. The problem here arises when \ttt{GameObject}s are destroyed. We have not added support to remove \ttt{FRPBehaviour}s from the \gls{FRP}-system, as the current version \dquote{cleans} up after itself when \ttt{GameObject}s are destroyed. This is to be understood in the sense that the whole system is deallocated and thus never risks invoking event handlers on objects that have been destroyed.
 
 In order to truely determine whether or not \gls{FRP} comes with a performance penalty, these changes would have to be incorporated.
+
+\section{Unity's Incremental Garbage Collector}
