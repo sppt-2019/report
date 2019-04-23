@@ -35,6 +35,9 @@ symbolic x coords={,
     \addlegendentry{#1};
 }
 
+\newcommand{\logmode}[1]{\IfBooleanTF{#1}{log}{normal}}
+\newcommand{\logbase}[1]{\IfBooleanTF{#1}{2}{1}}
+
 % O/o for optional, M/m for mandatory
 % O #1 PGFPlot options
 % O #2 Y label
@@ -42,18 +45,20 @@ symbolic x coords={,
 % m #4 Caption
 % m #5 Label
 % m #6 Plots
-\NewDocumentCommand\lineChart{O{}O{Logarithmic Run Time (ns)}O{Lower is better}mmm}{%
+\NewDocumentCommand\lineChart{sO{}O{Logarithmic Run Time (ns)}O{Lower is better}mmm}{%
 \begin{figure}[H]
 \makebox[\textwidth][c]{
 \begin{tikzpicture}
     \begin{axis}[
-        ylabel={#2},
-        xlabel={#3},
+        ylabel={#3},
+        xlabel={#4},
         width=1.2\textwidth,
         height=8cm,
         ymajorgrids,
         xtick=data,
-        #1,
+        #2,
+        ymode/.expand once=\logmode{#1},
+        log basis y/.expand once=\logbase{#1},
         xticklabel style={rotate=45, anchor=east},
         legend columns = -1,
         legend style={
@@ -64,11 +69,11 @@ symbolic x coords={,
             font=\tiny
         }
     ]
-    #6
+    #7
     \end{axis}
 \end{tikzpicture}}
-\caption{#4}
-\label{fig:#5}
+\caption{#5}
+\label{fig:#6}
 \end{figure}
 }
 
@@ -81,22 +86,23 @@ symbolic x coords={,
 % m #6 Caption
 % m #7 Label
 % m #8 Plots
-\NewDocumentCommand\barChart{O{12}O{}O{Run Time (ns)}O{Lower is better}O{ymode = log,log basis y={2}}mmm}{%
+\NewDocumentCommand\barChart{sO{12}O{}O{Run Time (ns)}O{Lower is better}mmm}{%
     \begin{figure}[H]
     \makebox[\textwidth][c]{
     \begin{tikzpicture}
         \begin{axis}[
-            ylabel={#3},
-            xlabel={#4},
+            ylabel={#4},
+            xlabel={#5},
             width=1.2\textwidth,
             height=8cm,
             ymajorgrids,
             xtick=data,
             ybar=0.4pt,
-            bar width=#1pt,
+            bar width=#2pt,
             xticklabel style={rotate=45, anchor=east},
-            #2,
-            #5,
+            #3,
+            ymode/.expand once=\logmode{#1},
+            log basis y/.expand once=\logbase{#1},
             legend columns = -1,
             legend style={
                 draw=none,
