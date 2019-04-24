@@ -2,7 +2,7 @@
 The result of the tests was six git branches with source code written by the participants along with five video-files. Sadly the video-recording program broke down during one of the tests and we were unable to recover the file. We took notes during the tests and will refer to those instead. Whenever we quote the notes rather than the participant, we will clearly indicate that.
 
 
-In general the participants were able to complete roughly one test case, some didn't and some started the second as well. This was the case for both F\# and C\#.
+In general the participants were able to complete roughly one test case, some didn't and some started the second as well. This was the case for both \fsh and \csh.
 
 \subsection{Questionaire}
 All participants where asked to estimate their own skill levels in these categories and give a ballpark estimate of how many Unity applications they had developed. The results can be seen in \tableref{participant-scores}.
@@ -10,7 +10,7 @@ All participants where asked to estimate their own skill levels in these categor
 \begin{table}[H]
 \begin{tabular}{| c | r | r | r | r | r |}
 	\hline
-	\textbf{Participant}&\textbf{C\#}&\textbf{Unity}&\textbf{Game Dev}&\textbf{Functional}&\textbf{Unity Apps} \\ \hline
+	\textbf{Participant}&\textbf{\csh}&\textbf{Unity}&\textbf{Game Dev}&\textbf{Functional}&\textbf{Unity Apps} \\ \hline
 	1 & 9 & 9 & 5 & 3 & 25 \\ \hline
 	2 & 8 & 8 & 7 & 2 & 10 \\ \hline
 	3 & 8 & 8 & 2 & 1 & 12 \\ \hline
@@ -23,15 +23,44 @@ All participants where asked to estimate their own skill levels in these categor
 \end{table}
 
 \subsection{Data Processing}
-In the following section we will process the data from the tests. We have decided to do so using three approaches; a side-by-side cognitive dimensions analysis, Champagne Protoyping's Attention Investment Model and measuring the execution speed of the solutions.
+In the following section we will process the data from the tests. The tests where constructed using the Champagne Prototyping methodology and the analysis of the data will also follow this approach. Champagne Prototyping uses two methodologies for data Processing; Attention Investment Model and Cognitive Dimensions. In addition the code written by test participants will be microbenchmarked to estimate the execution speed of their code in relation to our reference implementations.
 
-\subsubsection{Side-By-Side Cognitive Dimensions}
-In this experiment we first and foremost wish to test how well-suited F\# is in the context of game development. In the side-by-side cognitive dimensions analysis we compare the participants' solutions in F\# with those in C\#, as they were given test cases from the same category. This allow us to use a well-established vocabilary to discuss whether or not functional programming is suitable for game development.
+\subsubsection{Cognitive Dimensions}
+In this experiment we first and foremost wish to test how well-suited \fsh is in the context of game development. In the side-by-side cognitive dimensions analysis we compare the participants' solutions in \fsh with those in \csh, as they were given test cases from the same category. This allow us to use a well-established vocabulary to discuss whether or not functional programming is suitable for game development.
 
 
-% The writability parameter is evaluated by examining the participants' reactions during the test and the readability by reading through the code in the subsequent analysis. Modularity is included because functional programming allow the participants to write generalised code to carry out multiple different actions when treating data collections \cite{hughes1989functional}. For instance, in the test cases of this experiment a generalised tree walker could be used in the talents task to both calculate the user's current bonus as well as the maximum achievable bonus.
+% The writability parameter is evaluated by examining the participants' reactions during the test and the readability by reading through the code in the subsequent analysis. Modularity is included because functional programming allows the participants to write generalised code to carry out multiple different actions when treating data collections \cite{hughes1989functional}. For instance, in the test cases of this experiment a generalised tree walker could be used in the talents task to both calculate the user's current bonus as well as the maximum achievable bonus.
 
-\subsubsection{Champagne Prototyping's Attention Investment Model}
+\subsubsection{Attention Investment Model}
+The attention investment model, presented in \secref{attention-investment}, can be used to map the programming approach undertaken by a user. This section will endeaver to do so, using the user test video material. Firstly, user comprehension of feature being evaluated is measured. This feature is the use of \fsh and \gls{FRP} in game development. In order to measure comprehension, the instances where participants mention aspects of the feature where recorded and categorised, as can be seen in \tableref{comp-matrix}.
+
+\begin{table}[H]
+	\alignCenter{
+	\begin{tabular}{| l | c | c | c |}\hline
+		\multicolumn{1}{| l |}{\textbf{Recognised Aspects}}&\multicolumn{1}{| l |}{\textbf{Without Prompt}}&\multicolumn{1}{| l |}{\textbf{With Prompt}}&\multicolumn{1}{| l |}{\textbf{Not Noted}} \rowEnd
+		Modularity 			& & & \rowEnd
+		ReactTo 				& & & \rowEnd
+		Types 					& & & \rowEnd
+		List Operations	& & & \rowEnd
+	\end{tabular}}
+	\caption{User Comprehension of the Feature}
+	\label{tab:comp-matrix}
+\end{table}
+
+In addition to a measure of the participants comprehension, the attention investment model also provides a quantification of their efforts in the programming activity. This consists of five or six metrics, mentioned in \secref{attention-investment}. This can be seen in \tableref{att-inv-findings}.
+
+\begin{table}[H]
+	\alignCenter{
+	\begin{tabular}{| l | c |}\hline
+		\multicolumn{2}{|c|}{\textbf{Attention Investment}} \rowEnd
+		Investment Risk & \rowEnd
+		Investment Cost & \rowEnd
+		Investment Payoff & \rowEnd
+		Manual Alternative & \rowEnd
+	\end{tabular}}
+	\caption{Attention Investment Findings}
+	\label{tab:att-inv-findings}
+\end{table}
 
 \subsubsection{Execution Speed}
-Execution speed is included because of the sentiment among game developers, that functional programming is too slow to even consider \cite{pop:functional:slow, pop:functional:sucks}. By comparing the execution speeds of the solutions we can compare how actual game-code in C\# and F\# compare to one another and thus give a more scientific opinion is this discussion.
+Execution speed is included because of the sentiment among game developers, that functional programming is too slow to even consider \cite{pop:functional:slow, pop:functional:sucks}. By comparing the execution speeds of the solutions we can compare how actual game-code in \csh and \fsh compare to one another and thus give a more scientific opinion is this discussion.
