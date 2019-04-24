@@ -30,6 +30,16 @@ symbolic x coords={,
     \addlegendentry{#1};
 }
 
+\newcommand{\plotUnmarkedData}[2]{
+  \addplot+[mark=none] table [y={#1}] {#2};
+  \addlegendentry{#1};
+}
+
+\NewDocumentCommand\optPlotData{O{}mm}{
+  \addplot+[#1] table [y={#2}] {#3};
+  \addlegendentry{#2};
+}
+
 \newcommand{\plotDataWithError}[2]{
     \addplot+[error bars/.cd, y dir=both,y explicit] table [y={#1}, y error={#1 Error}] {#2};
     \addlegendentry{#1};
@@ -39,12 +49,13 @@ symbolic x coords={,
 \newcommand{\logbase}[1]{\IfBooleanTF{#1}{2}{1}}
 
 % O/o for optional, M/m for mandatory
-% O #1 PGFPlot options
-% O #2 Y label
-% O #3 X label
-% m #4 Caption
-% m #5 Label
-% m #6 Plots
+% s #1 BooleanTrue if star, BooleanFalse otherwise
+% O #2 PGFPlot options
+% O #3 Y label
+% O #4 X label
+% m #5 Caption
+% m #6 Label
+% m #7 Plots
 \NewDocumentCommand\lineChart{sO{}O{Logarithmic Run Time (ns)}O{Lower is better}mmm}{%
 \begin{figure}[H]
 \makebox[\textwidth][c]{
@@ -78,11 +89,11 @@ symbolic x coords={,
 }
 
 % O/o for optional, M/m for mandatory
-% O #1 bar width
-% O #2 PGFPlot options
-% O #3 Y label
-% O #4 X label
-% O #5 Extra PGFPlot options, defaults to logarithmic mode
+% s #1 BooleanTrue if star, BooleanFalse otherwise
+% O #2 bar width
+% O #3 PGFPlot options
+% O #4 Y label
+% O #5 X label
 % m #6 Caption
 % m #7 Label
 % m #8 Plots
