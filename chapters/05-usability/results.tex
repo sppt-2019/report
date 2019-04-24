@@ -31,17 +31,20 @@ In this experiment we first and foremost wish to test how well-suited \fsh is in
 
 % The writability parameter is evaluated by examining the participants' reactions during the test and the readability by reading through the code in the subsequent analysis. Modularity is included because functional programming allows the participants to write generalised code to carry out multiple different actions when treating data collections \cite{hughes1989functional}. For instance, in the test cases of this experiment a generalised tree walker could be used in the talents task to both calculate the user's current bonus as well as the maximum achievable bonus.
 
+\newcommand{\mn}{\newmoon}
+\newcommand{\mns}{\fullmoon}
+
 \subsubsection{Attention Investment Model}
-The attention investment model, presented in \secref{attention-investment}, can be used to map the programming approach undertaken by a user. This section will endeaver to do so, using the user test video material. Firstly, user comprehension of feature being evaluated is measured. This feature is the use of \fsh and \gls{FRP} in game development. In order to measure comprehension, the instances where participants mention aspects of the feature where recorded and categorised, as can be seen in \tableref{comp-matrix}.
+The attention investment model, presented in \secref{attention-investment}, can be used to map the programming approach undertaken by a user. This section will endeaver to do so, using the user test video material. Firstly, user comprehension of feature being evaluated is measured. This feature is the use of \fsh and \gls{FRP} in game development. In order to measure comprehension, the instances where participants mention aspects of the feature where recorded and categorised, as can be seen in \tableref{comp-matrix}. A closed bullet (\mn) means that a participant mentioned an aspect of the feature, when the participant mentioned it multiple times a open bullet is used (\mns).
 
 \begin{table}[H]
 	\alignCenter{
 	\begin{tabular}{| l | c | c | c |}\hline
 		\multicolumn{1}{| l |}{\textbf{Recognised Aspects}}&\multicolumn{1}{| l |}{\textbf{Without Prompt}}&\multicolumn{1}{| l |}{\textbf{With Prompt}}&\multicolumn{1}{| l |}{\textbf{Not Noted}} \rowEnd
-		Modularity 			& & & \rowEnd
-		ReactTo 				& & & \rowEnd
-		Types 					& & & \rowEnd
-		List Operations	& & & \rowEnd
+		Modularity 			& \mns\mn & & \mn\mn\mn\mn \rowEnd
+		ReactTo 				& \mns & \mn\mn\mn & \mn\mn \rowEnd
+		Types 					& \mns\mn & \mn\mn & \mn\mn \rowEnd
+		List Operations	& \mns & \mn\mn & \mn\mn\mn \rowEnd
 	\end{tabular}}
 	\caption{User Comprehension of the Feature}
 	\label{tab:comp-matrix}
