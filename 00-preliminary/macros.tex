@@ -100,6 +100,7 @@
 \newcolumntype{R}[1]{>{\raggedleft\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
 \newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1}}
 
+\newcommand\rowEnd{\\\hline}
 
 \newcommand{\metasheep}{
     \begin{figure}[H]
@@ -116,5 +117,8 @@
     \end{figure}
 }
 
+\newcommand\alignCenter[1]{\makebox[\textwidth][c]{#1}}
+
 \newcommand{\cpp}{C++\xspace}
 \newcommand{\csh}{C\#\xspace}
+\newcommand{\fsh}{F\#\xspace}
