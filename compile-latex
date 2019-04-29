@@ -64,9 +64,9 @@ function output {
 	echo "$solid"
 	if [ -e "$build/$target.pdf" ] ; then
 		cp "$build/$target.pdf" .
-		printf "${green}Build Succeed in $duration seconds!${clear}\n"
+		printf "${green}Build succeed in $duration seconds!${clear}\n"
 	else
-		printf "${red}Build Failed in $duration seconds!${clear}\n"
+		printf "${red}Build failed in $(( SECONDS - start )) seconds!${clear}\n"
 	fi
 	echo "$solid"
 	printf "${red}"
@@ -81,18 +81,17 @@ function output {
 	echo "$dashed"
 	cat latex.log | grep -n "Warning"
 	printf "${clear}"
-	echo "$solid"
 }
 
 function compile {
 	echo "$solid"
 	if [ $# == 2 ] ; then
-		if [ $2 == "-h" ] ; then
+		if [ $2 == "-h" || $2 == "--help" ] ; then
 			help
-	    	elif [ $2 == "-q" ] ; then
+	    	elif [ $2 == "-q" || $2 == "--quick" ] ; then
 			quick
 			output
-		elif [ $2 == "-rq" ] ; then
+		elif [ $2 == "-rq" || $2 == "--really-quick" ] ; then
 			really-quick
 			output
      	fi
