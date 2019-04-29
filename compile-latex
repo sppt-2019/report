@@ -136,10 +136,14 @@ function really-quick {
          duration=$(( SECONDS - start ))
 }
 
+function main {
+	clear
+	if [ $# == 2 ] ; then
+		compile $1 $2
+	else
+		compile $1
+	fi
+}
+
 # Main script behaviour	
-clear
-if [ $# == 2 ] ; then
-	compile $1 $2
-else
-	compile $1
-fi
+main $@
