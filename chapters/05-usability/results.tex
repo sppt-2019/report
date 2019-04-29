@@ -22,17 +22,38 @@ All participants where asked to estimate their own skill levels in these categor
 \label{tab:participant-scores}
 \end{table}
 
+\newcommand{\mn}{\newmoon}
+\newcommand{\mns}{\fullmoon}
+
 \subsection{Data Processing}
 In the following section we will process the data from the tests. The tests where constructed using the Champagne Prototyping methodology and the analysis of the data will also follow this approach. Champagne Prototyping uses two methodologies for data Processing; Attention Investment Model and Cognitive Dimensions. In addition the code written by test participants will be microbenchmarked to estimate the execution speed of their code in relation to our reference implementations.
 
 \subsubsection{Cognitive Dimensions}
 In this experiment we first and foremost wish to test how well-suited \fsh is in the context of game development. In the side-by-side cognitive dimensions analysis we compare the participants' solutions in \fsh with those in \csh, as they were given test cases from the same category. This allow us to use a well-established vocabulary to discuss whether or not functional programming is suitable for game development.
 
+\begin{table}[H]
+	\alignCenter{
+	\begin{tabular}{| l | c |}\hline
+		\multicolumn{2}{|c|}{\textbf{Cognitive Dimensions}} \rowEnd
+	 	Abstract Gradient & \mns \rowEnd
+		Closeness of Mapping & \mns \rowEnd
+		Consistency & \mns \rowEnd
+		Diffuseness/Terseness & \mns \rowEnd
+		Error-proneness & \mns \rowEnd
+		Hard Mental Operations & \mns \rowEnd
+		Hidden Dependencies & \mns \rowEnd
+		Premature Commitment & \mn \rowEnd
+		Progressive Evaluation & \mn \rowEnd
+		Role-expressiveness & \mn \rowEnd
+		Secondary Notation and Escape from Formalism & \mn \rowEnd
+		Viscosity & \rowEnd
+		Visibility and Juxtaposability & \rowEnd
+	\end{tabular}}
+	\caption{Cognitive Dimensions Findings}
+	\label{tab:cog-dim-findings}
+\end{table}
 
 % The writability parameter is evaluated by examining the participants' reactions during the test and the readability by reading through the code in the subsequent analysis. Modularity is included because functional programming allows the participants to write generalised code to carry out multiple different actions when treating data collections \cite{hughes1989functional}. For instance, in the test cases of this experiment a generalised tree walker could be used in the talents task to both calculate the user's current bonus as well as the maximum achievable bonus.
-
-\newcommand{\mn}{\newmoon}
-\newcommand{\mns}{\fullmoon}
 
 \subsubsection{Attention Investment Model}
 The attention investment model, presented in \secref{attention-investment}, can be used to map the programming approach undertaken by a user. This section will endeaver to do so, using the user test video material. Firstly, user comprehension of feature being evaluated is measured. This feature is the use of \fsh and \gls{FRP} in game development. In order to measure comprehension, the instances where participants mention aspects of the feature where recorded and categorised, as can be seen in \tableref{comp-matrix}.
@@ -50,7 +71,7 @@ The attention investment model, presented in \secref{attention-investment}, can 
 	\label{tab:comp-matrix}
 \end{table}
 
-A closed bullet (\mn) means that a participant mentioned an aspect of the feature, when the participant mentioned it multiple times a open bullet is used (\mns). The categories, \textit{Correct \& Unprompted} and \textit{Correct \& Prompted} are instances where the partitions mentions or exlains a feature correctly and/or positively. The last category are instances where features are mentioned negatively, incorrectly or is a cause for confusion.
+A closed bullet (\mn) means that a participant mentioned an aspect of the feature, when the participant mentioned it multiple times a open bullet is used (\mns). The categories, \textit{Correct \& Unprompted} and \textit{Correct \& Prompted} are instances where the partitions mentions or explains a feature correctly and/or positively. The last category are instances where features are mentioned negatively, incorrectly or is a cause for confusion.
 
 In addition to a measure of the participants comprehension, the attention investment model also provides a quantification of their efforts in the programming activity. This consists of four metrics, mentioned in \secref{attention-investment}. This can be seen in \tableref{att-inv-findings}. The risk metric measures the amount of times partitions mentioned or discussed things that could go wrong, this includes increased difficulty of some tasks using \fsh. The cost metric is the attention and time required to switch to using \fsh. Any musing over the difficulties of switching over is included. The payoff is the reduced cost of game development after switching to \fsh. The imperative alternative metric is the number of times participants mentioned the problems in \csh, or other imperative languages, that form the basis for switching to \fsh.
 
@@ -67,7 +88,7 @@ In addition to a measure of the participants comprehension, the attention invest
 	\label{tab:att-inv-findings}
 \end{table}
 
-The participants where able to correctly use and describe \fsh and \gls{FRP} behaviour in some instances and struggled in other instances. As can be seen in \tableref{comp-matrix} not all participants expressed cognition of all feature aspects, e.g. all participants misunderstood or struggled with the type system. Functional programming claims a greater degree of modularity than imperative languages \cite{hughes1989functional}, however less than half of partitions noted this. Some participants wrote much more modular code in \fsh than in \csh, but did not mention it.
+The participants where able to correctly use and describe \fsh and \gls{FRP} behaviour in some instances and struggled in other instances. As can be seen in \tableref{comp-matrix} not all participants where cognisant of all feature aspects, e.g. all participants misunderstood or struggled with the type system. Functional programming claims a greater degree of modularity than imperative languages \cite{hughes1989functional}, however less than half of partitions expressed cognisance of this. Some participants wrote much more modular code in \fsh than in \csh, but did not mention it.
 
 As can be seen in \tableref{att-inv-findings} the participants noted a high cost with a high payoff. Participants could see the usefulness of \gls{FRP}, but several participants expressed uncertainty of any benefit provided by \fsh. Another point is that very few participants noted the problems with existing solutions, even when compared to \fsh. The high cost is attributed to loss of productivity while a developer learns to use \fsh.
 
