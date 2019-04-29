@@ -55,13 +55,18 @@ if [ $# == 2 ] ; then
 	start=$SECONDS
 	echo -ne "Compiling $zero"
 	pdflatex $args "$target.tex" > "latex.log"
-	echo -ne "Compiling $thirty"
-	pdflatex $args "$target.tex" > "latex.log"
-	echo -ne "Compiling $sixtysix"
+	echo -ne "Compiling $fifty"
 	pdflatex $args "$target.tex" > "latex.log"
 	echo -ne "Compiling $hundred"
         duration=$(( SECONDS - start ))
     fi
+    if [ $2 == "-rq" ] ; then
+         start=$SECONDS
+         echo -ne "Compiling $zero"
+         pdflatex $args "$target.tex" > "latex.log"
+         echo -ne "Compiling $hundred"
+         duration=$(( SECONDS - start ))
+     fi
 else
     start=$SECONDS
     echo -ne "Compiling $zero"
