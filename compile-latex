@@ -1,8 +1,5 @@
 #! /bin/bash
 
-#set -e
-#pwd
-
 # Separate the filename and extension
 IFS='.' read -r target extension _ <<<"$1"
 [[ $target ]] || { echo "File name invalid." >&2; exit 1; }
@@ -31,43 +28,84 @@ yellow="\033[1;33m"
 green="\033[0;32m"
 clear="\033[0m"
 
-# Clear output directory
-if [ -e "$build" ] ; then
-    rm -rf $build
-    mkdir $build
-else
-    mkdir $build
-fi
-
 # pdflatex arguements
 args="-shell-escape -interaction=nonstopmode -output-directory=$build"
 
-# Clear log file, maybe this is unnecessary
-if [ -e latex.log ] ; then
-    rm "latex.log"
-fi
-touch "latex.log"
+# Functions
+function help {
+	echo "compile-latex use"
+	echo  "$dashed"
+	echo "'compile-latex [FILE, FILE.tex] compiles the file tree times with pdflatex and once with bibtex"
+	echo "$dashed"
+	echo "Arguements"
+	echo "$dashed"
+	echo "'-h' displays this help message"
+	echo "'-q' option or quick mode, compiles the given file twice with pdflatex"
+	echo "'-rq' option or really quick mode, compiles the given file with pdflatex once"
+}
 
-# Check program arguements, if -q is passed run short, else run long
-echo "$solid"
-if [ $# == 2 ] ; then
-    if [ $2 == "-q" ] ; then
-	start=$SECONDS
-	echo -ne "Compiling $zero"
-	pdflatex $args "$target.tex" > "latex.log"
-	echo -ne "Compiling $fifty"
-	pdflatex $args "$target.tex" > "latex.log"
-	echo -ne "Compiling $hundred"
-        duration=$(( SECONDS - start ))
-    fi
-    if [ $2 == "-rq" ] ; then
-         start=$SECONDS
-         echo -ne "Compiling $zero"
-         pdflatex $args "$target.tex" > "latex.log"
-         echo -ne "Compiling $hundred"
-         duration=$(( SECONDS - start ))
-     fi
-else
+function clear {
+	# Clear output directory
+	if [ -e "$build" ] ; then
+	    rm -rf $build
+	    mkdir $build
+	else
+	    mkdir $build
+	fi
+
+	# Clear log file, maybe this is unnecessary
+	if [ -e latex.log ] ; then
+	    rm "latex.log"
+	fi
+	touch "latex.log"
+}
+
+function output {
+	echo "$solid"
+	if [ -e "$build/$target.pdf" ] ; then
+		cp "$build/$target.pdf" .
+		printf "${green}Build Succeed in $duration seconds!${clear}\n"
+	else
+		printf "${red}Build Failed in $duration seconds!${clear}\n"
+	fi
+	echo "$solid"
+	printf "${red}"
+	echo "Errors"
+	echo "$dashed"
+	cat latex.log | grep -n "Error"
+	printf "${clear}"
+
+	echo "$solid"
+	printf "${yellow}"
+	echo "Warnings"
+	echo "$dashed"
+	cat latex.log | grep -n "Warning"
+	printf "${clear}"
+	echo "$solid"
+}
+
+function compile {
+	echo "$solid"
+	if [ $# == 2 ] ; then
+		if [ $2 == "-h" ] ; then
+			help
+	    	elif [ $2 == "-q" ] ; then
+			quick
+			output
+		elif [ $2 == "-rq" ] ; then
+			really-quick
+			output
+     	fi
+	elif [ $1 == "-h" ] ; then
+		help
+	else
+		full
+		output
+	fi
+	echo "$solid"
+}
+
+function full {
     start=$SECONDS
     echo -ne "Compiling $zero"
     pdflatex $args "$target.tex" > "latex.log"
@@ -79,28 +117,30 @@ else
     pdflatex $args "$target.tex" > "latex.log"
     echo -ne "Compiling $hundred"
     duration=$(( SECONDS - start ))
-fi
+}
 
-# Move generated pdf to calling directory
-echo "$solid"
-if [ -e "$build/$target.pdf" ] ; then
-	cp "$build/$target.pdf" .
-	printf "${green}Build Succeed in $duration seconds!${clear}\n"
+function quick {
+	start=$SECONDS
+	echo -ne "Compiling $zero"
+	pdflatex $args "$target.tex" > "latex.log"
+	echo -ne "Compiling $fifty"
+	pdflatex $args "$target.tex" > "latex.log"
+	echo -ne "Compiling $hundred"
+        duration=$(( SECONDS - start ))
+}
+
+function really-quick {
+         start=$SECONDS
+         echo -ne "Compiling $zero"
+         pdflatex $args "$target.tex" > "latex.log"
+         echo -ne "Compiling $hundred"
+         duration=$(( SECONDS - start ))
+}
+
+# Main script behaviour	
+clear
+if [ $# == 2 ] ; then
+	compile $1 $2
 else
-	printf "${red}Build Failed in $duration seconds!${clear}\n"
+	compile $1
 fi
-
-echo "$solid"
-printf "${red}"
-echo "Errors"
-echo "$dashed"
-cat latex.log | grep -n "Error"
-printf "${clear}"
-
-echo "$solid"
-printf "${yellow}"
-echo "Warnings"
-echo "$dashed"
-cat latex.log | grep -n "Warning"
-printf "${clear}"
-echo "$solid"
