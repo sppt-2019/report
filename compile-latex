@@ -52,6 +52,7 @@ touch "latex.log"
 echo "$solid"
 if [ $# == 2 ] ; then
     if [ $2 == "-q" ] ; then
+	start=$SECONDS
 	echo -ne "Compiling $zero"
 	pdflatex $args "$target.tex" > "latex.log"
 	echo -ne "Compiling $thirty"
@@ -59,8 +60,10 @@ if [ $# == 2 ] ; then
 	echo -ne "Compiling $sixtysix"
 	pdflatex $args "$target.tex" > "latex.log"
 	echo -ne "Compiling $hundred"
+        duration=$(( SECONDS - start ))
     fi
 else
+    start=$SECONDS
     echo -ne "Compiling $zero"
     pdflatex $args "$target.tex" > "latex.log"
     echo -ne "Compiling $twentyfive"
@@ -70,15 +73,16 @@ else
     echo -ne "Compiling $seventyfive"
     pdflatex $args "$target.tex" > "latex.log"
     echo -ne "Compiling $hundred"
+    duration=$(( SECONDS - start ))
 fi
 
 # Move generated pdf to calling directory
 echo "$solid"
 if [ -e "$build/$target.pdf" ] ; then
 	cp "$build/$target.pdf" .
-	printf "${green}Build Succeed!${clear}\n"
+	printf "${green}Build Succeed in $duration seconds!${clear}\n"
 else
-	printf "${red}Build Failed!${clear}\n"
+	printf "${red}Build Failed in $duration seconds!${clear}\n"
 fi
 
 echo "$solid"
