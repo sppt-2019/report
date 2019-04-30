@@ -1,6 +1,4 @@
 \section{Concurrency in Unity} \label{sec:unity:concurrency}
-In this section we discuss concurrency in Unity. 
-%This is more intended as providing insights as to how the \gls{FRP}-system could be extended to support concurrency and possibly outweigh the performance penalty we discovered.
 Traditionally Unity has been single-threaded, but over the last two years, Unity has made an effort to implement currency in the form of a C\# Job System\cite{unity:csharp:job:system} and more recently an \gls{ECS}\cite{unity:ecs}. Unity does not support the \ttt{async}/\ttt{await}-model when accessing \ttt{MonoBehaviours} that is usually seen on the .NET platform\cite{unity:async,csharp:async}.
 
 \subsection{C\# Job System}
@@ -65,10 +63,10 @@ public class BulletJobSystem : MonoBehaviour {
 \begin{labeling}{\quad\quad}
     \item[Entities] represent single objects in the game. It is a very simple data structure, e.g. an ID, which is used to look up components associated with the object.
     \item[Components] are data containers, which defines data that is needed in order to carry out a certain behaviour. It is very important in \gls{ECS} that each component is kept small and defines as few fields as possible.
-    \item[Systems] define the behaviour of the objects. They consist of two parts; a filter, which defines the components that must be associated with an entity in order for the system to take effect and an update method, which aplies the system's behaviour to the entities at regular intervals.
+    \item[Systems] define the behaviour of the objects. They consist of two parts; a filter, which defines the components that present for the system to take effect and an update method, which applies the system's behaviour to the entities at regular intervals.
 \end{labeling}
 
-The advantage of \glspl{ECS}, compared to scene graphs, are that they tend to increase code reuseability, as system behaviour may be used across multiple different types of objects. Furthermore, \glspl{ECS} will attempt to group components together in so-called chunks, which increases spatial locality. In Unity, the \gls{ECS} may be used in conjunction with the C\# Job System to update chunks in parallel\cite{unity:ecs}. \lstref{unity:ecs:example} lists an example, which moves all bullets in the scene forward.
+The advantage of \glspl{ECS}, compared to scene graphs, are that they tend to increase code reuseability, as systems may be used to control multiple different types of objects. Furthermore, \glspl{ECS} will attempt to group components together in so-called chunks, which increases spatial locality. In Unity, the \gls{ECS} may be used in conjunction with the C\# Job System to update chunks in parallel\cite{unity:ecs}. \lstref{unity:ecs:example} lists an example, which moves all bullets in the scene forward.
 
 \begin{listing}
 \begin{minted}{csharp}

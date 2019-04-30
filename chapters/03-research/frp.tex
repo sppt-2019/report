@@ -1,25 +1,15 @@
 \section{Functional Reactive Programming}
-\gls{FRP} stems from the Functional Reactive Animation (FRAN) framework presented in \cite{ElliottHudak97:Fran}. In the scientific community the most notable \gls{FRP} framework is the Yampa Arcade project \cite{courtney2003yampa}, which was initially used to implement a clone of Space Invaders. It was later shown that Yampa Arcade could be used for commercial-grade games of that time by developing a game called FRAG \cite{cheong2005functional}.
+\gls{FRP} stems from the Functional Reactive Animation (FRAN) framework presented in \cite{ElliottHudak97:Fran}. In the scientific community the most notable \gls{FRP} framework is the Yampa Arcade project\cite{courtney2003yampa}, which was initially used to implement a clone of Space Invaders. It was later shown that Yampa Arcade could be used for commercial-grade games of that time by developing a game called FRAG\cite{cheong2005functional}.
 
-\gls{FRP} is a mixture of functional programming and reactive programming, treating programs as data- or event streams (events are sometimes called signals). \cite{lettier:frp} describes events as time-stamped values, i.e. discrete variables with respect to time. Examples of events are button clicks, GPS location updates and gestural inputs \cite{singh:frp}. As an example, a mouse button may be either clicked or not clicked at some time $t$. The event stream from that mouse button is a list of tuples: $(time,clicked)$. Programs are expressed in a declarative manner as sets of event handlers (sometimes called signal functions or behaviours) that react to the event streams. The strength in \gls{FRP} lies in the ability to combine multiple event handlers. Such combinations may come in the form of chaining together several event handlers or creating one event handler that responds to multiple events \cite{lettier:frp}.
+\gls{FRP} is a mixture of functional programming and reactive programming, treating programs as data- or event streams (events are sometimes called signals). \cite{lettier:frp} describes events as time-stamped values, i.e. discrete variables with respect to time. Examples of events are button clicks, GPS location updates and gestural inputs\cite{singh:frp}. As an example, a mouse button may be either clicked or not clicked at some time $t$. The event stream from the mouse button is a list of tuples: $(time,clicked)$. Programs are expressed in a declarative manner as sets of event handlers (sometimes called signal functions or behaviours) that react to the event streams. The strength in \gls{FRP} lies in the ability to combine multiple event handlers. Such combinations may come in the form of chaining together several event handlers or creating one event handler that responds to multiple events\cite{lettier:frp}.
 
 \cite{maraffi:frp} presents an overview of different game-related \gls{FRP} systems and conclude:
 \quoteWithCite{Perhaps  a  commercial  language  like  F\#,  with  better support and integration into the presentation pipeline (.NET, C\#, XNA, and the Kinect SDK), would be a better choice for making FP (functional programming) into a real game changer.}{Christopher Maraffi and David Seagal}{maraffi:frp}
 
-Apart from Yampa Arcade, \gls{FRP} has also been implemented in other game frameworks, such as Helm \cite{helm:wiki} and more recently Nu \cite{nu:github}. In previous work we examined both and concluded that to be truly useful they need a bigger community and more documentation \cite{p92018gameplay}.
+Apart from Yampa Arcade, \gls{FRP} has also been implemented in other game frameworks, such as Helm \cite{helm:wiki} and more recently Nu\cite{nu:github}. In previous work we examined both and concluded that to be truly useful they need a bigger community and more documentation\cite{p92018gameplay}.
 
 \subsection{Possible Pitfalls}
-In scientific literature, the consensus seems to be that \gls{FRP} is too slow to be adopted in game development \cite{maraffi:frp,cheong2005functional}, which is backed by findings from Nu, where 7,000 objects can be simulated using pure \gls{FRP}, whereas the number is 25,000 for imperative objects \cite{edds2016whyFunctional}. On the other hand, \cite{rey:frp} claims that Netflix, a world-wide video streaming service, uses \gls{FRP} on both frontend and backend. If that is true, it is a strong indication that the performance overhead is not as large as the scientific community fears.
+In scientific literature, the consensus seems to be that \gls{FRP} is too slow to be adopted in game development\cite{maraffi:frp,cheong2005functional}, which is backed by findings from Nu, where 7,000 objects can be simulated using pure \gls{FRP}, whereas the number is 25,000 for imperative objects\cite{edds2016whyFunctional}. On the other hand, \cite{rey:frp} claims that Netflix, a world-wide video streaming service, uses \gls{FRP} on both frontend and backend. If that is true, it is a strong indication that the performance overhead is not as large as the scientific community fears.
 
 \subsection{Other Applications}
-\gls{FRP} also has applications in other areas than game development. As mentioned earlier, \gls{FRP} dates back to FRAN, which could be used to model 3D geometry \cite{ElliottHudak97:Fran}. \gls{FRP} has also seens its use in music with the Euterpea Haskell \gls{DSL}.  
-%Euterpea: http://www.euterpea.com/
-%http://www.dsi.unive.it/~cortesi/paperi/iee_iv.pdf
-
-
-
-
-
-
-
-
+\gls{FRP} is also used in other areas than game development. As mentioned earlier, \gls{FRP} dates back to FRAN, which could be used to model 3D geometry\cite{ElliottHudak97:Fran}. \gls{FRP} has also seens its use in music with the Euterpea Haskell \gls{DSL}\cite{euterpea}.
