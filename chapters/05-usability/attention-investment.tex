@@ -1,0 +1,36 @@
+\subsubsection{Attention Investment Model}
+The attention investment model, presented in \secref{attention-investment}, can be used to map the programming approach undertaken by a user. This section will endeaver to do so, using the user test video material. Firstly, user comprehension of feature being evaluated is measured. This feature is the use of \fsh and \gls{FRP} in game development. In order to measure comprehension, the instances where participants mention aspects of the feature where recorded and categorised, as can be seen in \tableref{comp-matrix}.
+
+\begin{table}[H]
+	\alignCenter{
+	\begin{tabular}{| l | c | c | c |}\hline
+		\multicolumn{1}{| l |}{\textbf{Recognised Aspects}}&\multicolumn{1}{| l |}{\textbf{Correct \& Unprompted}}&\multicolumn{1}{| l |}{\textbf{Correct \& Prompted}}&\multicolumn{1}{| l |}{\textbf{Incorrect}} \rowEnd
+		Modularity 			& \mn\mn & & \mn \rowEnd
+		ReactTo 				& \mns & \mn\mn\mns & \mn\mn\mn \rowEnd
+		Types 					& \mn\mn & & \mn\mns\mns\mns\mns\mns \rowEnd
+		List Operations	& \mn & \mn\mn\mns & \mn\mns \rowEnd
+	\end{tabular}}
+	\caption{User Comprehension of the Feature}
+	\label{tab:comp-matrix}
+\end{table}
+
+A closed bullet (\mn) means that a participant mentioned an aspect of the feature, when the participant mentioned it multiple times a open bullet is used (\mns). The categories, \textit{Correct \& Unprompted} and \textit{Correct \& Prompted} are instances where the partitions mentions or explains a feature correctly and/or positively. The last category are instances where features are mentioned negatively, incorrectly or is a cause for confusion.
+
+In addition to a measure of the participants comprehension, the attention investment model also provides a quantification of their efforts in the programming activity. This consists of four metrics, mentioned in \secref{attention-investment}. This can be seen in \tableref{att-inv-findings}. The risk metric measures the amount of times partitions mentioned or discussed things that could go wrong, this includes increased difficulty of some tasks using \fsh. The cost metric is the attention and time required to switch to using \fsh. Any musing over the difficulties of switching over is included. The payoff is the reduced cost of game development after switching to \fsh. The imperative alternative metric is the number of times participants mentioned the problems in \csh, or other imperative languages, that form the basis for switching to \fsh.
+
+\begin{table}[H]
+	\alignCenter{
+	\begin{tabular}{| l | c |}\hline
+		\multicolumn{2}{|c|}{\textbf{Attention Investment}} \rowEnd
+		Investment Risk & \mn\mn\mn\mn\mns  \rowEnd
+		Investment Cost & \mn\mns\mns\mns\mns \rowEnd
+		Investment Payoff & \mn\mns\mns\mns\mns \rowEnd
+		Imperative Alternative & \mn\mn\mn \rowEnd
+	\end{tabular}}
+	\caption{Attention Investment Findings}
+	\label{tab:att-inv-findings}
+\end{table}
+
+The participants where able to correctly use and describe \fsh and \gls{FRP} behaviour in some instances and struggled in other instances. As can be seen in \tableref{comp-matrix} not all participants where cognisant of all feature aspects, e.g. all participants misunderstood or struggled with the type system. Functional programming claims a greater degree of modularity than imperative languages \cite{hughes1989functional}, however less than half of partitions expressed cognisance of this. Some participants wrote much more modular code in \fsh than in \csh, but did not mention it.
+
+As can be seen in \tableref{att-inv-findings} the participants noted a high cost with a high payoff. Participants could see the usefulness of \gls{FRP}, but several participants expressed uncertainty of any benefit provided by \fsh. Another point is that very few participants noted the problems with existing solutions, even when compared to \fsh. The high cost is attributed to loss of productivity while a developer learns to use \fsh.
