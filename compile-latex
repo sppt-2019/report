@@ -102,7 +102,7 @@ function compile {
 		output
 	fi
 	echo "$solid"
-	exit o
+	exit 0
 }
 
 function full {
