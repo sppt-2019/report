@@ -136,12 +136,24 @@ function really-quick {
          duration=$(( SECONDS - start ))
 }
 
-function main {
-	clear
-	if [ $# == 2 ] ; then
-		compile $1 $2
+function present {
+	if [ ! -f "$target.tex" ] ; then
+		return 1
 	else
-		compile $1
+		return 0
+	fi
+}
+
+function main {
+	if present ; then
+		clear
+		if [ $# == 2 ] ; then
+			compile $1 $2
+		else
+			compile $1
+		fi
+	else
+		echo "$1 is not a valid source file."
 	fi
 }
 
