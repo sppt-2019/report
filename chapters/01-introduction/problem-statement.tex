@@ -1,19 +1,15 @@
 \section{Problem Statement} \label{sec:problem_statement}
 The gurus John Carmack and Tim Sweeney present two different approaches to the use of functional programming in game development. On one hand Carmack recommends writing code in a functional style whenever possible, but he does not believe fully functional programming languages are a practical tool for game development. The main features mentioned are higher-order and pure functions and action items.
 
-\quoteWithCite{No matter what language you work in, programming in a functional style provides benefits. You should do it whenever it is convenient, and you should think hard about the decision when it isn't convenient.}{John Carmack}{gamasutra:c++functional}
-
 In contrast Sweeney argues for a pure functional language supporting multiple evaluation strategies explicitly controlled by the programmer. In addition, he argues for constructs that allow for explicit handling of the imperative nature of games, however the exact nature of such constructs is left to the language designers.
 
-\quoteWithCite{Purely Functional is the right default [...]\\Imperative constructs are vital features that must be exposed through explicit effects-typing constructs [...]\\Lenient evaluation is the right default.}{Tim Sweeney}{theNextMainstreanProgrammingLanguage}
-
-Using the .NET platform both approaches can be put into practise. C\# presents a viable candidate of Carmack's suggested approach, while F\#, with support for lenient evaluation strategy, is a candidate for Sweeney's approach. Given candidates for both approaches their efficacy can be tested.
+Using the .NET platform both approaches can be put into practise. C\# presents a viable candidate of Carmack's suggested approach, while F\#, with support for lenient evaluation strategy, is a candidate for Sweeney's approach. Given candidates for both approaches their efficacy can be tested. We propose the following research questions to examine the use of functional programming in game development:
 
 \begin{center}
     \begin{enumerate}
-        \item \textbf{Are experienced game developers capable of putting these two approaches to use?}
-        \item Is either approach easier to use?
-        \item Are these approaches viable in a game development setting?
-        \item What are the performance impacts of these two approaches?
+        \item \textbf{How well does experienced game developers express game-related code in F\#?}
+        \item How can F\# be incorporated in game development?
+        \item What are the advantages and disadvantages of using functional programming in a game development setting?
+        \item What are the performance impacts of using F\# in a game engine?
     \end{enumerate}
 \end{center}

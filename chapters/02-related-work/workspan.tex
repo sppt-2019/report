@@ -1,39 +1,39 @@
 \section{Formal Performance of Parallel Programs}
-This section will detail a formal method of estimating performance of parallel programs called work and span. This method counts the number of primitive operations required to execute the entire program. This is called the sequential running time of the program and i denoted: $T(n)$ where $n$ is the problem size \cite{DBLP:books/daglib/para-algo}. However the sped up running time, using additional processors, is denoted: $T_p(n)$. Here $p$ denotes the number of processors, Thus:
-\begin{itemize}
-    \item[$T(n)$] The total sequential running time.
-    \item[$T_p(n)$] The total running time of the program when parallelised as much as possible.
-\end{itemize}
-In order to estimate $T_p(n)$ the \textit{work} and \textit{span} of the program must be identified. The work, of the program, is the total running time of all processors ignoring synchronisation overheads. This is equivalent to running the program one a single processor or sequentially. Therefore
+This section will detail a formal method of estimating performance of parallel programs called work and span. This method counts the number of primitive operations required to execute the entire program. This is called the sequential running time of the program and is denoted: $T(n)$ where $n$ is the problem size\cite{DBLP:books/daglib/para-algo}. The sped up running time, using additional processors, is denoted: $T_p(n)$. Here $p$ denotes the number of processors, Thus:
+\begin{labeling}{\quad\quad}
+    \item[$T(n)$] denotes the total sequential running time.
+    \item[$T_p(n)$] denotes the total running time of the program when parallelised as much as possible.
+\end{labeling}
+In order to estimate $T_p(n)$ the \textit{work} and \textit{span} of the program must be identified. The work is the total running time of all processors, ignoring synchronisation overheads. This is equivalent to running the program on a single processor or sequentially. Therefore
 \begin{equation}
     \text{work} = T(n)
 \end{equation}
-The span is the longest data dependent path in the program i.e. the longest path of strictly sequential computation. This is sometimes called the critical path or the computational depth \cite{Blelloch:1996:PPA:prog-para-algo}. The shorter the span, the more parallelisable the program. Finally the cost of the program can be calculated. This is the total running time across all processors including the time spent idling. The cost is denoted $pT_p$.
+The span is the longest data dependent path in the program i.e. the longest path of strictly sequential computation. This is sometimes called the critical path or the computational depth\cite{Blelloch:1996:PPA:prog-para-algo}. The shorter the span, the more parallelisable the program. Finally the cost of the program can be calculated. This is the total running time across all processors including the time spent idling. The cost is denoted $pT_p$.
 
-Given this information about a parallel program, the speed up gain from parallelisation can be calculated. This calculation assumes an infinite number of processors, $T_\infty$. A number of different metrics for this gain exist, they are as follows.
+Given this information about a parallel program, the speed-up gain from parallelisation can be calculated. This calculation assumes an infinite number of processors, $T_\infty$. A number of different metrics for this gain exist, they are as follows.
 \begin{labeling}{\quad\quad}
-    \item[Speedup] the raw gain from running the program on multiple processors.
-    \begin{equation}
+    \item[Speed-up] is the raw gain from running the program on multiple processors.
+    \begin{equation*}
         S_p = T_1/T_p
-    \end{equation}
-    \item[Efficiency] the speedup per processor.
-    \begin{equation}
+    \end{equation*}
+    \item[Efficiency] is the speed-up per processor.
+    \begin{equation*}
         S_p/p
-    \end{equation}
+    \end{equation*}
     \item[Parallelism] is the maximum possible speedup given a number of processors.
-    \begin{equation}
+    \begin{equation*}
         T_1/T_\infty
-    \end{equation}
-    \item[Slackness] is a measure or the programs paralleisability. A slackness of less then one implies that perfect linear speedup is possible.
-    \begin{equation}
+    \end{equation*}
+    \item[Slackness] is a measure of the program's paralleisability. A slackness of less then one implies that perfect linear speedup is possible.
+    \begin{equation*}
         T_1/(pT_\infty)
-    \end{equation}
+    \end{equation*}
 \end{labeling}
-Since no actual machine has an infinite number of processors, the above equations require slight modification to simulate real machines. Any computation that can run on $N$ processors can be executed on smaller number or processors, $p < N$ \cite{Gustafson2011}. This is achieved by dividing the work load onto the processors, instead of assigning one processor per task. Furthermore, running on fewer then $N$ processors the execution is bounded by
-\begin{equation}
+Since no actual machine has an infinite number of processors, the above equations require slight modifications to simulate real machines. Any computation that can run on $N$ processors can be executed on smaller number or processors, $p < N$\cite{Gustafson2011}. This is achieved by dividing the work load onto the processors, instead of assigning one processor per task. Furthermore, running on fewer then $N$ processors the execution is bounded by:
+\begin{equation*}
     T_p \leq T_N + \frac{T_1 - T_n}{p}
-\end{equation}
-The bound $T_p$ can be expressed with upper and lower bound \cite{brent1974parallel}.
-\begin{equation}
+\end{equation*}
+The bound $T_p$ can be expressed with upper and lower bound\cite{brent1974parallel}:
+\begin{equation*}
     \frac{T_1}{p} \leq T_p \leq \frac{T_1}{p} + T_\infty
-\end{equation}
+\end{equation*}

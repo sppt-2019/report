@@ -7,7 +7,7 @@ In this experiment we estimate the critical workload of C\#'s \ttt{Task}-system.
 \subsubsection{Test Setup}
 We use the Binary Tree Summation benchmark presented in the previous section with a minor modification: Every time the algorithm finds a \ttt{Node}, it busy-waits for a given amount of time to simulate work. The busy-wait was implemented with a loop, whose number of iterations is gradually halved until the sequential solution executes faster than the parallel. The hypothesis here is that the parallel solutions will be faster, because it is capable of busy-waiting multiple tasks at the same time.
 
-The Binary Summation test case from the previous section was reused in this experiment, but implemented in two variations. The first variation emulates a data dependency between the wait and the results the subtrees, i.e. the wait is intended to emulate a computation that must be carried out after the results of both subtrees have been computed. The other variation emulates a situation where the left and right subtree can be computed in parallel with the wait, i.e. no data dependency between the delay and the subtrees. The tree has a total of 60 leaf nodes. In addition to the binary tree summation, we also implemented a N-ary tree summation in the same variations as that of binary.
+We implemented the test in two variations. The first variation emulates a data dependency between the wait and the results the subtrees, i.e. the wait is intended to emulate a computation that must be carried out after the results of both subtrees have been computed. The other variation emulates a situation where the left and right subtree can be computed in parallel with the wait, i.e. no data dependency between the delay and the subtrees. The tree has a total of 60 leaf nodes. In addition to the binary tree summation, we also implemented a N-ary tree summation in the same variations as that of binary.
 
 \subsubsection{Results}
 The results are plotted in \figureref{crit-work-dep} and \figureref{crit-work-no-dep} (and listed in \tableref{binary:tree:with:bias:dependency} and \tableref{binary:tree:with:bias:no:dependency} in \apxref{crit:work:data}).
@@ -34,7 +34,16 @@ The results are plotted in \figureref{crit-work-dep} and \figureref{crit-work-no
     \plotData{Lenient}{\workWithoutDependencyDataNary}
 }
 
-\tmc{Vi skal lave lidt analyse her og snakke om vores fund.}
+\makeTable{
+    { c | c | c }
+    & No data dependency & Data dependency \\\hline
+    Binary & 1024 & 4096 \\
+    N-ary & 2048 & 2048
+}{Iterations of the busy-wait loop before the sequantial solution becomes the fastest.}{crit:work:iterations}
+
+The number of iterations in the busy-wait loop before the sequential solution is faster than the concurrent is listed in \tableref{crit:work:iterations}. The graphs also underline that our hypothesis was correct. The parallel solutions grows slower than the sequential because they are capable of executing multiple busy-wais concurrently. Finally we notice that the lenient and fork join strategy lie very close in execution speed. This is a promising result for the lenient evaluation strategy, as it shows that it may be as fast as a traditional concurrency strategy.
+
+Some conccurency models batch smaller jobs together to form larger jobs\needcite. Such batching may reduce the time spent context switching as thus increase the execution speed of the concurrent solutions. Such strategy is employed by Unity's C\# job system\cite{unity:csharp:job:system}.
 
 \subsection{Matrix Summation}
 In this section we execute a matrix summation benchmark. This benchmark measures the time it takes to sum all indices of a random $N x N$ matrix. This benchmark was implemented in different parallelisation strategies to explore how well they scale to increasing sizes of $N$:
@@ -46,7 +55,7 @@ In this section we execute a matrix summation benchmark. This benchmark measures
     \item[Tasks] is similar to parallel foreach, with the only exception that we manually spawn a \ttt{Task} that calculates the sum of each column.
 \end{labeling}
 
-We have not included a lenient-variation in this experiment, as an implementation in our C\# mapping would be largely equivalent to the Tasks-implementation (see \lstref{matrix-sum-csharp}). The most notable difference being that a lenient-evaluation strategy would most likely also construct the matrix in parallel with the summation. As the time it takes to construct a matrix is not included in the results here, this should have little to no effect on the validity of the results.
+We have not included a lenient-variation in this experiment, as an implementation in our C\# mapping would be largely equivalent to the Tasks-implementation (see \lstref{matrix-sum-csharp}). The most notable difference being that a lenient-evaluation strategy would most likely also construct the matrix in parallel with the summation. As the time it takes to construct a matrix is not included in the results here, this should have no effect on the validity of the results.
 \begin{listing}
 \begin{minted}{csharp}
 public static async Task<long> SumTask(long[,] matrix)
@@ -73,7 +82,7 @@ public static async Task<long> SumTask(long[,] matrix)
 \caption{Tasks implementation of Matrix Sum, largely equal to a lenient C\# mapping.} \label{lst:matrix-sum-csharp}
 \end{listing}
 
-As the matrices are of size $N x N$, they contain a total of $N^2$ elements with random values between \ttt{Int64.Minvalue} and \ttt{Int64.MaxValue}. When running the test with large matrices we found that even 64-bit integers would overflow, which throws an exception because C\# and F\# are managed languages. In order to avoid this, we used the \ttt{unchecked}-keyword, which disables bounds-checking on an integral arithmetic operation \cite{csharp:unchecked}. \cite{csharp:unchecked} states that using \ttt{unchecked} \textit{\dquote{might improve performance}}, compared to checked integral arithmetic operations.
+As the matrices are of size $N x N$, they contain a total of $N^2$ elements with random values between \ttt{Int64.Minvalue} and \ttt{Int64.MaxValue}. When running the test with large matrices we found that the result would overflow, which throws an exception because C\# is a managed language. In order to avoid this, we used the \ttt{unchecked}-keyword, which disables bounds-checking on an integral arithmetic operation\cite{csharp:unchecked}. \cite{csharp:unchecked} states that using \ttt{unchecked} \textit{\dquote{might improve performance}}, compared to checked integral arithmetic operations.
 
 \subsubsection{Results}
 The results are plotted in \figureref{linpack-summation}. The first thing to notice is that Map Reduce seems to be roughly equal to the sequential in running time. This could indicate that the \ttt{Select}-method of C\#'s \gls{LINQ}, which was used to implement Map Reduce, does not parallelise its iterations. We will thus treat Map Reduce as a sequential solution for the rest of this result discussion.
