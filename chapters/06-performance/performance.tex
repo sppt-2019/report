@@ -1,5 +1,5 @@
 \chapter{Performance}
-In this chapter we examine the performance of F\# in Unity, mainly using the \gls{FRP}-extension that was developed as part of this project. We first examine the aspect of \gls{GC} by looking at Unity best-practise guidelines. We found that garbage is to be avoided to the extend that it's possible, which we were not aware of when we implemented the reference solutions. We therefore adapt one of the solutions to conform to Unity best-practise guidelines and benchmark that against the more \dquote{careless} implementation. Finally we research concurrency in Unity \tmc{Der skal nok puttes lidt mere ind her.}.
+In this chapter we examine the performance of F\# in Unity, mainly using the \gls{FRP}-extension that was developed as part of this project. We first examine the aspect of \gls{GC} by looking at Unity best-practise guidelines, which suggests that garbage is to be avoided to the extend that it's possible. We were not aware of this when we implemented the reference solutions. We therefore adapt one of the solutions to conform to Unity best-practise guidelines and benchmark that against the more \dquote{careless} implementation. Finally we research concurrency in Unity \tmc{Der skal nok puttes lidt mere ind her.}.
 
 \input{chapters/06-performance/garbage-collection.tex}
 \input{chapters/06-performance/concurrency.tex}
