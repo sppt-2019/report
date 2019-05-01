@@ -1,7 +1,7 @@
 \subsubsection{Closeness of Mapping}
-The measure of how close to the problem domain a language can get is called the closeness of mapping. In order to solve a real problem, that problem must be expressible in the language and the closer the language the easier it is to express \cite{green1996usability}. Textual programming languages are abstractions over the real problem domain and therefore often does not map directly to the domain.
+The measure of how close to the problem domain a language can get is called the closeness of mapping. In order to solve a real problem, that problem must be expressible in the language and the closer the language the easier it is to express\cite{green1996usability}. Textual programming languages are abstractions over the real problem domain and therefore often does not map directly to the domain.
 
-Both languages have mechanisms to model the problem domain. In object-oriented programming, the world is represented as objects and the objects are abstracted over via classes \cite{kindler2011object}. Functional programming models the problem as behaviour (functions) which are applied to data \cite{hughes1989functional}. The advantage of the object oriented approach is that the object abstraction comes quite close the problem domain.
+Both languages have mechanisms to model the problem domain. In object-oriented programming, the world is represented as objects and the objects are abstracted over via classes\cite{kindler2011object}. Functional programming models the problem as behaviour (functions) which are applied to data\cite{hughes1989functional}. The advantage of the object oriented approach is that the object abstraction comes quite close the problem domain.
 
 \quoteWithCite{The object expresses the user's view of reality [...]}{Object Oriented Analysis \& Design}{mathiassen2000object}
 
@@ -11,7 +11,7 @@ This approach is in contrast to the functional paradigme which models reality ma
 
 The abstraction models of the languages are the tools used by the programmers to model the world. \cs uses a model, which lends itself more to closeness of mapping, but both languages make use of custom types and naming which allow programmers to mold their programs in accordance with the problem domain. Additionally both languages support each others modelling approach. An example of this can be seen in \lstref{tree-imps}, where a recursive class in \cs can be implemented via custom types in \fs.
 
-\begin{listing}[H]'
+\begin{listing}[H]
   \begin{minted}{fsharp}
 type Talent(strength, intellect, agility) =
   member val Strength = strength with get, set
