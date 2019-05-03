@@ -31,7 +31,7 @@ let UpdateAsync () =
     \label{lst:fsharp:pipe:async}
 \end{listing}
 
-As with many other dimensions, viscosity can also be affected by the programmer's style of programming. This is explified in \lstref{csharp:viscous}, which is taken from one of the solutions in C\#. In order to make implement \dquote{concurrent} update, the participant had to construct a new list in the \ttt{Update}-method and wrap the calls to the state methods in \ttt{Task.Run} (e.g. \ttt{_updateTasks.Add(Task.Run(() => Flee(fleeingShooter)))}). This change is manageable, but imagine how much effort it would take if we wanted to add an additional state to the shooter units. 
+As with many other dimensions, viscosity can also be affected by the programmer's style of programming. This is explified in \lstref{csharp:viscous}, which is taken from one of the solutions in C\#. In order to make implement \dquote{concurrent} update, the participant had to construct a new list in the \ttt{Update}-method and wrap the calls to the state methods in \ttt{Task.Run} (e.g. \ttt{updateTasks.Add(Task.Run(() =\textgreater\ Flee(fleeingShooter)))}). This change is manageable, but imagine how much effort it would take if we wanted to add an additional state to the shooter units. 
 
 \begin{listing}
     \begin{minted}{csharp}
