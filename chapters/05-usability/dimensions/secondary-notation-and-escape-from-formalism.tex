@@ -1,1 +1,10 @@
 \subsubsection{Secondary Notation and Escape from Formalism}
+Secondary notation and escapte from formalism defines how well a programming environment supports conyeing information that is not part of the source code. Typical examples of such are comments, indentation and grouping code into paragraphs in textual languages\cite{green1996usability}.
+
+C\# and F\# are very alike in this dimension. They both support the \ttt{//}-operator, which indicates that the rest of the line should be commented out and matching pairs of \ttt{/*} and \ttt{*/} which comments everything out between them. Furthermore functions, methods, classes and more or less any program construct may be annotated with \ttt{///}-comments, which allow the programmer to add \gls{XML}-documentation\cite{fsharp:xml:doc}. The programmer may use this to describe the intend of the construct along with its arguments and, if needed, link to other constructs in the program. Other developers may open this documentation in a pop-up box elsewhere in the program, whenever such construct is encountered.
+
+In the test we saw very limited use of secondary notation. This is likely caused by the relatively small tasks, along with the fact that the code was not meant to be used in production nor expanded upon. The programmers, however, would often open said pop-up boxes to read about the functions and methods before putting them to use. Generally, our intuition was that the programmers found it more easy to understand the C\# documentation than the F\# documentation. We suspect that there two reasons:
+\begin{enumerate}
+    \item The programmers were more experienced in C\#.
+    \item F\# uses the arrow function signatures (e.g. \ttt{val map : mapping : ('T -\textgreater\ 'U) -\textgreater\ list:'T list -\textgreater\ 'U list}, which is the signature of \ttt{List.map}) in its documentation. This notation indicates that a function of multiple parameters can be curried. Curring is not supported in C\# and is thus a concept that the programmers were unfamiliar with.
+\end{enumerate}
