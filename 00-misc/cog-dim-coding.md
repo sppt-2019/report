@@ -26,17 +26,17 @@ In the social sciences the term coding means roughly the same as tagging or anno
 
 | Attention Investment Metric | Code Frequency | Dot |
 |:---                     |:--:|:--:|
-| Abstract Gradient       | 000 | &#9702; |
-| Closeness of Mapping    | 000 | &#9702; |
-| Consistency             | 00 | &#9702; |
-| Diffuseness/Terseness   | 00 | &#9702; |
-| Error-proneness         | 00000 | &#9702; |
-| Hard Mental Operations  | 000 | &#9702; |
-| Hidden Dependencies     | 00 | &#9702; |
-| Premature Commitment    | 0 | &bull; |
-| Progressive Evaluation  | 0 | &bull; |
-| Role-expressiveness     | 0 | &bull; |
-| Secondary Notation and Escape from Formalism | 0 | &bull; |
+| Abstract Gradient       | | |
+| Closeness of Mapping    | | |
+| Consistency             | | |
+| Diffuseness/Terseness   | | |
+| Error-proneness         | | |
+| Hard Mental Operations  | | |
+| Hidden Dependencies     | | |
+| Premature Commitment    | | |
+| Progressive Evaluation  | | |
+| Role-expressiveness     | | |
+| Secondary Notation and Escape from Formalism | | |
 | Viscosity               | | |
 | Visibility and Juxtaposability | | |
 
