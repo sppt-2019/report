@@ -4,7 +4,7 @@ Viscosity defines how much effort a developer has to put in to make a small chan
 C\# and F\# are both textual languages and thus have relatively low viscosity. We argue that the primary difference between C\# and F\# are scope delimitation. C\# scopes are delimited by pairs of curly brackets, whereas in F\# they are delimited by indentation. If a programmer is to move code from one scope to another in C\#, he would have to either insert or delete pairs of curly brackets, whereas in F\# he would select the code that needs to be moved and press TAB or Shift+TAB.
 
 % Participant 2, 40:40 samt 1:02:30
-In our test cases, viscosity is particularly visible in the \dquote{concurrent}-update category. The reason for this is that the participants are asked to develop a sequential solution first, followed by a parallel implementation. Generally viscosity is low. Given an implementation in F\# using the pipe operator, one can implement a parallel solution by piping into \ttt{Async.Parallel} and then \ttt{Async.RunSynchronously} (see \lstref{fsharp:pipe:async}).
+In our test cases, viscosity is particularly visible in the \dquote{concurrent}-update category. The reason for this is that the participants are asked to develop a sequential solution first, followed by a parallel implementation. Generally viscosity is low in both languages. In F\# we saw the magnetism task implemented using the pipe operator. Such an implementation can be extended to a parallel solution by piping into \ttt{Async.Parallel} and then \ttt{Async.RunSynchronously} (see \lstref{fsharp:pipe:async}). A similar solution can be achieved in C\# using \gls{LINQ}, albeit the change requires the programmer to delete a semicolon.
 
 \begin{listing}
     \begin{minted}{fsharp}
@@ -29,4 +29,78 @@ let UpdateAsync () =
     \end{minted}
     \caption{Transforming from sequential to concurrent list operations in F\#.}
     \label{lst:fsharp:pipe:async}
+\end{listing}
+
+As with many other dimensions, viscosity can also be affected by the programmer's style of programming. This is explified in \lstref{csharp:viscous}, which is taken from one of the solutions in C\#. In order to make implement \dquote{concurrent} update, the participant had to construct a new list in the \ttt{Update}-method and wrap the calls to the state methods in \ttt{Task.Run} (e.g. \ttt{_updateTasks.Add(Task.Run(() => Flee(fleeingShooter)))}). This change is manageable, but imagine how much effort it would take if we wanted to add an additional state to the shooter units. 
+
+\begin{listing}
+    \begin{minted}{csharp}
+        class StateMachine : MonoBehaviour
+        {
+            [...] //Pre-implemented code, such as JoinState
+
+            private List<Shooter> fleeingShooters = new List<Shooter>();
+            private List<Shooter> movingShooters = new List<Shooter>();
+            private List<Shooter> attackingShooters = new List<Shooter>();
+        
+            private void Update()
+            {
+                foreach(var fleeingShooter in fleeingShooters)
+                {
+                    Flee(fleeingShooter);
+                }
+                foreach (var movingShooter in movingShooters)
+                {
+                    Move(movingShooter);
+                }
+                foreach (var attackingShooter in attackingShooters)
+                {
+                    Attack(attackingShooter);
+                }
+            }
+        
+            public void TransferState(Shooter shooter, State state)
+            {
+                switch (state)
+                {
+                    case State.Fleeing:
+                        fleeingShooters.Add(shooter);
+                        RemoveFromList(shooter, ref movingShooters, ref attackingShooters);
+                        break;
+        
+                    case State.Moving:
+                        movingShooters.Add(shooter);
+                        RemoveFromList(shooter, ref fleeingShooters, ref attackingShooters);
+                        break;
+        
+                    case State.Attacking:
+                        attackingShooters.Add(shooter);
+                        RemoveFromList(shooter, ref movingShooters, ref fleeingShooters);
+                        break;
+        
+                    default:
+                        break;
+                }
+            }
+        
+            private void RemoveFromList(Shooter shooter, ref List<Shooter> list1, ref List<Shooter> list2)
+            {
+                if (list1.IndexOf(shooter) != -1)
+                {
+                    list1.Remove(shooter);
+                    return;
+                }
+        
+                if(list2.IndexOf(shooter) != -1)
+                {
+                    list2.Remove(shooter);
+                    return;
+                }
+            }
+        
+            [...] //methods for each unit state
+        }
+    \end{minted}
+    \caption{Example of viscous C\# implementation of the Unit Management Test.}
+    \label{lst:csharp:viscous}
 \end{listing}
