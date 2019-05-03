@@ -31,66 +31,91 @@ let UpdateAsync () =
     \label{lst:fsharp:pipe:async}
 \end{listing}
 
-As with many other dimensions, viscosity can also be affected by the programmer's style of programming. This is explified in \lstref{csharp:viscous}, which is taken from one of the solutions in C\#. In order to make implement \dquote{concurrent} update, the participant had to construct a new list in the \ttt{Update}-method and wrap the calls to the state methods in \ttt{Task.Run} (e.g. \mintinline{csharp}|updateTasks.Add(Task.Run(() => Flee(fleeingShooter)))|). This change is manageable, but imagine how much effort it would take if we wanted to add an additional state to the shooter units. 
+As with many other dimensions, viscosity can also be affected by the programmer's style of programming. This is explified in \lstref{csharp:viscous}, which is taken from one of the solutions in C\#. In order to make implement \dquote{concurrent} update, the participant had to construct a new list in the \ttt{Update}-method and wrap the calls to the state methods in \ttt{Task.Run} (e.g. \mintinline{csharp}|updateTasks.Add(Task.Run(() => Flee(fleeingShooter)))|). This change is manageable, but imagine how much effort it would take if we wanted to add an additional state to the shooter units. If such change was to be implemented, the programmer would have to:
+\begin{itemize}
+    \item Add an additional list and \ttt{foreach}-statement in \lstref{csharp:viscous}.
+    \item Change the signature of the \ttt{TransferState}-method in \lstref{csharp:viscous:transfer} to accept an additional list and add an addtitional \ttt{else if} for the third list.
+    \item Add an additional case to the switch in \lstref{csharp:viscous:transfer}, and update the call to \ttt{RemoveFromList} in all other cases.
+\end{itemize}
+
 
 \begin{listing}
     \begin{minted}{csharp}
-        class StateMachine : MonoBehaviour
-        {
-            [...] //Pre-implemented code, such as JoinState
+class StateMachine : MonoBehaviour
+{
+    [...] //Pre-implemented code, such as JoinState
 
-            private List<Shooter> fleeingShooters;
-            private List<Shooter> movingShooters;
-            private List<Shooter> attackingShooters;
-        
-            private void Update()
-            {
-                foreach(var fleeingShooter in fleeingShooters)
-                {
-                    Flee(fleeingShooter);
-                }
-                foreach (var movingShooter in movingShooters)
-                {
-                    Move(movingShooter);
-                }
-                foreach (var attackingShooter in attackingShooters)
-                {
-                    Attack(attackingShooter);
-                }
-            }
-        
-            public void TransferState(Shooter shooter, State state)
-            {
-                switch (state)
-                {
-                    case State.Fleeing:
-                        fleeingShooters.Add(shooter);
-                        RemoveFromList(shooter, ref movingShooters, ref attackingShooters);
-                        break;
-                    case State.Moving:
-                        movingShooters.Add(shooter);
-                        RemoveFromList(shooter, ref fleeingShooters, ref attackingShooters);
-                        break;
-                    case State.Attacking:
-                        attackingShooters.Add(shooter);
-                        RemoveFromList(shooter, ref movingShooters, ref fleeingShooters);
-                        break;
-                    default:
-                        break;
-                }
-            }
-        
-            private void RemoveFromList(Shooter shooter, ref List<Shooter> list1, ref List<Shooter> list2)
-            {
-                if (list1.IndexOf(shooter) != -1)
-                    list1.Remove(shooter);
-                else if(list2.IndexOf(shooter) != -1)
-                    list2.Remove(shooter);
-            }
-        
-            [...] //methods for each unit state
+    private List<Shooter> fleeingShooters;
+    private List<Shooter> movingShooters;
+    private List<Shooter> attackingShooters;
+
+    private void Update()
+    {
+        foreach(var fleeingShooter in fleeingShooters)
+        {
+            Flee(fleeingShooter);
         }
+        foreach (var movingShooter in movingShooters)
+        {
+            Move(movingShooter);
+        }
+        foreach (var attackingShooter in attackingShooters)
+        {
+            Attack(attackingShooter);
+        }
+    }
+
+    [...] //TransferState
+    [...] //RemoveFromList
+
+    [...] //methods for each unit state
+}
     \end{minted}
     \caption{Example of viscous C\# implementation of the Unit Management Test.}
     \label{lst:csharp:viscous}
+\end{listing}
+
+\begin{listing}
+    \begin{minted}{csharp}
+public void TransferState(Shooter shooter, State state)
+{
+    switch (state)
+    {
+        case State.Fleeing:
+            fleeingShooters.Add(shooter);
+            RemoveFromList(shooter, ref movingShooters, ref attackingShooters);
+            break;
+        case State.Moving:
+            movingShooters.Add(shooter);
+            RemoveFromList(shooter, ref fleeingShooters, ref attackingShooters);
+            break;
+        case State.Attacking:
+            attackingShooters.Add(shooter);
+            RemoveFromList(shooter, ref movingShooters, ref fleeingShooters);
+            break;
+        default:
+            break;
+    }
+}
+    \end{minted}
+    \caption{TransferState-method, which is part of the viscous Unit Management implementation from \lstref{csharp:viscous}.}
+    \label{lst:csharp:viscous:transfer}
+\end{listing}
+
+\begin{listing}
+    \begin{minted}{csharp}
+private void RemoveFromList(Shooter shooter, ref List<Shooter> list1, ref List<Shooter> list2)
+{
+    if (list1.IndexOf(shooter) != -1) {
+        list1.Remove(shooter);
+        return;
+    }
+    if(list2.IndexOf(shooter) != -1) {
+        list2.Remove(shooter);
+        return;
+    }
+}
+    \end{minted}
+    \caption{RemoveFromList-method, which is part of the viscous Unit Management implementation from \lstref{csharp:viscous}.}
+    \label{lst:csharp:viscous:remove}
 \end{listing}
