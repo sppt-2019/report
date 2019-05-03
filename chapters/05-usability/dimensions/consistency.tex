@@ -1,4 +1,19 @@
 \subsubsection{Consistency} % par 2 43:0 32:10, pipe operator
 In the cognitive dimensions framework consistency is the coherence between the language designer's understanding and the language user's intuition of the language\cite{green1996usability}. This does not mean that consistency is the difference in language knowledge, but rather the difficulty of extrapolating behaviour and syntax of language features based on knowledge of other language features.
 
-All participants had prior \cs experience which may have affected their expectations. This was apparent when participants applied \cs methodology in the \fs code. An example of this is the confusion of types some participants experienced. Several participants noted that they preferred strict typing or specifying types manually.
+All participants had prior \cs experience which may have affected their expectations. This was apparent when participants applied \cs methodology in the \fs code. An example of this is the confusion of types some participants experienced. Several participants noted that they preferred strict typing or specifying types manually. Another issue encountered where lambda expressions.
+
+\begin{listing}
+\begin{minted}{fsharp}
+let moveMagneticBalls (objs:GameObject[]) (center:GameObject) =
+  objs center |> Array.map (fun i ->
+    i.transform.LookAr(center.transform)
+    i.transform.Translate(i.transform.forward * Time.deltaTime * speed))
+\end{minted}
+\caption{Closure Misunderstanding}
+\label{lst:clos-mis}
+\end{listing}
+
+In \lstref{clos-mis} a participant has defined a function to move a number of objects towards a center point. The center point, \ttt{center}, is passed as a parameter but the participant became confused as to how to pass it to the lambda expressions. Therefore center was added on line 2 after \ttt{objs} and piped into the \ttt{map} function. This causes an error because \ttt{objs center} is now a function call to a non-existent function. Passing \ttt{center} to the lambda function is unnecessary, because they are both in the same closure.
+
+The behaviour described is consistent within the \fs, but not it is inconsistent with the expectations of the participant. Arguably, this instance is a product of the participant's inexperience with \fs, however it is an example of disharmony between the largely consistent rules of \fs and the expectations of programmers.
