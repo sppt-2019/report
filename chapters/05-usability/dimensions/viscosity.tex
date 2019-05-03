@@ -31,7 +31,7 @@ let UpdateAsync () =
     \label{lst:fsharp:pipe:async}
 \end{listing}
 
-As with many other dimensions, viscosity can also be affected by the programmer's style of programming. This is explified in \lstref{csharp:viscous}, which is taken from one of the solutions in C\#. In order to make implement \dquote{concurrent} update, the participant had to construct a new list in the \ttt{Update}-method and wrap the calls to the state methods in \ttt{Task.Run} (e.g. \ttt{updateTasks.Add(Task.Run(() =\textgreater\ Flee(fleeingShooter)))}). This change is manageable, but imagine how much effort it would take if we wanted to add an additional state to the shooter units. 
+As with many other dimensions, viscosity can also be affected by the programmer's style of programming. This is explified in \lstref{csharp:viscous}, which is taken from one of the solutions in C\#. In order to make implement \dquote{concurrent} update, the participant had to construct a new list in the \ttt{Update}-method and wrap the calls to the state methods in \ttt{Task.Run} (e.g. \mintinline{csharp}|updateTasks.Add(Task.Run(() => Flee(fleeingShooter)))|). This change is manageable, but imagine how much effort it would take if we wanted to add an additional state to the shooter units. 
 
 \begin{listing}
     \begin{minted}{csharp}
@@ -39,9 +39,9 @@ As with many other dimensions, viscosity can also be affected by the programmer'
         {
             [...] //Pre-implemented code, such as JoinState
 
-            private List<Shooter> fleeingShooters = new List<Shooter>();
-            private List<Shooter> movingShooters = new List<Shooter>();
-            private List<Shooter> attackingShooters = new List<Shooter>();
+            private List<Shooter> fleeingShooters;
+            private List<Shooter> movingShooters;
+            private List<Shooter> attackingShooters;
         
             private void Update()
             {
@@ -67,17 +67,14 @@ As with many other dimensions, viscosity can also be affected by the programmer'
                         fleeingShooters.Add(shooter);
                         RemoveFromList(shooter, ref movingShooters, ref attackingShooters);
                         break;
-        
                     case State.Moving:
                         movingShooters.Add(shooter);
                         RemoveFromList(shooter, ref fleeingShooters, ref attackingShooters);
                         break;
-        
                     case State.Attacking:
                         attackingShooters.Add(shooter);
                         RemoveFromList(shooter, ref movingShooters, ref fleeingShooters);
                         break;
-        
                     default:
                         break;
                 }
@@ -86,16 +83,9 @@ As with many other dimensions, viscosity can also be affected by the programmer'
             private void RemoveFromList(Shooter shooter, ref List<Shooter> list1, ref List<Shooter> list2)
             {
                 if (list1.IndexOf(shooter) != -1)
-                {
                     list1.Remove(shooter);
-                    return;
-                }
-        
-                if(list2.IndexOf(shooter) != -1)
-                {
+                else if(list2.IndexOf(shooter) != -1)
                     list2.Remove(shooter);
-                    return;
-                }
             }
         
             [...] //methods for each unit state
