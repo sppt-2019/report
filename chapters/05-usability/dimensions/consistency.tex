@@ -1,0 +1,31 @@
+\subsubsection{Consistency}
+All participants had prior \cs experience which affected their expectations. This was apparent when participants applied \cs methodology in the \fs code. An example of this is the confusion of types some participants experienced. Several participants noted that they preferred strict typing or specifying types manually. An example of this can be seen in \lstref{type-conf}.
+
+\begin{listing}[H]
+\begin{minted}{fsharp}
+[<SerializeField>]
+let mutable _velocity = 5.0f;
+[...]
+member this.HandleMoveForward() =
+this.transform.position+=new Vector(0,0,this._velocity)
+\end{minted}
+\caption{Type Confusion}
+\label{lst:type-conf}
+\end{listing}
+
+In \lstref{type-conf} the participant correctly types the \ttt{\_velocity} variable on line 2. However, when attempting to set the object's position on line 5, the participant uses \ttt{0} instead of \ttt{0.0f}. When this caused an error the participant attempted to use \ttt{.0f} instead of \ttt{0.0f}, which is valid in \cs, but not in \fs. This is an instance of confusion surrounding the implicit type of variable and the typing of literals. Another issue encountered where lambda expressions.
+
+\begin{listing}[H]
+\begin{minted}{fsharp}
+let moveMagneticBalls (objs:GameObject[]) (center:GameObject) =
+  objs center |> Array.map (fun i ->
+    i.transform.LookAr(center.transform)
+    i.transform.Translate(i.transform.forward * Time.deltaTime * speed))
+\end{minted}
+\caption{Closure Misunderstanding}
+\label{lst:clos-mis}
+\end{listing}
+
+In \lstref{clos-mis} a participant has defined a function to move a number of objects towards a center point. The center point, \ttt{center}, is passed as a parameter but the participant became confused as to how to pass it to the lambda expressions. Therefore center was added on line 2 after \ttt{objs} and piped into the \ttt{map} function. This causes an error because \ttt{objs center} is now a function call to a non-existent function. Passing \ttt{center} to the lambda function is unnecessary, because they are both in the same closure.
+
+The behaviour described is consistent within the \fs, but not it is inconsistent with the expectations of the participant. Arguably, this instance is a product of the participant's inexperience with \fs, however it is an example of disharmony between the largely consistent rules of \fs and the expectations of programmers. These consistency issues where primarily present in the \fs code, which is not surprising considering the participants' experience.
