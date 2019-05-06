@@ -1,53 +1,42 @@
 \subsubsection{Role-expressiveness}
-Role-expressiveness defines how easily a program can be read and comprehended. The dimension is easily confused with hard mental operations or poor secondary notation, from which it should be kept apart\cite{green1996usability}. Role-expressiveness thus defines how self-explanatory a program is.
+Role-expressiveness defines how easily a program can be read and comprehended. The dimension is easily confused with hard mental operations or secondary notation, from which it should be kept apart\cite{green1996usability}. Role-expressiveness thus defines how self-explanatory a program is.
 
 Being languages that run in the same platform, C\# and F\# share many constructs and all libraries. This means that a discussion of the standard library is of little interest. There are, however, some differences in the syntax that we will highlight. 
 
 %let vs. var
-First and foremost C\# uses either \ttt{var} or type names in variable declarations. In F\# the equivalent is \ttt{let}, possibly followed by \ttt{mutable} to indicate mutability. Depending on the programmer's background, these keywords may be more or less expressive. From a mathematic background it makes sense to create namebindings by using \ttt{let}, as that's common in proofs and similar mathematical lingo. The type of the namebinding by using \ttt{let} may be inferred by how it's used. Furthermore, \ttt{let} indicates a namebinding and not a variable, which further underlines that F\# is pure until otherwise is expressed. This contrasts with the classic C-style way of defining variables; by using their type name. Some programmers may prefer this way, as it is more expressive of the variable's type. Finally, the \ttt{var} keyword is simply an abbreviation for \squote{variable}, which goes well hand-in-hand with its purpose; a variable which we do not care about the type of. Common for the last two types of declarations are that they do not indicate anything about mutability and thus require knowledge about the language at hand.
+First and foremost C\# uses either \ttt{var} or type names in variable declarations. In F\# the equivalent is \ttt{let}, possibly followed by \ttt{mutable} to indicate mutability. Depending on the programmer's background, these keywords may be more or less expressive. From a mathematical background it makes sense to create namebindings by using \ttt{let}, as that's common in proofs and similar mathematical lingo. The type of a namebinding may be inferred by how it's used. Furthermore, \ttt{let} indicates a namebinding and not a variable, which further underlines that F\# is pure until otherwise is expressed. This contrasts with the classic C-style way of defining variables; by using their type name. Some programmers that are less versed in mathematical notation may prefer this way, as it is more expressive of the variable's type. Finally, the \ttt{var} keyword is simply an abbreviation for \squote{variable}, which goes well hand-in-hand with its purpose; a variable which we do not care about the type of. Common for the last two types of declarations are that they do not indicate anything about mutability and thus require knowledge about the language at hand.
 
 %F# fun-keyword
-Lambda functions are available in both languages. In C\# they're expressed as \mintinline{csharp}|(a,b) => a + b|, where as in F\# they're expressed as \mintinline{fsharp}|fun a b -> a + b|. In this case F\# uses the keyword \ttt{fun} to indicate a lambda, which is quite literally an abbreviation of \squote{function}. One thing worth noting is that the \ttt{fun} keyword may easily be confused with the English word fun, another abbreviation such as \ttt{fn} or \ttt{func}, would probably have been better. C\# uses the \ttt{=\textgreater}, which is of limited expressiveness (especially because C\# does not use arrow-style function signatures anywhere else).
-
-%Function signatures
-
+Lambda functions are available in both languages. In C\# they're expressed as \mintinline{csharp}|(a,b) => a + b|, where as in F\# they're expressed as \mintinline{fsharp}|fun a b -> a + b|. In this case F\# uses the keyword \ttt{fun} to indicate a lambda, which is quite literally an abbreviation of \squote{function}. One thing worth noting is that the \ttt{fun} keyword may easily be confused with the English word fun, another abbreviation such as \ttt{fn} or \ttt{func}, would probably have been better. C\# uses the \ttt{=\textgreater}, which is of limited expressiveness, especially because C\# does not use arrow-style function signatures anywhere else.
 
 %Type vs. class
-In order to declare custom data structures in C\# one can use \ttt{class}, \ttt{struct} or \ttt{enum}, depending purpose of the structure. In F\# all data structures are constructed using the \ttt{type} keyword. Depending on the symbols used in and around the definition, the outcome will change. We have illustrated this in \lstref{fsharp:type}. As a result this means that \ttt{type} keyword in F\# have very limited expressive power, compared to those of C\#.
+In order to declare custom data structures in C\# one can use \ttt{class}, \ttt{struct} or \ttt{enum}, depending purpose of the structure. In F\# all data structures are constructed using the \ttt{type} keyword. Depending on the symbols used in and around the definition, the outcome will change. We have illustrated this in \lstref{fsharp:type}. As a result this means that the \ttt{type} keyword in F\# have very limited role-expressiveness, compared to those of C\#.
 
 \begin{listing}
     \begin{minted}{fsharp}
-//enum
-type A =
+type Enum =
 | B = 0
 | C = 1
 
-//union
-type A2 =
+type Union =
 | B
 | C
 
-//discriminating union
-type A3 =
+type DiscriminatingUnion =
 | B of bool
 | C of char
 
-//record
-type A4 = { b: bool, c: char }
+type Record = { b: bool, c: char }
 
-//class
-type A5() =
+type Class() =
     let b = true
     let c = 'x'
 
-//struct
 [<Struct>]
-type A6(b:bool, c:char) =
+type Struct(b:bool, c:char) =
     member this.B = b
     member this.C = c
     \end{minted}
     \caption{Different kinds of data structures defined using the \ttt{type}-keyword in F\#.}
     \label{lst:fsharp:type}
 \end{listing}
-
-%Lists
