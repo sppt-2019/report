@@ -1,4 +1,5 @@
 \subsubsection{Consistency}
+% par 2 43:0 32:10, pipe operator
 In the cognitive dimensions framework consistency is the coherence between the language designer's understanding and the language user's intuition of the language\cite{green1996usability}. This does not mean that consistency is the difference in language knowledge, but rather the difficulty of extrapolating behaviour and syntax of language features based on knowledge of a subset of the language or other language features.
 
 \fs uses a strict type system which infers types. This feature allows the programmer to omit explicit typing while still gaining the benefits of it. In some cases the type inference can cause confusion or in an unexpected way, as when a \ttt{int16} value is used in the declaration of a \ttt{int} value. In \lstref{type-incompat} an example of this can be seen. An error is thrown because on line 2 an \ttt{int} literal and a \ttt{int16} variable are being multiplied. This behaviour is consistent with \fs's rules, but is surprising from the point of view of a C-family programmer.

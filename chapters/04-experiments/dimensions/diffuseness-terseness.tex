@@ -1,4 +1,4 @@
-\subsubsection{Diffuseness/Terseness}
+\subsubsection{Diffuseness/Terseness} %Antal af paranteser: Participant 6, 1:01:00 cirka
 This dimension measures the conciseness of a notation system on a scale from terse, meaning too brief, to diffuse, meaning not brief enough. The golden middle ground is referred to as concise. This measure is affected by the symbols used for operators as well as the notation system's naming conventions. If the notation is too brief, understanding it's meaning may be quite difficult and small changes can have large consequences. Whereas notations that are too verbose, cannot be viewed on a single screen and therefore are more difficult to overview.
 
 To compare the conciseness of both languages, two solutions to a problem will be examined. The problem consists of calculating three sums based on properties of a list of objects. The objects are given and the sums must be printed to the console. In \lstref{cs-armour} the \cs solution can be seen. The method takes a collection of \m{Item}s and iterating over them, keeping a running tally of three sums. Once all objects have been summed, the results are printed to the console.
@@ -33,7 +33,7 @@ The \fs is slightly longer then the \cs implementation, this is due to dividing 
 
 The most prominent syntactic differences between \cs and \fs are the operators, scope delimiters and lineend delimiters. In \cs blocks are denoted using the \m{\{} and \m{\}} symbols, where in \fs indents are used. In addition line ends are denoted using a \m{;} in \cs, where a newline character is used in \fs instead. These differences mean that \fs uses fewer symbols in general then \cs, however some programmers find the "light" syntax more difficult to read \needcite.
 
-Another difference that greatly affects terseness/diffuseness is approach to code reuse the languages use. In \cs inheritance and the Composite Pattern \needcite are often used \needcite. In \fs function composition or chaining, is often used to increase code reuse. Both approaches reduce the codebase, but do so in different ways. 
+Another difference that greatly affects terseness/diffuseness is approach to code reuse the languages use. In \cs inheritance and the Composite Pattern \needcite are often used \needcite. In \fs function composition or chaining, is often used to increase code reuse. Both approaches reduce the codebase, but do so in different ways.
 
 \begin{listing}[H]
 \begin{minted}{fsharp}
