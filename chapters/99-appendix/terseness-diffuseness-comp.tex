@@ -1,5 +1,4 @@
-\chapter{Terseness/Diffuseness Comparison Examples} \label{app:terse-diff-comp}
-
+\chapter{Conciseness Examples} \label{app:terse-diff-comp}
 \begin{listing}[H]
 \begin{minted}{csharp}
 using System;
@@ -35,60 +34,68 @@ public class ArmourBehaviour : MonoBehaviour
                   $"Strength: {totalStr}\n\t" +
                   $"Intellect: {totalInt}");
     }
-
-    public void Solution2(List<Group> GroupedArmour)
-    {
-        GroupedArmour = Item.Exercise2();
-
-        var groupTotals = new List<Tuple<ItemGroup, int, int, int>>();
-
-        foreach (var group in GroupedArmour)
-        {
-            int totalAgi = 0;
-            int totalStr = 0;
-            int totalInt = 0;
-
-            float agiMod = 0.0f;
-            float strMod = 0.0f;
-            float intMod = 0.0f;
-
-            foreach (var item in group.Items)
-            {
-                totalAgi += item.Agility;
-                totalStr += item.Strength;
-                totalInt += item.Intellect;
-
-                agiMod += item.AgilityMod;
-                strMod += item.StrengthMod;
-                intMod += item.IntellectMod;
-            }
-
-            totalAgi = (int) (totalAgi * agiMod);
-            totalStr = (int) (totalStr * strMod);
-            totalInt = (int) (totalInt * intMod);
-
-            groupTotals.Add(new Tuple<ItemGroup, int, int, int>(group.GroupName, totalAgi, totalStr, totalInt));
-        }
-
-        string res = "Exercise 2\n";
-        foreach (var tuple in groupTotals)
-        {
-            res += $"{tuple.Item1}\n\t" +
-                      $"Agi: {tuple.Item2}\n\t" +
-                      $"Str: {tuple.Item3}\n\t" +
-                      $"Int: {tuple.Item4}\n";
-        }
-        Debug.Log(res);
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
 }
 
 \end{minted}
+\caption{Armour Graph \cs Solution Part 1}
+\label{lst:armour-graph-cs-1}
+\end{listing}
+
+\begin{listing}[H]
+\begin{minted}[firstnumber=35]{csharp}
+public void Solution2(List<Group> GroupedArmour)
+{
+    GroupedArmour = Item.Exercise2();
+
+    var groupTotals = new List<Tuple<ItemGroup, int, int, int>>();
+
+    foreach (var group in GroupedArmour)
+    {
+        int totalAgi = 0;
+        int totalStr = 0;
+        int totalInt = 0;
+
+        float agiMod = 0.0f;
+        float strMod = 0.0f;
+        float intMod = 0.0f;
+
+        foreach (var item in group.Items)
+        {
+            totalAgi += item.Agility;
+            totalStr += item.Strength;
+            totalInt += item.Intellect;
+
+            agiMod += item.AgilityMod;
+            strMod += item.StrengthMod;
+            intMod += item.IntellectMod;
+        }
+
+        totalAgi = (int) (totalAgi * agiMod);
+        totalStr = (int) (totalStr * strMod);
+        totalInt = (int) (totalInt * intMod);
+
+        groupTotals.Add(new Tuple<ItemGroup, int, int, int>(group.GroupName, totalAgi, totalStr, totalInt));[firstline=35]
+    }
+
+    string res = "Exercise 2\n";
+    foreach (var tuple in groupTotals)
+    {
+        res += $"{tuple.Item1}\n\t" +
+                  $"Agi: {tuple.Item2}\n\t" +
+                  $"Str: {tuple.Item3}\n\t" +
+                  $"Int: {tuple.Item4}\n";
+    }
+    Debug.Log(res);
+}
+
+// Update is called once per frame
+void Update()
+{
+
+}
+\end{minted}
+\caption{Armour Graph \cs Solution Part 2}
+\label{lst:armour-graph-cs-2}
 \end{listing}
 
 \begin{listing}[H]
@@ -128,7 +135,13 @@ type FRP_ArmourBehaviour() =
         |> List.map (fun i ->
             let (grp,(agiMod,intMod,strMod),(agi,int,str)) = i.Deconstruct()
             (grp, float32(agi) * agiMod, float32(int)*intMod, float32(str) * strMod))
+\end{minted}
+\caption{Armour Graph \fs Solution Part 1}
+\label{lst:armour-graph-fs-1}
+\end{listing}
 
+\begin{listing}[H]
+\begin{minted}[firstnumber=36]{fsharp}
     member this.Start() =
         let i = ItemStore.AllItems()
         let (agi, int, str) = totalStats(i)
@@ -144,4 +157,6 @@ type FRP_ArmourBehaviour() =
             let (gr, sAgi,sInt,sStr) = gs.Deconstruct()
             Debug.Log(gr.ToString() + "\n" + String.Join("\n", ["Agility: " + sAgi.ToString(); "Intellect: " + sInt.ToString(); "Strength: "+ sStr.ToString()])))
 \end{minted}
+\caption{Armour Graph \fs Solution Part 2}
+\label{lst:armour-graph-fs-2}
 \end{listing}
