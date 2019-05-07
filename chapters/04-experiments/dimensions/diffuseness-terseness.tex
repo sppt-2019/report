@@ -1,2 +1,66 @@
-\subsubsection{Diffuseness/Terseness}
-%Antal af paranteser: Participant 6, 1:01:00 cirka
+\subsubsection{Diffuseness/Terseness} %Antal af paranteser: Participant 6, 1:01:00 cirka
+This dimension measures the conciseness of a notation system on a scale from terse, meaning too brief, to diffuse, meaning not brief enough. The golden middle ground is referred to as concise. This measure is affected by the symbols used for operators as well as the notation system's naming conventions. If the notation is too brief, understanding it's meaning may be quite difficult and small changes can have large consequences. Whereas notations that are too verbose, cannot be viewed on a single screen and therefore are more difficult to overview.
+
+To compare the conciseness of both languages, two solutions to a problem will be examined. The problem consists of calculating three sums based on properties of a list of objects. The objects are given and the sums must be printed to the console. In \lstref{cs-armour} the \cs solution can be seen. The method takes a collection of \m{Item}s and iterating over them, keeping a running tally of three sums. Once all objects have been summed, the results are printed to the console.
+
+\begin{listing}[H]
+\begin{minted}{csharp}
+public void Solution1(IEnumerable<Item> Armour)
+{
+  int totalAgi = 0;
+  int totalStr = 0;
+  int totalInt = 0;
+
+  foreach (var item in Armour)
+  {
+    totalAgi += item.Agility;
+    totalStr += item.Strength;
+    totalInt += item.Intellect;
+  }
+  Debug.Log($"Exercise 1\n\t" +
+            $"Agility: {totalAgi}\n\t" +
+            $"Strength: {totalStr}\n\t" +
+            $"Intellect: {totalInt}");
+}
+\end{minted}
+\caption{First Person Movement Controller \cs}
+\label{lst:cs-armour}
+\end{listing}
+
+The approach taken in \fs is somewhat different, the solution can be seen in \lstref{fs-armour}. Instead of iterating over the given array, a map reduce approach is used. On line 8 the array is piped into a map which deconstructs each \m{Item} into a triple. The triples are then piped into a reduce function which calls the sum function defined on line 1. In the start function on line 16, the sums are computed and printed to the console.
+
+The \fs is slightly longer then the \cs implementation, this is due to dividing the functionality into several smaller functions. This lengthened the implementation of the first solution, but reduced the overall length of the code. The \cs code ended up being 35 lines longer than the \fs code. The full examples can be seen in \appref{terse-diff-comp}.
+
+The most prominent syntactic differences between \cs and \fs are the operators, scope delimiters and lineend delimiters. In \cs blocks are denoted using the \m{\{} and \m{\}} symbols, where in \fs indents are used. In addition line ends are denoted using a \m{;} in \cs, where a newline character is used in \fs instead. These differences mean that \fs uses fewer symbols in general then \cs, however some programmers find the "light" syntax more difficult to read \needcite.
+
+Another difference that greatly affects terseness/diffuseness is approach to code reuse the languages use. In \cs inheritance and the Composite Pattern \needcite are often used \needcite. In \fs function composition or chaining, is often used to increase code reuse. Both approaches reduce the codebase, but do so in different ways.
+
+\begin{listing}[H]
+\begin{minted}{fsharp}
+let sum (triplet1:int*int*int) (triplet2:int*int*int) =
+  let (a1, b1, c1) = triplet1.Deconstruct()
+  let (a2, b2, c2) = triplet2.Deconstruct()
+  (a1+a2,b1+b2,c1+c2)
+
+[...]
+
+let totalStats (armour:Item[]) =
+  armour
+  |> Array.map (fun a -> (a.Agility, a.Intellect, a.Strength))
+  |> Array.reduce (fun acc elm ->
+    sum acc elm)
+
+[...]
+
+member this.Start() =
+  let i = ItemStore.AllItems()
+  let (agi, int, str) = totalStats(i)
+  Debug.Log("Agility: " + agi.ToString())
+  Debug.Log("Intellect: " + int.ToString())
+  Debug.Log("Strength: " + str.ToString())
+
+ [...]
+\end{minted}
+\caption{First Person Movement Controller \fs}
+\label{lst:fs-armour}
+\end{listing}

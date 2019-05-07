@@ -1,11 +1,13 @@
 #! /bin/bash
 
 # Separate the filename and extension
-IFS='.' read -r target extension _ <<<"$1"
-[[ $target ]] || { echo "File name invalid." >&2; exit 1; }
-if [[ $extension && $extension != "tex" ]] ; then
-	echo "File extensions: $extension not supported." >&2
-	exit 1
+if [ $# -gt 0 ] ; then
+	IFS='.' read -r target extension _ <<<"$1"
+	[[ $target ]] || { echo "File name invalid." >&2; exit 1; }
+	if [[ $extension && $extension != "tex" ]] ; then
+		echo "File extensions: $extension not supported." >&2
+		exit 1
+	fi
 fi
 
 # Output directory
@@ -94,9 +96,18 @@ function compile {
 		elif [ $2 == "-rq" || $2 == "--really-quick" ] ; then
 			really-quick
 			output
-     	fi
-	elif [ $1 == "-h" ] ; then
-		help
+     		fi
+	elif [ $# -eq 1 ] ; then
+		if [ $1 == "-h" || $1 == "--help"] ; then
+			help
+		fi
+	elif [ $# -eq 0 ] ; then
+		if default-name ; then
+			full
+			output
+		else
+			echo "No build candidate found."
+		fi
 	else
 		full
 		output
@@ -145,17 +156,39 @@ function present {
 	fi
 }
 
+function default-name {
+	if [ -f "main.tex" ] ; then
+		target="main"
+		return 0
+	elif [ -f "Main.tex" ] ; then
+		target="Main"
+		return 0
+	elif [ -f "master.tex" ] ; then
+		target="master"
+		return 0
+	elif [ -f "Master.tex" ] ; then
+		target="Master"
+		return 0
+	else
+		return 1
+	fi
+}
+
 function main {
-	if present ; then
-		clear
-		if [ $# == 2 ] ; then
-			compile $1 $2
+	if [ $# -gt 0 ] ; then
+		if present ; then
+			clear
+			if [ $# == 2 ] ; then
+				compile $1 $2
+			else
+				compile $1
+			fi
 		else
-			compile $1
+			echo "$1 is not a valid source file."
+			exit 1
 		fi
 	else
-		echo "$1 is not a valid source file."
-		exit 1
+		compile
 	fi
 }
 
