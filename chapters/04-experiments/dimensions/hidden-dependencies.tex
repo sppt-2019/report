@@ -4,22 +4,8 @@ Hidden dependencies discuss how many relationships there are between components,
 The problem of hidden dependencies is prominent in both C\# and F\#, though in two different flavours. We have listed code in \lstref{hidden:dependencies} that showcase the problems. In F\# the problem is present on the function level. This is because F\# programmers are allowed to write functions that are directly nested in a module. These functions may be imported into another module or namespace with the \ttt{open} keyword. Given that a name of a function does not collide, the function may be refered to without the use of its fully qualified name. In C\# the problem occurs because programmers are allowed to reference code in base classes without using their fully qualified name. One example of this in Unity is that any \ttt{MonoBehaviour} may directly call \ttt{Destroy}, which is actually a static method on the \ttt{GameObject}-class. This may wash out the distinction between static and non-static methods. In F\# programmers are required to give fully qualified names when dealing with classes.
 
 \begin{listing}[H]
-    \begin{minipage}{.45\textwidth}
-    \begin{minted}{fsharp}
-//Imagine this is in another file
-module X =
-    let function () =
-        "function"
-
-open X
-module Y =
-    let function2 () =
-        function() + "2"
-    \end{minted}
-    \end{minipage}
-    \hfill
-    \begin{minipage}{.45\textwidth}
-    \begin{minted}{csharp}
+    \begin{minipage}{.50\textwidth}
+        \begin{minted}{csharp}
 class Base {
     protected static string Method() {
         return "Method";
@@ -31,16 +17,30 @@ class Inherited : Base {
         return Method() + " is the string";
     }
 }
-    \end{minted}
+        \end{minted}
     \end{minipage}
-    \caption{Hidden dependencies in function/method calls in C\# and F\#.}
-    \label{lst:hidden:dependencies}
-    \end{listing}
+    \hfill
+    \begin{minipage}{.40\textwidth}
+        \begin{minted}{fsharp}
+//Imagine this is in another file
+module X =
+    let function () =
+        "function"
+
+open X
+module Y =
+    let function2 () =
+        function() + "2"
+        \end{minted}
+    \end{minipage}
+\caption{Hidden dependencies in function/method calls in C\# and F\#.}
+\label{lst:hidden:dependencies}
+\end{listing}
 
 In both languages the problem of shadowing may occur. An example of this is if a base class defines a \ttt{virtual} method in C\# or an \ttt{abstract} method in F\#. This method method may be shadowed further down the inheritance tree by implementing a function with the same name without using the \ttt{override} keyword. This will give a warning on compile-time, which can be removed by supplying the \ttt{new} keyword in front of the shadowing method.
 
 % goto statements in C#
-C\# has a modified version of the \ttt{goto}-statement, which traditionally allow programmers to jump to labels anywhere in the source code. In C\#, however, the jumps are restricted to either a label in the same scope or one in an enclosing scope\cite{csharp:goto}. Nevertheless, it may be hard to comprehend the exact target of a \ttt{goto} if it is deeply nested in multiple loops. 
+C\# has a modified version of the \ttt{goto}-statement, which traditionally allow programmers to jump to labels anywhere in the source code. In C\#, however, the jumps are restricted to either a label in the same scope or one in an enclosing scope\cite{csharp:goto}. Nevertheless, it may be hard to comprehend the exact target of a \ttt{goto} if it is deeply nested in multiple loops. According to a StackOverflow discussion\cite{goto:stack:overflow}, it seems that the \ttt{goto} statement sees limited use in practise.
 
 % mutability
 % Unity Editor reference assignment
