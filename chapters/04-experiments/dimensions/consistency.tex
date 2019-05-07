@@ -2,7 +2,7 @@
 % par 2 43:0 32:10, pipe operator
 In the cognitive dimensions framework consistency is the coherence between the language designer's understanding and the language user's intuition of the language\cite{green1996usability}. This does not mean that consistency is the difference in language knowledge, but rather the difficulty of extrapolating behaviour and syntax of language features based on knowledge of a subset of the language or other language features.
 
-\fs uses a strict type system which infers types. This feature allows the programmer to omit explicit typing while still gaining the benefits of it. In some cases the type inference can cause confusion or in an unexpected way, as when a \ttt{int16} value is used in the declaration of a \ttt{int} value. In \lstref{type-incompat} an example of this can be seen. An error is thrown because on line 2 an \ttt{int} literal and a \ttt{int16} variable are being multiplied. This behaviour is consistent with \fs's rules, but is surprising from the point of view of a C-family programmer.
+\fs uses a strict type system which infers types. This feature allows the programmer to omit explicit typing while still gaining the benefits of it. In some cases the type inference can cause confusion or in an unexpected way, as when a \ttt{int16} value is used in the declaration of a \ttt{int} value. In \lstref{type-incompat} an example of this can be seen. An error is thrown because on line 2 an \ttt{int} literal and a \ttt{int16} variable are being multiplied. This behaviour is consistent with \fs's rules, but is surprising for programmers who are versed in C-style languages.
 
 \begin{listing}[H]
 \begin{minted}{fsharp}
@@ -13,9 +13,9 @@ let y = 2 * x
 \label{lst:type-incompat}
 \end{listing}
 
-Naming conventions can present consistency difficulties for some languages. An example of this are the type modules, such as \ttt{List}. These modules supply helper functions for working with a particular type. These functions would be static methods on type class in Java or \cs, which may cause some confusion for C-family programmers.
+Naming conventions can present consistency difficulties for some languages. An example of this are the type modules, such as \ttt{List}. These modules supply helper functions for working with a particular type. These functions would be static methods on type class in Java or \cs, which may cause some confusion for C-family programmers\tmc{?}.
 
-In addition to naming conventions causing confusion, \ttt{list}s have another problem. \fs and \cs share a platform and can therefore use each other's language features. While is an advantage it also presents some disadvantages, namely the fact that \fs lists and \cs lists are not the same type. This clashes with programmer expectations and converting to the correct list type can be unexpectedly difficult, see \lstref{list-conv}.
+In addition to naming conventions causing confusion, \ttt{list}s have another problem. \fs and \cs share a platform and can therefore use each other's language features. While this is an advantage it also presents some disadvantages, most notably that \fs lists and \cs lists are not the same type. This clashes with programmer expectations and converting to the correct list type can be unexpectedly difficult, see \lstref{list-conv}.
 
 \begin{listing}[H]
 \begin{minted}{csharp}
@@ -28,7 +28,7 @@ private static List<object> GetParams(Microsoft.FSharp.Collections.List<object> 
 \label{lst:list-conv}
 \end{listing}
 
-In functional programming languages function signatures can often be specified by the programmer, to help the compiler catch unexpected behaviour. This is also possible in \fs, however in a unexpected manner. A function signature, in \fs, are reported using Hindly-Milner type system's syntax. However, when the programmer attempts to declare the function signature manually, they cannot use the same syntax. Instead a Python-like syntax is used. An example can be seen in \lstref{fun-sig}.
+In functional programming languages function signatures can often be specified by the programmer, to help the compiler catch unexpected behaviour. This is also possible in \fs, however in a unexpected manner. Function signatures, in \fs, are reported using the Hindly-Milner type system's syntax\cite{fsharp:type:inference}. However, when the programmer attempts to declare the function signature manually, they cannot use the same syntax. Instead a Python-like syntax is used. An example can be seen in \lstref{fun-sig}.
 
 \begin{listing}[H]
 \begin{minted}{fsharp}
@@ -37,13 +37,15 @@ val add: x:int -> y:int -> int
 
 // function definition and signature
 let add x y = x + y
+// or alternatively with explicit types
+let add (x:int) (y:int) : int = x + y
 \end{minted}
 \caption{Function Signatures}
 \label{lst:fun-sig}
 \end{listing}
 
-In \fs lambda expressions are denoted using the \fsinline{fun} keyword and \fsinline{->} operator. The use of \fsinline{fun} vs. the use of \fsinline{func} may initially be confusing for programmers, but is quickly learned. Once the keyword confusion is delt with it the feature is consistent with the rest of \fs, the lambda expression is defined not unlike function signatures. This is not the case in \cs. A lambda expression is defined using the \csinline{=>} operator. This is not consistent with the rest of \cs, because \cs does not use a function signature similar to the Hindly-Milner type system.
+In \fs lambda expressions are denoted using the \ttt{fun} keyword and \ttt{-\textgreater} operator. The use of \ttt{fun} vs. the use of \ttt{func} may initially be confusing for programmers, but is quickly learned. After the initial confusion, the feature is consistent with the rest of \fs, as lambda expressions are defined like functions. This is not the case in \cs, where lambda expressions are defined using the \ttt{=\textgreater} operator. This is not consistent with the rest of \cs, because \cs does not use a function signature similar to the Hindly-Milner type system.
 
-\fs has two main collection types, lists and arrays. The array-collection type can provides some benefits when looking up elements by index.  However, when looking up an element by index dot notation is used to call the \fsinline{[]} function, thus a lookup looks becomes \fsinline{array1.[0]}. This clashes with expectations of a C-family programmer where \csinline{array1[0]} is the norm.
+\fs has two primary collection types: lists and arrays. The array-collection type can provides some benefits when looking up elements by index.  However, when looking up an element by index dot notation is used to call the \ttt{[]} function, thus a lookup looks becomes \fsinline{array1.[0]}. This clashes with expectations of a C-family programmer where \csinline{array1[0]} is the norm.
 
-While \fs presents some consistency problems, their are consistent within the language. This indicates that the problems may be experienced more by novice programmers and that they dissipate with experience.
+While \fs presents some consistency problems, they're are consistent within the language. This indicates that the problems may be experienced more by novice programmers and that they dissipate with experience.
