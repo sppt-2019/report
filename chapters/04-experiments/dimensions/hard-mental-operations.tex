@@ -1,1 +1,25 @@
 \subsubsection{Hard Mental Operations}
+The hard mental operations dimension defines how often incomprehensible expressions occur in the code. Hard mental operations often occur in conjunction with boolean expressions\cite{green1996usability}.
+
+Boolean expressions are expressed similarly in C\# and F\#, with the only exception that C\# uses \ttt{!} to negate expressions, whereas F\# uses the \ttt{not} function. We argue that the use of the \ttt{not}-function reduces the perceived ambiguety, because it forces the programmer to parenthesise the expression. We have illustrated an example in \lstref{hard:mental:operations}. In this example the reader may incorrectly assume that the \ttt{\&\&} operator is evaluated before \ttt{!}, and that the expression is evaluated as  \csinline{!(expr1 && expr2)}. That is not the case in F\#, where the parantheses indicate the order of evaluation.
+
+\begin{listing}[H]
+    \begin{minipage}{.45\textwidth}
+        \begin{minted}{fsharp}
+if(!expr1 && expr2) {
+    //[...]
+}
+        \end{minted}
+    \end{minipage}
+    \hfill
+    \begin{minipage}{.45\textwidth}
+        \begin{minted}{csharp}
+if (not expr1) && expr2 then
+    //[...]
+        \end{minted}
+    \end{minipage}
+\caption{Hard mental operations illustrated using boolean expressions in C\# and F\#.}
+\label{lst:hard:mental:operations}
+\end{listing}
+
+The F\# compiler uses type inference with the Damas-Hindley W algorithm\cite{fsharp:type:inference}, meaning that it is optional for the programmer to indicate types when he is writing functions. Sometimes it may be necessary to verify that the compilers inferance is correct by looking at the deduced function signature. We argue that this is a hard mental operation in F\#. The function signatures will quickly get incomprehensible as the number of arguments grow. Take for example the function signature of the \ttt{ReactTo} function that we wrote as part of the \gls{FRP} plugin for Unity: \fsinline{member FRPBehaviour.ReactTo : event:FRPEvent * condition:('T0 -> bool) * handler:('T0 -> unit) -> unit}. We should underline that this function uses tupled arguments, because we wanted to overload it with a function to unconditionally react to events. But even without tupled arguments the definition would have been: \fsinline{member FRPBehaviour.ReactTo : event:FRPEvent -> condition:('T0 -> bool) -> handler:('T0 -> unit) -> unit}. In C\# the equivalent would have been \csinline{public void ReactTo(FRPEvent event, Func<T, bool> condition, Action<T> handler)}, which is also lengthy, but in our opinion easier to comprehend.
