@@ -1,4 +1,54 @@
 \subsubsection{Error-proneness}
-% Participant 2: 32:10, pipe operator
-%Antal af paranteser: Participant 6, 1:01:00 cirka
-% Participant 6: Copy-pasting input parameters into expressions 1:03:30-ish, participant changes order of arguments
+Errors produced by the programmer fall into one of two categories, either the error is a slip: instances where the programmer knows what to do, but did something else by accident, or a mistake: when a programmer makes a logical error. These errors can be exacerbated by language features.
+
+According to \cite{green1996usability}, textual programming languages are inherently more error-prone. The given examples are implicit declaration, line-ends and delimiters. Implicit are not applicable to either \cs or \fs, however line-ends are used in both languages. \cs uses \m{;} to denote line-ends where \fs uses newlines. A C-family programmer may find it difficult to overview \fs code for this reason. However, traditionally in \cs a \m{;} isn't a line-end rather a statement-end and is followed by a newline anyway \needcite. The \fs approach using newlines and indentation to delimit scopes and lines uses less characters and promotes more readable code \needcite. An example of this can be seen in \lstref{con-comp}.
+
+\begin{listing}[H]
+\begin{minted}{csharp}
+class Person(string name, DateTime, birthday)
+{
+  public string Name { get; } = name;
+  public DateTime Birthday { get; } = birthday;
+  public int Age() =>
+    DateTime.Today.Subtract(birthday).Days / 365;
+}
+\end{minted}
+\begin{minted}{fsharp}
+type Person(name: string, birthday: DateTime ) =
+  member this.Name =
+    name
+  member this.Birthday =
+    birthday
+  member this.Age() =
+    let daysDiff = DateTime.Today.Subtract(birthday).Days
+    daysDiff / 365
+\end{minted}
+\caption{Conciseness Comparison \cite{wlaschin2017FsharpForCsharpProgrammers}}
+\label{lst:con-comp}
+\end{listing}
+
+The strong type system used in \fs can also cause unexpected errors. While the system prevents some errors down the line, C-family programmers would expect type coercion to assist with operations on integer values of different sizes. An example of this can be seen in \lstref{coer-lack}. The function on line 1 takes a 16-bit integer and returns its square. The programmer then attempts to calculate the square of the integer literal 10, however, 10 is not a 16-bit integer and an error is thrown. This causes initial errors, but may prevent type errors later in development \needcite.
+
+\begin{listing}[H]
+\begin{minted}{fsharp}
+let sqr (x: int16) = x * x
+
+let value = sqr 10
+\end{minted}
+\caption{Lack of Type Coercion}
+\label{lst:coer-lack}
+\end{listing}
+
+Programmers may inadvertently change the parameters of a function by separating parameters using commas, see \lstref{para-err}. Often this is still valid \fs and compiles, however the function now takes a single tuple parameter. This mistake can occur without the programmer noticing any difference, before they have to invoke the function. At this point the invocation has changed from \fsline{add 2 4}(two parameters) to \fsline{add (2, 4)}(tuple parameter). Initially, programmers may have no issue with this behaviour, until the function is on lists via list operations and each element needs to be converted to a tuple.
+
+\begin{listing}[H]
+\begin{minted}{fsharp}
+// Multiple parameters
+let add x y = x + y
+
+// Single parameter
+let add (x, y) = x + y
+\end{minted}
+\caption{Parameter Error}
+\label{lst:para-err}
+\end{listing}
