@@ -66,17 +66,18 @@ In the social sciences the term coding means roughly the same as tagging or anno
 |:---                     |:--:|:--:|
 | Abstract Gradient       | | |
 | Closeness of Mapping    | | |
-| Consistency             | | |
+| Consistency             | | f | <!-- Implicit return -->
 | Diffuseness/Terseness   | | |
-| Error-proneness         | | |
+| Error-proneness         | | ff | <!-- Strong Types and array != list -->
 | Hard Mental Operations  | | |
 | Hidden Dependencies     | | |
 | Premature Commitment    | | |
 | Progressive Evaluation  | | |
-| Role-expressiveness     | | |
+| Role-expressiveness     | | f | <!-- List.sum -->
 | Secondary Notation and Escape from Formalism | | |
 | Viscosity               | | |
 | Visibility and Juxtaposability | | |
+<!-- Good use of modularity -->
 
 ### Participant 4
 
