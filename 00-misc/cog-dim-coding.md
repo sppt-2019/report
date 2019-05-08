@@ -8,24 +8,6 @@ In the social sciences the term coding means roughly the same as tagging or anno
 
 | Attention Investment Metric | Code Frequency | Dot |
 |:---                     |:--:|:--:|
-| Abstract Gradient       | | | <!-- More is better and fixed -->
-| Closeness of Mapping    | | | <!-- More is better -->
-| Consistency             | | | <!-- More is better -->
-| Diffuseness/Terseness   | | | <!-- Means either too terse or too diffuse -->
-| Error-proneness         | | |
-| Hard Mental Operations  | | |
-| Hidden Dependencies     | | |
-| Premature Commitment    | | |
-| Progressive Evaluation  | | |
-| Role-expressiveness     | | | <!-- More is better -->
-| Secondary Notation and Escape from Formalism | | | <!-- More is better and fixed -->
-| Viscosity               | | | <!-- More is better and fixed -->
-| Visibility and Juxtaposability | | | <!-- More is better and fixed -->
-
-### Participant 1
-
-| Attention Investment Metric | Code Frequency | Dot |
-|:---                     |:--:|:--:|
 | Abstract Gradient       | | |
 | Closeness of Mapping    | | |
 | Consistency             | | |
@@ -37,6 +19,25 @@ In the social sciences the term coding means roughly the same as tagging or anno
 | Progressive Evaluation  | | |
 | Role-expressiveness     | | |
 | Secondary Notation and Escape from Formalism | | |
+| Viscosity               | | |
+| Visibility and Juxtaposability | | |
+
+### Participant 1
+
+% 09:11 consistency affords participant understanding
+| Attention Investment Metric | Code Frequency | Dot |
+|:---                     |:--:|:--:|
+| Abstract Gradient       | | |
+| Closeness of Mapping    | | |
+| Consistency             | | ff |
+| Diffuseness/Terseness   | | c |
+| Error-proneness         | | f |
+| Hard Mental Operations  | | |
+| Hidden Dependencies     | | f c |
+| Premature Commitment    | | f |
+| Progressive Evaluation  | | ff |
+| Role-expressiveness     | | f c |
+| Secondary Notation and Escape from Formalism | | f c |
 | Viscosity               | | |
 | Visibility and Juxtaposability | | |
 
