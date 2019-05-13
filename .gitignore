@@ -262,3 +262,6 @@ TSWLatexianTemp*
 
 # standalone packages
 *.sta
+
+# JetBrains bullshit
+.idea/
