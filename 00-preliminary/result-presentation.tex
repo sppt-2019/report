@@ -18,7 +18,7 @@ symbolic x coords={,
 }
 }
 
-\newcommand{\symbolic}[1]{symbolic x coords={,#1}}
+\newcommand{\symbolic}[1]{symbolic x coords={#1}}
 \NewDocumentCommand\lnm{O{y}O{2}}{%
 \begin{switch}{#1}%
     \case{x}{xmode=log, log basis x={#2}}%
