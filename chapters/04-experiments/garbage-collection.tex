@@ -172,7 +172,7 @@ Another interesting observation we made during the test is that there is a very 
 \subsubsection{Performance of the FRP-system}
 The results are plotted in \figref{ai:benchmark:overhead}. The results show that \gls{FRP} introduces additional overhead. This overhead results in a decrease of ten \gls{FPS} on average over the 900 frames. On the other hand, the \gls{FRP}-system yields a smoother curve, which means that the game will be subject to less stuttering and fewer lag spikes.
 
-\lineChart[xtick={100, 200, 300, 400, 500, 600, 700, 800}][FPS][Frame No.]{FPS for each frame in FRP and C\# Inverse}{ai:benchmark:overhead}{
+\lineChart[xtick={0,100, 200, 300, 400, 500, 600, 700, 800, 900}][FPS][Frame No.]{FPS for each frame in FRP and C\# Inverse}{ai:benchmark:overhead}{
     \plotUnmarkedData{Csharp}{\aiBenchmarkOverheadData}
     \plotUnmarkedData{FRP}{\aiBenchmarkOverheadData}
 }
@@ -188,14 +188,14 @@ The results from running the C\# Normal implementation with the two different ru
 
 In general, the incremental \gls{GC} has lower variation, except from Mono after frame 650 where the \gls{FPS} varies wildly.
 
-\barChart[12][xtick={0, 100, 200, 300, 400, 500, 600, 700, 800, 900}][FPS][Frame No.]{FPS for each frame in C\# using the two different Unity GC}{ai:benchmark:csharp:gc:bar}{
-  \plotUnmarkedData{il2cpp}{\aiBenchmarkCsharpGCData}
-  \plotUnmarkedData{Mono}{\aiBenchmarkCsharpGCData}
-  \plotUnmarkedData{Incremental il2cpp}{\aiBenchmarkCsharpGCData}
-  \plotUnmarkedData{Incremental Mono}{\aiBenchmarkCsharpGCData}
+\barChart[5][width=1.35\textwidth,xtick=data,\symbolic{0-49,50-99,100-149,150-199,200-249,250-299,300-349,350-399,400-449,450-499,500-549,550-599,600-649,650-699,700-749,750-799,800-849,850-899}][FPS][Frame No.]{FPS for each frame in C\# using the two different Unity GC}{ai:benchmark:csharp:gc:bar}{
+  \plotDataWithError{il2cpp}{\aiCsharpGCDataCol}
+  \plotDataWithError{Mono}{\aiCsharpGCDataCol}
+  \plotDataWithError{Incremental il2cpp}{\aiFsharpGCDataCol}
+  \plotDataWithError{Incremental Mono}{\aiFsharpGCDataCol}
 }
 
-\lineChart[xtick={100, 200, 300, 400, 500, 600, 700, 800}][FPS][Frame No.]{FPS for each frame in F\# \gls{FRP} using the two different Unity \glspl{GC}}{ai:benchmark:frp:gc}{
+\lineChart[xtick={0,100, 200, 300, 400, 500, 600, 700, 800, 900}][FPS][Frame No.]{FPS for each frame in F\# \gls{FRP} using the two different Unity \glspl{GC}}{ai:benchmark:frp:gc:cs}{
       \plotUnmarkedData{il2cpp}{\aiBenchmarkCsharpGCData}
       \plotUnmarkedData{Mono}{\aiBenchmarkCsharpGCData}
       \plotUnmarkedData{Incremental il2cpp}{\aiBenchmarkCsharpGCData}
@@ -204,7 +204,7 @@ In general, the incremental \gls{GC} has lower variation, except from Mono after
 
 We also tested the two \glspl{GC} with the \gls{FRP}-system we developed in F\#. The results are plotted in \figref{ai:benchmark:frp:gc}. These results show that the incremental \gls{GC} performs slightly better than the original one. However, it comes at the cost of must higher variation in the framerate, especially in the Mono runtime. The il2cpp incremental curve has large spikes up until around the 200th frame, after which point it stabilises within 5-8 \gls{FPS} variation. The Mono curve continues to variate with nearly 30 \gls{FPS}.
 
-\lineChart[xtick={0, 100, 200, 300, 400, 500, 600, 700, 800}][FPS][Frame No.]{FPS for each frame in F\# \gls{FRP} using the two different Unity \glspl{GC}}{ai:benchmark:frp:gc}{
+\lineChart[xtick={0, 100, 200, 300, 400, 500, 600, 700, 800, 900}][FPS][Frame No.]{FPS for each frame in F\# \gls{FRP} using the two different Unity \glspl{GC}}{ai:benchmark:frp:gc:fs}{
     \plotUnmarkedData{il2cpp}{\aiBenchmarkFsharpGCData}
     \plotUnmarkedData{Mono}{\aiBenchmarkFsharpGCData}
     \plotUnmarkedData{Incremental il2cpp}{\aiBenchmarkFsharpGCData}
