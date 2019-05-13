@@ -1,13 +1,51 @@
 \section{Parallel Overhead \& Performance}\label{sec:crit:work}
-In this section we present results from an experiment that estimates the critical workload for each task. We also implement a matrix summation benchmark to determine how different parallelisation strategies handle matrices of increasing sizes.
+In this section we present results from an experiment that estimates how much work need to be done in a task to outweigh the performance penalty of \ttt{Task} synchronisation. We also implement a matrix summation benchmark to determine how different parallelisation strategies handle matrices of increasing sizes.
 
-\subsection{Estimating Critical Workload}
-In this experiment we estimate the critical workload of C\#'s \ttt{Task}-system. By critical workload we mean the time each task must execute before it is worthwhile to spawn it, compared to a sequential solution. The reason for this exploration is that we found the sequential solution to be faster in the binary tree benchmarks presented in the previous section.
+\subsection{Estimating Minimum Concurrent Workload}
+In this experiment we estimate the minimum concurrent workload of C\#'s \ttt{Task}-system. By minimum concurrent workload we mean how much time each task must execute before it is worthwhile to spawn it, compared to a sequential solution. The reason for this exploration is that we found the sequential solution to be faster in the binary tree benchmarks presented in the previous section.
 
 \subsubsection{Test Setup}
 We use the Binary Tree Summation benchmark presented in the previous section with a minor modification: Every time the algorithm finds a \ttt{Node}, it busy-waits for a given amount of time to simulate work. The busy-wait was implemented with a loop, whose number of iterations is gradually halved until the sequential solution executes faster than the parallel. The hypothesis here is that the parallel solutions will be faster, because it is capable of busy-waiting multiple tasks at the same time.
 
-We implemented the test in two variations. The first variation emulates a data dependency between the wait and the results the subtrees, i.e. the wait is intended to emulate a computation that must be carried out after the results of both subtrees have been computed. The other variation emulates a situation where the left and right subtree can be computed in parallel with the wait, i.e. no data dependency between the delay and the subtrees. The tree has a total of 60 leaf nodes. In addition to the binary tree summation, we also implemented a N-ary tree summation in the same variations as that of binary.
+We implemented the test in two variations, which are both listed in \lstref{benchmark:strategies}. The first variation emulates a data dependency between the wait and the results the subtrees, i.e. the wait is intended to emulate a computation that must be carried out after the results of both subtrees have been computed. The other variation emulates a situation where the left and right subtree can be computed in parallel with the wait, i.e. no data dependency between the delay and the subtrees. The tree has a total of 60 leaf nodes. In addition to the binary tree summation, we also implemented a N-ary tree summation in the same variations as that of binary.
+
+\begin{listing}
+    \begin{minted}{csharp}
+public static int DoFakeWork(int workBias) {
+    //Start the 'work bias' before blocking wait on child computation, i.e. we're waiting while the children
+    //are computing
+    var fakeSum = 0;
+    for(var i = 0; i < workBias / 2; i++) {
+        fakeSum += i;
+    }
+    for (var i = 0; i < workBias / 2; i++) {
+        fakeSum -= i;
+    }
+    return fakeSum;
+}
+
+public static async Task<int> SumLeaves(Tree<int> tree, int workBias)
+{
+    if (tree is Leaf<int> leaf)
+        return leaf.Value;
+
+    var sums = tree.Children.Select(c => SumLeaves(c, workBias)).ToList();
+    
+#if !DELAY_DEPENDS_ON_LR
+    var wb = Task.Run(() => DoFakeWork(workBias));
+    await Task.WhenAll(sums);
+    var fakeSum = await wb;
+#else
+    await Task.WhenAll(sums);
+    var fakeSum = DoFakeWork(workBias);
+#endif
+    
+    return sums.Sum(t => t.Result) + fakeSum;
+}
+    \end{minted}
+    \caption{Implementation of the two different data dependency strategies with an N-ary tree. The strategy may be selected by either defining or undefining the \ttt{DELAY_DEPENDS_ON_LR} preprocessor flag.}
+    \label{lst:benchmark:strategies}
+\end{listing}
 
 \subsubsection{Results}
 The results are plotted in \figureref{crit-work-dep} and \figureref{crit-work-no-dep} (and listed in \tableref{binary:tree:with:bias:dependency} and \tableref{binary:tree:with:bias:no:dependency} in \apxref{crit:work:data}).
@@ -41,9 +79,9 @@ The results are plotted in \figureref{crit-work-dep} and \figureref{crit-work-no
     N-ary & 2048 & 2048
 }{Iterations of the busy-wait loop before the sequantial solution becomes the fastest.}{crit:work:iterations}
 
-The number of iterations in the busy-wait loop before the sequential solution is faster than the concurrent is listed in \tableref{crit:work:iterations}. The graphs also underline that our hypothesis was correct. The parallel solutions grows slower than the sequential because they are capable of executing multiple busy-wais concurrently. Finally we notice that the lenient and fork join strategy lie very close in execution speed. This is a promising result for the lenient evaluation strategy, as it shows that it may be as fast as a traditional concurrency strategy.
+The number of iterations in the busy-wait loop before the sequential solution is faster than the concurrent is listed in \tableref{crit:work:iterations}. The graphs also underline that our hypothesis was correct. The parallel solutions grows slower than the sequential because they are capable of executing multiple busy-waits concurrently. Finally we notice that the lenient and fork join strategy lie very close in execution speed. This is a promising result for the lenient evaluation strategy, as it shows that it may be as fast as a traditional concurrency strategy.
 
-Some conccurency models batch smaller jobs together to form larger jobs\needcite. Such batching may reduce the time spent context switching as thus increase the execution speed of the concurrent solutions. Such strategy is employed by Unity's C\# job system\cite{unity:csharp:job:system}.
+Some conccurency models batch smaller jobs together to form larger jobs\needcite. Such batching may reduce the time spent context switching and thus increase the execution speed of the concurrent solutions. Such strategy is employed by Unity's C\# job system\cite{unity:csharp:job:system}.
 
 \subsection{Matrix Summation}
 In this section we execute a matrix summation benchmark. This benchmark measures the time it takes to sum all indices of a random $N x N$ matrix. This benchmark was implemented in different parallelisation strategies to explore how well they scale to increasing sizes of $N$:
@@ -94,9 +132,9 @@ The results are plotted in \figureref{linpack-summation}. The first thing to not
     \plotDataWithError{Parallel Foreach}{\linpackData}
     \plotDataWithError{Tasks}{\linpackData}
 }
-In general, the results from this experiment is in alignment with those of the previous, in that there is an initial overhead associated with parallelisation. In this case, it seems the sequential and parallel solutions evens out at parallel job sizes of around 256 summations, after which point the parallel solutions are faster.
+In general, the results from this experiment is in alignment with those of the previous, in that there is an initial overhead associated with concurrency. In this case, it seems the sequential and concurrent solutions evens out at job sizes of around 256 summations, after which point the concurrent solutions are faster.
 
-After overcoming the initial overhead, the parallel solutions handle increasing matrix sizes much better than their sequential counterparts. This is even more notable in \figureref{linpack-summation-line}, which plots the same data as a line and without logarithmic y-axis. As the matrix sizes continue to grow, it may be possible to split the columns in multiple separate tasks, possibly making parallel faster yet.
+After overcoming the initial overhead, the concurrent solutions handle increasing matrix sizes much better than their sequential counterparts. This is even more notable in \figureref{linpack-summation-line}, which plots the same data as a line and without logarithmic y-axis. As the matrix sizes continue to grow, it may be possible to split the columns in multiple separate tasks, possibly making the concurrent implementations faster yet.
 
 \lineChart{Matrix Summation}{linpack-summation-line}{
     \plotData{Sequential}{\linpackData}

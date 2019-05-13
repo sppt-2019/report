@@ -3,9 +3,6 @@ As part of researching whether or not functional programming in F\# is suitable 
 
 As part of the project we implemented a simple \gls{FRP} system in Unity, which was meant to smoothen the transition from C\# to F\#. We had initially decided that this experiment would use either lenient evaluation or Async Workflows under the hood to update \ttt{MonoBehaviour}s concurrently, but discovered too late that Unity uses a custom concurrency strategy called Unity C\# Job System\cite{unity:csharp:job:system}. Unity therefore does not allow \ttt{MonoBehaviour} updates from \ttt{Task}s and Async Workflows\cite{unity:async}. The resulting \gls{FRP} system therefore runs sequentially. We also measure the performance of said system to ascertain whether or not the use of functional programming in Unity results in a performance penalty. 
 
-Finally in the chapter we use the cognitive dimension framework to discuss our transition from C\# to F\# and compare the two languages.
-
-\input{chapters/04-experiments/benchmarks.tex}
-\input{chapters/04-experiments/crit-work.tex}
-\input{chapters/04-experiments/performance.tex}
-\input{chapters/04-experiments/cognitive-dimensions.tex}
+\input{chapters/05-experiments/benchmarks.tex}
+\input{chapters/05-experiments/crit-work.tex}
+\input{chapters/05-experiments/performance.tex}

@@ -2,7 +2,7 @@
 % par 2 43:0 32:10, pipe operator
 In the cognitive dimensions framework consistency is the coherence between the language designer's understanding and the language user's intuition of the language\cite{green1996usability}. This does not mean that consistency is the difference in language knowledge, but rather the difficulty of extrapolating behaviour and syntax of language features based on knowledge of a subset of the language or other language features.
 
-\fs uses a strict type system which infers types. This feature allows the programmer to omit explicit typing while still gaining the benefits of it. In some cases the type inference can cause confusion or in an unexpected way, as when a \ttt{int16} value is used in the declaration of a \ttt{int} value. In \lstref{type-incompat} an example of this can be seen. An error is thrown because on line 2 an \ttt{int} literal and a \ttt{int16} variable are being multiplied. This behaviour is consistent with \fs's rules, but is surprising for programmers who are versed in C-style languages.
+\fs uses a strict type system which infers types. This feature allows the programmer to omit explicit typing while still gaining the benefits of it. In some cases the type inference can cause confusion or act in an unexpected way, as when a \ttt{int16} value is used in the declaration of a \ttt{int} value. In \lstref{type-incompat} an example of this can be seen. Line 2 gives n error because an \ttt{int} literal and a \ttt{int16} namebinding are multiplied. This behaviour is consistent with \fs's rules, but is surprising for programmers who are versed in C-style languages.
 
 \begin{listing}[H]
 \begin{minted}{fsharp}
@@ -15,7 +15,7 @@ let y = 2 * x
 
 Naming conventions can present consistency difficulties for some languages. An example of this are the type modules, such as \ttt{List}. These modules supply helper functions for working with a particular type. These functions would be static methods on type class in Java or \cs, which may cause some confusion for C-family programmers\tmc{?}.
 
-In addition to naming conventions causing confusion, \ttt{list}s have another problem. \fs and \cs share a platform and can therefore use each other's language features. While this is an advantage it also presents some disadvantages, most notably that \fs lists and \cs lists are not the same type. This clashes with programmer expectations and converting to the correct list type can be unexpectedly difficult, see \lstref{list-conv}.
+In addition to naming conventions causing confusion, \ttt{list}s have another problem. \fs and \cs share a platform and can therefore use each other's language features. While this is an advantage, it also presents some disadvantages, most notably that \fs lists and \cs lists are not the same type. This clashes with programmer expectations and converting to the correct list type can be unexpectedly difficult, see \lstref{list-conv}.
 
 \begin{listing}[H]
 \begin{minted}{csharp}
@@ -46,6 +46,6 @@ let add (x:int) (y:int) : int = x + y
 
 In \fs lambda expressions are denoted using the \ttt{fun} keyword and \ttt{-\textgreater} operator. The use of \ttt{fun} vs. the use of \ttt{func} may initially be confusing for programmers, but is quickly learned. After the initial confusion, the feature is consistent with the rest of \fs, as lambda expressions are defined like functions. This is not the case in \cs, where lambda expressions are defined using the \ttt{=\textgreater} operator. This is not consistent with the rest of \cs, because \cs does not use a function signature similar to the Hindly-Milner type system.
 
-\fs has two primary collection types: lists and arrays. The array-collection type can provides some benefits when looking up elements by index.  However, when looking up an element by index dot notation is used to call the \ttt{[]} function, thus a lookup looks becomes \fsinline{array1.[0]}. This clashes with expectations of a C-family programmer where \csinline{array1[0]} is the norm.
+\fs has two primary collection types: lists and arrays. The array-collection type can provides some benefits when looking up elements by index.  However, when looking up an element by index, dot notation is used to call the \ttt{[]} function, thus a lookup becomes \fsinline{array1.[0]}. This clashes with expectations of a C-family programmer where \csinline{array1[0]} is the norm.
 
 While \fs presents some consistency problems, they're are consistent within the language. This indicates that the problems may be experienced more by novice programmers and that they dissipate with experience.

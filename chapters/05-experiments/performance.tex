@@ -1,0 +1,4 @@
+\section{Performance}
+In this chapter we examine the performance of F\# and our \gls{FRP} system in Unity. We first examine the aspect of \gls{GC} by looking at Unity best-practise guidelines, which suggests that garbage is to be avoided to the extend that it's possible. We were not aware of this when we implemented reference solutions to the eight usability test cases that we present in \secref{usability:test:cases}. We therefore adapt one of the solutions to conform to Unity best-practise guidelines and benchmark that against the more \dquote{careless} implementation.
+
+\input{chapters/05-experiments/garbage-collection.tex}
