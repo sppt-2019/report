@@ -142,3 +142,8 @@ After overcoming the initial overhead, the concurrent solutions handle increasin
     \plotData{Parallel Foreach}{\linpackData}
     \plotData{Tasks}{\linpackData}
 }
+
+\subsection{Discussion}
+Our results show, first and foremost, that there is an initial overhead in concurrent programming. In order to speed up a computation the task sizes must exceed a certain threshold. Our results show that this threshold lies around the size of 1024-4096 iterations in a for-loop that increments a variable\tmc{Måske skal vi tælle nogle instruktioner her?}, but also that it varies with the type of problem. Furthermore, the results show that the concurrency of lenient evaluation strategy is similar to that of classic concurrency strategies, but that the choice of problems in \cite{DBLP:journals/cl/Tremblay-parallel} is not well suited to parallelisation. Finally C\#'s \ttt{Task}-model seems to handle the matrix summation problem well, after exceeding the threshold of roughly 256 summations in each column.
+
+As part of the project we implemented a simple \gls{FRP} system in Unity, because this particular programming paradigm is well suited to gameplay programming in functional languages\needcite. We had initially decided that this experiment would use either lenient evaluation or Async Workflows under the hood to update \ttt{MonoBehaviour}s concurrently, but discovered too late that Unity uses a custom concurrency strategy called Unity C\# Job System\cite{unity:csharp:job:system} (see \secref{unity:concurrency}). Unity therefore does not allow \ttt{MonoBehaviour} updates from \ttt{Task}s and Async Workflows\cite{unity:async}. The resulting \gls{FRP} system therefore runs sequentially.
