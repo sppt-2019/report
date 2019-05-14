@@ -1,4 +1,4 @@
-\section{Setup}
+\subsection{Setup}
 The test setup draws inspiration from the Champagne Prototyping method and Discount Method for Language Evaluation. The tasks, prototype and participants were selected according to the former, whereas the use of a cheat-sheet for the participant is inspired by the latter. Contrary to the suggestion of using a text editor in Discount Method for Language Evaluation, we chose to use \glspl{IDE}, as we're testing well established languages. We allowed the users to choose between JetBrain's Rider and Microsoft's Visual Studio, depending on what they're used to.
 
 For each participant one and a half hour was allocated. We expected that actual coding time was roughly one hour, as we conducted a questionnaire before the test to learn about the test participants' experience with Unity and an interview after the test to allow the participant to share their opinion on F\# in Unity, C\# and functional programming. Out of the one hour coding time, we intended to use 20 minutes on C\# and 40 minutes on F\#, as the participants were required to have experience with C\# in Unity and therefore likely would complete the C\# tasks faster.
@@ -7,7 +7,7 @@ We also created a document with a two-fold purpose, which was made available onl
 
 During the tests we recorded the screen and audio on the test computer. The files were not transcribed, but whenever we quote one of the participants we refer to transcriptions of larger pieces of dialogue that are listed in \appendixref{user:quotes}. We do so in order to give the reader more context on the quotes and avoid \dquote{plucking} sentences out of their context.
 
-\subsection{Test Cases} \label{sec:usability:test:cases}
+\subsubsection{Test Cases} \label{sec:usability:test:cases}
 We created a total of eight test cases, which fall into four categories; player controller, tree traversal, map-reduce and \dquote{concurrent} update. We list concurrent with double ticks here, as the tasks were designed to be implemented with \ttt{async}/\ttt{await} in C\# and asynchronous workflows in F\#. The reason we chose this was that it would be possible for the participants to implement a concurrent version with minor rework, given the right setup. Unity's concurrency models requires more boilerplate code, which we deemed would not provide any useful information.
 
 \begin{labeling}{\quad\quad}
@@ -25,7 +25,7 @@ The tasks fall into the categories as follows: the two controller-tasks fall int
 
 As we want to explore how suitable Carmack's and Sweeney's approaches are to game development, we have decided to use a fixed ordering of the test categories for each participant. We had initially planned that the participants would be given one of the tasks from the controller category as the first task and distribute the remaining semi-randomly, but discovered after the first actual test that the participants would only have time to solve a single task. We therefore decided that the participants would be given starting tasks from different categories. This ordering allow us to compare each of the participants' the solutions to tasks of the same category, and thus evaluate for each participant whether one language is better suited than the other.
 
-\subsection{Participants} \label{sec:par-crit}
+\subsubsection{Participants} \label{sec:par-crit}
 The participants for this experiment were gathered by sending emails to game studios and other game-related companies in Denmark, asking if their employees were interested in participating in the experiment. The participants were required to have experience with C\# and Unity in the game development industry. We gathered a total of six participants; two participants with Indie game-development experience, three from a company that creates \gls{AR}/\gls{VR} applications and one who teaches children game development.
 
 For selection criteria we looked for participants that had developed games or had significant experience with C\# in Unity. In addition the participants should not have experience with F\#. The criteria where ranked as follows:
@@ -35,7 +35,7 @@ For selection criteria we looked for participants that had developed games or ha
 	\item No F\# experience.
 \end{enumerate}
 
-\subsection{Pilot Test}
+\subsubsection{Pilot Test}
 We conducted a pilot test with a participant from the Programming Technology specialisation course at Aalborg University in order to get some feedback on the setup. The test participant has experience with Unity from Indie game development and teaching Unity programming to children in the Danish secondary school/advanced level (not to be confused with our test participant, who has a similar job). Contrary to the requirements for the actual test, the pilot test participant had experience with F\# and functional programming in general.
 
 Prior to the pilot test we had assumed that a 50/50 distribution between C\# and F\# would give the most valuable results, as it would not skew the results time-wise. During the pilot test the participant, who had prior experience with F\#, was able to complete three tasks in C\# and two in F\#. We therefore decided to change the distribution to 20 mintues of C\# and 40 minutes of F\#.

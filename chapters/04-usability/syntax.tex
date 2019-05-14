@@ -18,7 +18,7 @@ int x = 0;
 x = 1;
 \end{minted}
 \end{minipage}
-\caption{Assignment Comparison}
+\caption{Assignment Comparison in F\# (left) and C\# (right).}
 \label{lst:ass-comp}
 \end{listing}
 
@@ -62,7 +62,7 @@ let getTotalWithMod (items:Item list) (attribute:Item->int) (attributeMod:Item->
 In addition several participants remarked that they preferred strictly typed languages, even though they had encountered several typing errors. Some of the participants had Python experience which may explain this assumption, because Python 3.x annotates function parameters similarly to F\# and Python is dynamically typed.
 
 \subsubsection{Function Definitions}
-In F\# classes all functions must be declared before the first method, an example of this can be seen in \lstref{let-mem-incor}. This caused some initial confusion for participants, but it was quickly overcome. The reason for the strict order was not intuitive for the participants. The difference between the use of \ttt{let} and \ttt{member} is the accessibility of the method or function in question. The \ttt{let} keyword denotes a function in the class instance's scope, effectively a private function. The \ttt{member} keyword denotes a method which is similar to methods in C\#.
+In F\# all \ttt{let} functions must be declared before the first \ttt{member} function. An example of this can be seen in \lstref{let-mem-incor}. This caused some initial confusion for participants, but it was quickly overcome. The reason for the strict order was not intuitive for the participants. The difference between the use of \ttt{let} and \ttt{member} is the accessibility of the method or function in question. The \ttt{let} keyword denotes a function in the class instance's scope, effectively a private function. The \ttt{member} keyword denotes a method which is similar to methods in C\#.
 
 \begin{listing}[H]
 \begin{minted}{fsharp}
@@ -74,9 +74,10 @@ type Candy(price:int) =
 \label{lst:let-mem-incor}
 \end{listing}
 
-In addition to the confusion surrounding type definitions, participants also expressed frustration with how functions are defined. The issue stems from a problem with our sample sheet which did not contain an example of a simple function definition, plenty of functions where defined, but only ever as part of examples of other language features. Furthermore functions share the \ttt{let} keyword with variables, which contributed to the confusion during the test. Some participants also had some problems with lambda expressions. Some users where initially thrown off by the \ttt{fun} keyword, while others where new to the concept.
+In addition to the confusion surrounding type definitions, participants also expressed frustration with how functions are defined. The issue stems from a problem with our sample sheet which did not contain an example of a simple function definition, plenty of functions were defined, but only ever as part of examples of other language features. Furthermore, functions share the \ttt{let} keyword with namebindings, which contributed to the confusion during the test.
+%Some participants also had some problems with lambda expressions. Some users where initially thrown off by the \ttt{fun} keyword, while others where new to the concept.
 
-Several participants struggled with lambda expressions in \fs. Some of these participants expressed that they where not familiar with lambda expressions in \cs either, however even the participants with lambda expression experience from \cs had issues with them in \fs. The difference in syntax can be see in \lstref{lam-exp-syn}, with \cs on the left and \fs on the right.
+Several participants struggled with lambda expressions in \fs. Some of these participants expressed that they where not familiar with lambda expressions in \cs either, but even the participants with lambda expression experience from \cs had issues with them in \fs. The difference in syntax can be see in \lstref{lam-exp-syn}, with \cs on the left and \fs on the right.
 
 \begin{listing}[H]
 \begin{minipage}{.5\textwidth}
@@ -90,6 +91,6 @@ str => Console.WriteLine(str);
 fun str -> printfn str
 \end{minted}
 \end{minipage}
-\caption{Lambda Expression Syntax}
+\caption{Lambda Expression Syntax, C\# on the left and F\# on the right.}
 \label{lst:lam-exp-syn}
 \end{listing}

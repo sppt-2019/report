@@ -21,6 +21,25 @@ type Talent(strength, intellect, agility) =
 type Tree =
 | Node of TalentValue:Talent * Picked:bool * Children:Tree list
 | Leaf of TalentValue:Talent * Picked:bool
+
+let rec foldTree folding init tree =
+  match tree with
+  | Node (t, _, c) ->
+    let f = folding t init
+    let cf =
+      c
+      |> List.map (foldTree folding init)
+      |> List.fold folding init
+    folding f cf
+  | Leaf (t,_) ->
+    folding t init
+
+let sumPickedNodes root =
+  foldTree (fun t1 t2 ->
+    if t1.Picked then
+      Talent(t1.Strength + t2.Strength, t1.Intellect + t2.Intellect, t1.Agility + t2.Agility)
+    else
+      t2) (Talent(0,0,0)) root
   \end{minted}
   \begin{minted}{csharp}
 public class MyTalent
@@ -32,9 +51,23 @@ public class MyTalent
   public bool Picked;
 
   public List<MyTalent> SubTalents = new List<MyTalent>();
+
+  public MyTalent SumPickedTalents() {
+    var t = Picked ? new MyTalent(Strength, Agility, Intelligence) : new MyTalent(0,0,0);
+    if(SubTalents?.Count == 0)
+      return t;
+
+    foreach (var child in SubTalents) {
+      var childTalentValues = child.SumPickedTalents();
+      t.Strength += childTalentValues.Strength;
+      t.Agility += childTalentValues.Agility;
+      t.Intelligence += childTalentValues.Intelligence;
+    }
+    return t;
+  }
 }
   \end{minted}
-  \caption{Talent Tree Implementations}
+  \caption{Talent Tree Data Structure and Walker Implementations}
   \label{lst:tree-imps}
 \end{listing}
 
