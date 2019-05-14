@@ -1,0 +1,15 @@
+\chapter{Garbage Collection Experiment Data} \label{app:gc-data}
+
+\lineChart[xtick={0,100, 200, 300, 400, 500, 600, 700, 800, 900}][FPS][Frame No.]{FPS for each frame in C\# \gls{FRP} using the two different Unity \glspl{GC}}{ai:benchmark:frp:gc:cs}{
+      \plotUnmarkedData{il2cpp}{\aiBenchmarkCsharpGCData}
+      \plotUnmarkedData{Mono}{\aiBenchmarkCsharpGCData}
+      \plotUnmarkedData{Incremental il2cpp}{\aiBenchmarkCsharpGCData}
+      \plotUnmarkedData{Incremental Mono}{\aiBenchmarkCsharpGCData}
+}
+
+\lineChart[xtick={0, 100, 200, 300, 400, 500, 600, 700, 800, 900}][FPS][Frame No.]{FPS for each frame in F\# \gls{FRP} using the two different Unity \glspl{GC}}{ai:benchmark:frp:gc:frp}{
+    \plotUnmarkedData{il2cpp}{\aiBenchmarkFsharpGCData}
+    \plotUnmarkedData{Mono}{\aiBenchmarkFsharpGCData}
+    \plotUnmarkedData{Incremental il2cpp}{\aiBenchmarkFsharpGCData}
+    \plotUnmarkedData{Incremental Mono}{\aiBenchmarkFsharpGCData}
+}
