@@ -34,4 +34,7 @@ The test cases, the tasks participants where asked complete, where designed to m
 
 Some participants commented on the realism of the test cases. One participant noted that the character controller tasks where not representative of real development since they are freely available and even if they weren't the developer would buy one from the asset store. The other participants indicated that they had spent a lot of time writing character controllers.
 
-\paragraph{Previous Experience}
+\paragraph{Development Environment \& Test Setup}
+In order to use \fs with \unity a custom plugin was used. This plugin was developed by a student at Aalborg University\cite{fsharp2019plugin}. \unity does not officially support \fs and in order to run the \fs code a work around was employed. The plugin automated this process and allowed the test participants to focus on the task at hand. However, the plugin was not without problems. Compilation of \fs code was done in the \unity editor instead of the \gls{IDE}. These problems where mediates along the way, by reporting them to the developer. The plugin was patched repeatedly during test construction and no plugin errors where encountered during the test.
+
+Some errors where encountered during the test, however these errors originated from the setup code. Some errors had been identified and fixed as a result of running the pilot test. Unfortunately full test coverage was not achieved during the pilot test and some errors remained undiscovered until the test. This could have been mediated with additional pilot testing or a simulating all tests to verify changes did not break them.
