@@ -12,37 +12,39 @@ In this section we explore the performance of the lenient evaluation strategy an
 The difference between the two test cases is that there are no data-dependencies in the summation test, i.e. we can calculate the results of the left subtree and the right subtree in parallel. In the Binary Tree Accumulation and Sort benchmark the tree must be traversed in a left-to-right order and thus there is a data-dependency between the results from the left and right subtree.
 
 \subsection{Implementations}
-\tmc{Denne argumentation skal nok ændres lidt på.}In this benchmark we decided to use C\#, as we were familiar with the language. Furthermore, we discovered in previous work that C\#'s performance in the dotnet runtime is comparable to that of C++ in the context of microbenchmarks\cite{p92018gameplay}. We are well aware that C\# is not lenient, but we wanted to compare the strategies within the same language runtime and therefore attempted to map the lenient evaluation strategy onto C\#'s task system. \lstref{lenient:to:task} gives a code example how to do so.
+We implemented the benchmark suited in both F\# and C\#. In this test F\# will be the primary test subject, as we wish to examine how well it parallelises. The C\# implementation will be used as control, in the sense that we will compare, for the different strategies, which of the languages are fastest. We are well aware that F\# is not lenient, but we wanted to compare the strategies within the same language runtime and therefore attempted to map the lenient evaluation strategy onto F\# using it's async workflows. \lstref{lenient:to:task} gives a code example how to do so.
 
 \begin{listing}[H]
-\begin{minted}{csharp}
+\begin{minted}{fsharp}
 //Lenient function, body evaluated asynchronously from caller
 //parameters evaluated asynchronously from function body
-int CalculateC(int a, int b) {
-    int c = a * 50; //Implicit synchronisation with a-thread
-    return c + b;   //Implicit synchronisation with b-thread
-}
+let CalculateC a b = 
+    let c = a * 50 //Implicit synchronisation with a-thread
+    c + b;   //Implicit synchronisation with b-thread
 
-//C# mapping of the CalculateC-function
-//async method that runs asyncronously from the caller
-async Task<int> CalculateC_Lenient(Task<int> a, Task<int> b) {
-    int c = await a * 50;   //Explicit synchronisation with a-task
-    return c + await b;     //Explicit synchronisation with b-task
+//F# lenient mapping of the CalculateC-function
+//async function that runs asynchronously from the caller
+let CalculateCLenient a b = async {
+    let! aResult = a
+    let c = aResult * 50
+    let! bResult = b
+    return c + b  
 }
 \end{minted}
 \caption{Lenient evaluation in C\#} \label{lst:lenient:to:task}
 \end{listing}
-The mapping shown in \lstref{lenient:to:task} involves wrapping all arguments to methods in \ttt{Task}s and explicitly synchronise two \ttt{Task}s whenever there is a data-dependency between them. This means that all values of arguments are calculated asynchronously from the method body. The method is marked as \ttt{async}, meaning that a \ttt{Task} is spawned for every invocation of the method, i.e. it runs asyncronously from the caller. This leaves the majority of the footwork to the dotnet task scheduler, which must figure out in which order to execute them.
+The mapping shown in \lstref{lenient:to:task} involves wrapping all arguments to methods in Async Workflows and explicitly synchronise using the \ttt{let!} keyword whenever there is a data-dependency between them. This means that all values of arguments are calculated asynchronously from the method body. The method is marked as \ttt{async}, meaning that an Async Workflow is spawned for every invocation of the method, i.e. it runs asynchronously from the caller. This leaves the majority of the footwork to F\#'s scheduler, which must figure out in which order to execute them.
 
-We implemented the test cases in three different synchronisation models:
+We implemented the test cases in four different synchronization models:
 \begin{labeling}{\quad\quad}
     \item[Sequential] which uses divide and conquer on one unit of execution to do all the calculations. This provides the baseline speed for the computation on a single core.
-    \item[Fork-Join] which also uses divide and conquer, but in each recursion step, two \ttt{Task}s are spawned to compute the results of the left and right subtree. The \ttt{Task}s are then synchronised at the end of each recursive call. This provides a \textit{\dquote{classic parallel}} baseline speed.
-    \item[Lenient] using the mapping displayed in \lstref{lenient:to:task}, i.e. wrapping everything in \ttt{Task}s and have the .NET Core task scheduler figure out the computation order.
+    \item[Async Workflows] which uses also uses divide and conquer, but in each recursion step, two Async Workflows are spawned to compute the results of the left and right subtree. The Workflows are then synchronised at the end of each recursive call. This provides a \textit{\dquote{classic parallel}} baseline speed.
+    \item[Task] which uses C\#'s \ttt{Task}-library and divide and conquer. It is similar to the previous, except that it spawns \ttt{Task}s.  
+    \item[Lenient] using the mapping displayed in \lstref{lenient:to:task}, i.e. wrapping everything in Async Workflows and have the .NET Core task scheduler figure out the computation order.
 \end{labeling}
 
 \subsection{Test Setup}
-According to \cite{sestoft2013microbenchmarks} the most reliable results are obtained when the tests are repeated multiple times and the average and standard deviation calculated for the results. We therefore decided to take the average execution speed over 100 repetitions for varying problem sizes, starting with 10 leaf nodes and gradually increasing the number up to a total of 10,000 leaves.
+According to \cite{sestoft2013microbenchmarks} the most reliable results are obtained when the tests are repeated multiple times and the average and standard deviation calculated for the results. We therefore decided to take the average execution speed over 100 repetitions for varying problem sizes, starting with 1 leaf node and gradually doubling the number up to a total of 65536 nodes.
 
 The tests were run on a laptop, of which the specifications are listed in \tableref{sys-specs}.
 
@@ -64,19 +66,55 @@ Operating System & \multicolumn{2}{| c |}{Ubuntu 18.04 64bit}  \\ \hline
 C\# runtime & \multicolumn{2}{| c |}{dotnet 2.2.104} \\ \hline
 }{System specifications.}{sys-specs}\footnotetext{Logical cores are sometimes called threads. However logical cores is used here to avoid confusion with the software concept; threads, which is distinct from hardware threads.}
 
+We wish to analyse the following research questions:
+\begin{enumerate}
+    \item Which of the four presented strategies handle increasing sizes of trees best?
+    \item Does F\# have performance than C\# when running equivalent (concurrent) code? 
+\end{enumerate}
+
 \subsection{Results}
+In this section we analyse and discuss the results based on the two research questions presented in the previous section.
+
+\subsubsection{Parallel Strategy and Performance}
 The results are plotted in \figref{binary-accumulation} and \figref{binary-summation} (and listed in \tableref{accumulation:res} and \tableref{summation:res} in \apxref{benchmark:data}).
 
-\newcommand{\binAcumSymbolics}{\symbolic{Problem,10,100,1000,10000,100000}}
-\barChart*[15][\binAcumSymbolics]{Binary Accumulation}{binary-accumulation}{
+\newcommand{\binAcumSymbolics}{\symbolic{Problem,1,4,8,16,32,64,128,256,512,1024,2048,4096,8192,16384,32768,65536}}
+\barChart*[5][\binAcumSymbolics][Run Time (ns)][Number of Nodes]{Binary Accumulation}{binary-accumulation}{
     \plotDataWithError{Sequential}{\accumulationData}
-    \plotDataWithError{Fork Join}{\accumulationData}
+    \plotDataWithError{Async Workflow}{\accumulationData}
+    \plotDataWithError{Task}{\accumulationData}
     \plotDataWithError{Lenient}{\accumulationData}
-}\btc{?? -in reference to problem size 100}
-\barChart*[15][\binAcumSymbolics]{Binary Summation}{binary-summation}{
+}
+\barChart*[5][\binAcumSymbolics][Run Time (ns)][Number of Nodes]{Binary Summation}{binary-summation}{
     \plotDataWithError{Sequential}{\summationData}
-    \plotDataWithError{Fork Join}{\summationData}
+    \plotDataWithError{Async Workflow}{\summationData}
+    \plotDataWithError{Task}{\summationData}
     \plotDataWithError{Lenient}{\summationData}
 }
 
-Much to our surprise, the sequential implementation was actually the fastest in all cases. It seems that the overhead of spawning and synchronising \ttt{Task}s outweighs the performance gain of parallelisation, when the problem sizes are in the magnitude of additions and list appending. Furthermore, the Accumulation test case presented in \cite{DBLP:journals/cl/Tremblay-parallel} is a poor choice when it comes to parallelism, as it must traverse the tree in a left-to-right manner, meaning that the only things that can be executed in parallel is the recursive calls down the tree. Another interesting result is that the execution time of the lenient approach grows faster with the problem size compared to both Fork Join and Sequential. We suspect that the advantages of parallel programming will be more prominent, as the amount of work in each unit of execution increases. We will research this hypthosis in greater depth in the following section.
+Much to our surprise, the sequential implementation was actually the fastest in all cases. It seems that the overhead of spawning and synchronising \ttt{Task}s outweighs the performance gain of parallelisation when the problem sizes are in the magnitude of additions and list appending. Furthermore, the Accumulation test case presented in \cite{DBLP:journals/cl/Tremblay-parallel} is a poor choice when it comes to parallelism, as it must traverse the tree in a left-to-right manner, meaning that the only things that can be executed in parallel is the recursive calls down the tree. We suspect that the advantages of parallel programming will be more prominent, as the amount of work in each unit of execution increases. We will research this hypothesis in greater depth in the following section.
+
+The execution times of the lenient strategy grows faster with problem size than those of the task strategy. This means that the lenient approach handle increasing sizes of trees worse. It is, however, not as bad as async workflows. We have only obtained data for async workflows up to trees containing 256 nodes, as the running times grew so rapidly that it was not feasible to continue.
+
+\subsubsection{Language Performance with C\# Tasks}
+\figref{seq-binary-accumulation} and \figref{seq-binary-summation} shows the running time of the sequential implementation in C\# and F\#. These results show that F\# is faster in the accumulation benchmark up to tree sizes of roughly 256 nodes. In the summation benchmark C\# is faster all the way. Both data sets seem to decrease in running time up to tree sizes of 128 nodes. This is strange, as this means that the implementation handle more computations in less time. We are unsure what causes this. 
+
+\barChart*[10][\binAcumSymbolics][Run Time (ns)][Number of Nodes]{Binary Accumulation in F\# and C\# using the sequential solutions}{seq-binary-accumulation}{
+    \plotDataWithErrorAndLegend{Sequential}{\accumulationData}{F\#}
+    \plotDataWithErrorAndLegend{Sequential}{\accumulationDataCsharp}{C\#}
+}
+\barChart*[10][\binAcumSymbolics][Run Time (ns)][Number of Nodes]{Binary Summation in F\# and C\# using the sequential solutions}{seq-binary-summation}{
+    \plotDataWithErrorAndLegend{Sequential}{\summationData}{F\#}
+    \plotDataWithErrorAndLegend{Sequential}{\summationDataCsharp}{C\#}
+}
+
+In \figref{task-binary-accumulation} and \figref{task-binary-summation} we have plotted the running times for F\# and C\# in the two test cases. Both the C\# and F\# implementation uses the Task strategy (i.e. divide-and-conquer that spawns two tasks in each recursion step). These results align with the previous in that F\# is fastest when there is a small number of nodes in the tree (up to 128 nodes in accumulation and 8 nodes in summation). After that point C\# is faster, and it seems that C\# handle increasing number of nodes better. The strange curve we observed in the sequential data sets are also present in C\# in the binary summation benchmark. Again, we're unsure what causes this behaviour.
+
+\barChart*[10][\binAcumSymbolics][Run Time (ns)][Number of Nodes]{Binary Accumulation in F\# and C\# using \ttt{Task} parallelisation}{task-binary-accumulation}{
+    \plotDataWithErrorAndLegend{Task}{\accumulationData}{F\#}
+    \plotDataWithErrorAndLegend{Fork Join}{\accumulationDataCsharp}{C\#}
+}
+\barChart*[10][\binAcumSymbolics][Run Time (ns)][Number of Nodes]{Binary Summation in F\# and C\# using \ttt{Task} parallelisation}{task-binary-summation}{
+    \plotDataWithErrorAndLegend{Task}{\summationData}{F\#}
+    \plotDataWithErrorAndLegend{Fork Join}{\summationDataCsharp}{C\#}
+}

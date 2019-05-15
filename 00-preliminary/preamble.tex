@@ -211,16 +211,19 @@
 
 \input{00-preliminary/result-presentation.tex}
 
-\pgfplotstableread[col sep = comma]{00-data/accumulation.csv}\accumulationData
-\pgfplotstableread[col sep = comma]{00-data/summation.csv}\summationData
+\pgfplotstableread[col sep = comma]{00-data/fsharp/accumulation.csv}\accumulationData
+\pgfplotstableread[col sep = comma]{00-data/fsharp/sum.csv}\summationData
+\pgfplotstableread[col sep = comma]{00-data/csharp/accumulation.csv}\accumulationDataCsharp
+\pgfplotstableread[col sep = comma]{00-data/csharp/sum.csv}\summationDataCsharp
+
+\pgfplotstableread[col sep = comma]{00-data/fsharp/matrix.csv}\matrixSumData
+\pgfplotstableread[col sep = comma]{00-data/csharp/matrix.csv}\matrixSumDataCsharp
+
 \pgfplotstableread[col sep = comma]{00-data/work-bias-wait-after-join.csv}\workWithDependencyData
 \pgfplotstableread[col sep = comma]{00-data/work-bias-wait-before-join.csv}\workWithoutDependencyData
-\pgfplotstableread[col sep =
-comma]{00-data/nary-work-bias-wait-after-join.csv}\workWithDependencyDataNary
-\pgfplotstableread[col sep =
-comma]{00-data/nary-work-bias-wait-before-join.csv}\workWithoutDependencyDataNary
-\pgfplotstableread[col sep =
-comma]{00-data/linpack.csv}\linpackData
+\pgfplotstableread[col sep = comma]{00-data/nary-work-bias-wait-after-join.csv}\workWithDependencyDataNary
+\pgfplotstableread[col sep = comma]{00-data/nary-work-bias-wait-before-join.csv}\workWithoutDependencyDataNary
+
 \pgfplotstableread[col sep = comma]{00-data/ai-benchmark-runtimes.csv}\aiBenchmarkRuntimesData
 \pgfplotstableread[col sep = comma]{00-data/ai-benchmark.csv}\aiBenchmarkData
 \pgfplotstableread[col sep = comma]{00-data/csharp-vs-frp.csv}\aiBenchmarkOverheadData

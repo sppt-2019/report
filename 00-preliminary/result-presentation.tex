@@ -45,6 +45,11 @@ symbolic x coords={,
     \addlegendentry{#1};
 }
 
+\newcommand{\plotDataWithErrorAndLegend}[3]{
+    \addplot+[error bars/.cd, y dir=both,y explicit] table [y={#1}, y error={#1 Error}] {#2};
+    \addlegendentry{#3};
+}
+
 \newcommand{\logmode}[1]{\IfBooleanTF{#1}{log}{normal}}
 \newcommand{\logbase}[1]{\IfBooleanTF{#1}{2}{1}}
 
