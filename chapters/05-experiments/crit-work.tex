@@ -51,22 +51,22 @@ public static async Task<int> SumLeaves(Tree<int> tree, int workBias)
 The results are plotted in \figureref{crit-work-dep} and \figureref{crit-work-no-dep} (and listed in \tableref{binary:tree:with:bias:dependency} and \tableref{binary:tree:with:bias:no:dependency} in \apxref{crit:work:data}).
 
 \newcommand{\workBiasSymbolics}{\symbolic{Work Bias (iterations),134217728,67108864,33554432,16777216,8388608,4194304,2097152,1048576,524288,262144,131072,65536,32768,16384,8192,4096,2048,1024}}
-\lineChart[][Run Time (ns)][Number of Nodes]{Critical workload with data dependency.}{crit-work-dep}{
+\lineChart[][Run Time (ns)][Number of Busy-Wait Iterations]{Critical workload with data dependency.}{crit-work-dep}{
     \plotData{Sequential}{\workWithDependencyData}
     \plotData{Fork Join}{\workWithDependencyData}
     \plotData{Lenient}{\workWithDependencyData}
 }
-\lineChart[][Run Time (ns)][Number of Nodes]{Critical workload without data dependency.}{crit-work-no-dep}{
+\lineChart[][Run Time (ns)][Number of Busy-Wait Iterations]{Critical workload without data dependency.}{crit-work-no-dep}{
     \plotData{Sequential}{\workWithoutDependencyData}
     \plotData{Fork Join}{\workWithoutDependencyData}
     \plotData{Lenient}{\workWithoutDependencyData}
 }
-\lineChart[][Run Time (ns)][Number of Nodes]{Critical workload with data dependency, N-ary tree.}{crit-work-dep-nary}{
+\lineChart[][Run Time (ns)][Number of Busy-Wait Iterations]{Critical workload with data dependency, N-ary tree.}{crit-work-dep-nary}{
     \plotData{Sequential}{\workWithDependencyDataNary}
     \plotData{Fork Join}{\workWithDependencyDataNary}
     \plotData{Lenient}{\workWithDependencyDataNary}
 }
-\lineChart[][Run Time (ns)][Number of Nodes]{Critical workload with data dependency, N-ary tree.}{crit-work-no-dep-nary}{
+\lineChart[][Run Time (ns)][Number of Busy-Wait Iterations]{Critical workload with data dependency, N-ary tree.}{crit-work-no-dep-nary}{
     \plotData{Sequential}{\workWithoutDependencyDataNary}
     \plotData{Fork Join}{\workWithoutDependencyDataNary}
     \plotData{Lenient}{\workWithoutDependencyDataNary}
@@ -113,11 +113,11 @@ The results are plotted in \figureref{linpack-summation-fs} and \figref{linpack-
     \plotDataWithError{Parallel Foreach}{\matrixSumDataCsharp}
     \plotDataWithError{Tasks}{\matrixSumDataCsharp}
 }
-In general, the results from this experiment is in alignment with those of the previous, in that there is an initial overhead associated with concurrency. In this case, it seems the sequential and concurrent solutions evens out at job sizes of around 256 summations, after which point the concurrent solutions are faster.
+In general, the results from this experiment is in alignment with those of the previous, in that there is an initial overhead associated with concurrency. In this case, it seems the sequential and concurrent solutions evens out at job sizes of around 512 summations, after which point the concurrent solutions are faster.
 
 After overcoming the initial overhead, the concurrent solutions handle increasing matrix sizes much better than their sequential counterparts. This is even more notable in \figureref{linpack-summation-line}, which plots the same data as a line and without logarithmic y-axis. As the matrix sizes continue to grow, it may be possible to split the columns in multiple separate tasks, possibly making the concurrent implementations faster yet.
 
-\lineChart{Matrix Summation}{linpack-summation-line}{
+\lineChart[][Run Time (ns)][Size of matrix Columns and Rows]{Matrix Summation}{linpack-summation-line}{
     \plotData{Sequential}{\matrixSumData}
     \plotData{Map Reduce}{\matrixSumData}
     \plotData{Parallel Foreach}{\matrixSumData}
@@ -125,6 +125,6 @@ After overcoming the initial overhead, the concurrent solutions handle increasin
 }
 
 \subsection{Discussion}
-Our results show, first and foremost, that there is an initial overhead in concurrent programming. In order to speed up a computation the task sizes must exceed a certain threshold. Our results show that this threshold lies around the size of 1024-4096 iterations in a for-loop that increments a variable\tmc{Måske skal vi tælle nogle instruktioner her?}, but also that it varies with the type of problem. Furthermore, the results show that the concurrency of lenient evaluation strategy is similar to that of classic concurrency strategies, but that the choice of problems in \cite{DBLP:journals/cl/Tremblay-parallel} is not well suited to parallelisation. Finally C\#'s \ttt{Task}-model seems to handle the matrix summation problem well, after exceeding the threshold of roughly 256 summations in each column.
+Our results show, first and foremost, that there is an initial overhead in concurrent programming. In order to speed up a computation the task sizes must exceed a certain threshold. Our results show that this threshold lies around the size of 1024-4096 iterations in a for-loop that increments a variable\tmc{Måske skal vi tælle nogle instruktioner her?}, but also that it varies with the type of problem. Furthermore, the results show that the concurrency of lenient evaluation strategy in these cases is similar to that of classic concurrency strategies, but that the choice of problems in \cite{DBLP:journals/cl/Tremblay-parallel} is not well suited to parallelisation. Finally C\#'s \ttt{Task}-model seems to handle the matrix summation problem well, after exceeding the threshold of roughly 512 summations in each column.
 
 As part of the project we implemented a simple \gls{FRP} system in Unity, because this particular programming paradigm is well suited to gameplay programming in functional languages\needcite. We had initially decided that this experiment would use either lenient evaluation or Async Workflows under the hood to update \ttt{MonoBehaviour}s concurrently, but discovered too late that Unity uses a custom concurrency strategy called Unity C\# Job System\cite{unity:csharp:job:system} (see \secref{unity:concurrency}). Unity therefore does not allow \ttt{MonoBehaviour} updates from \ttt{Task}s and Async Workflows\cite{unity:async}. The resulting \gls{FRP} system therefore runs sequentially.
