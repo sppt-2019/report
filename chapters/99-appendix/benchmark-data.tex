@@ -1,30 +1,46 @@
 \chapter{Benchmark Data} \label{app:benchmark:data}
 
+\section{F\# - No Work Bias}
+\makeTable{{p{2.8cm} | S[round-precision=2] | S[round-precision=2] | S[round-precision=2]}
+\bfseries Problem Size (nodes) & \bfseries Sequential & \bfseries Async Workflows & \bfseries Lenient
+        \csvreader[head to column names]{00-data/fsharp/accumulation.csv}
+        {1=\ps, 2=\seq, 4=\aw, 6=\lenient}
+        {\\\hline \ps & \seq & \aw & \lenient}}
+{Running time in ns in Binary Tree Accumulation benchmark}{accumulation:res}
+
+\makeTable{{ p{2.8cm} | S[round-precision=2] | S[round-precision=2] | S[round-precision=2]}%
+        \bfseries Problem Size (nodes) & \bfseries Sequential & \bfseries Async Workflows & \bfseries Lenient
+        \csvreader[head to column names]{00-data/fsharp/sum.csv}
+        {1=\ps, 2=\seq, 4=\aw, 6=\lenient}
+        {\\\hline \ps & \seq & \aw & \lenient}}
+{Running time in ns in Binary Tree Summation benchmark}{summation:res}
+
+\section{C\# - No Work Bias}
 \makeTable{{p{2.8cm} | S[round-precision=2] | S[round-precision=2] | S[round-precision=2]}
 \bfseries Problem Size (nodes) & \bfseries Sequential & \bfseries Fork Join & \bfseries Lenient
-        \csvreader[head to column names]{00-data/accumulation.csv}
+        \csvreader[head to column names]{00-data/csharp/accumulation.csv}
         {1=\ps, 2=\seq, 4=\forkjoin, 6=\lenient}
         {\\\hline \ps & \seq & \forkjoin & \lenient}}
-{Running time in ticks in Binary Tree Accumulation benchmark}{accumulation:res}
+{Running time in ns in Binary Tree Accumulation benchmark}{accumulation:res:cs}
 
 \makeTable{{ p{2.8cm} | S[round-precision=2] | S[round-precision=2] | S[round-precision=2]}%
         \bfseries Problem Size (nodes) & \bfseries Sequential & \bfseries Fork Join & \bfseries Lenient
-        \csvreader[head to column names]{00-data/summation.csv}
+        \csvreader[head to column names]{00-data/csharp/sum.csv}
         {1=\ps, 2=\seq, 4=\forkjoin, 6=\lenient}
         {\\\hline \ps & \seq & \forkjoin & \lenient}}
-{Running time in ticks in Binary Tree Summation benchmark}{summation:res}
+{Running time in ns in Binary Tree Summation benchmark}{summation:res:cs}
 
 \section{Critical Work Data} \label{app:crit:work:data}
 \makeTable{{ c | c | c | c }%
-    \bfseries Work Bias (ticks) & \bfseries Sequential & \bfseries Fork Join & \bfseries Lenient
+    \bfseries Work Bias (iterations) & \bfseries Sequential & \bfseries Fork Join & \bfseries Lenient
     \csvreader[head to column names]{00-data/work-bias-wait-after-join.csv}
     {1=\wbt, 2=\seq, 3=\forkjoin, 4=\lenient}
     {\\\hline \wbt & \seq & \forkjoin & \lenient}}
-{Results from binary tree summation benchmark with work bias, all measures in epoch ticks. Models data dependency between subtrees and delay.}{binary:tree:with:bias:dependency}
+{Results from binary tree summation benchmark with work bias, all measures in ns. Models data dependency between subtrees and delay.}{binary:tree:with:bias:dependency}
 
 \makeTable{{ c | c | c | c }%
-    \bfseries Work Bias (ticks) & \bfseries Sequential & \bfseries Fork Join & \bfseries Lenient
+    \bfseries Work Bias (iterations) & \bfseries Sequential & \bfseries Fork Join & \bfseries Lenient
     \csvreader[head to column names]{00-data/work-bias-wait-before-join.csv}
     {1=\wbt, 2=\seq, 3=\forkjoin, 4=\lenient}
     {\\\hline \wbt & \seq & \forkjoin & \lenient}}
-{Results from binary tree summation benchmark with work bias, all measures in epoch ticks. Models no data dependency between subtrees and delay.}{binary:tree:with:bias:no:dependency}
+{Results from binary tree summation benchmark with work bias, all measures in ns. Models no data dependency between subtrees and delay.}{binary:tree:with:bias:no:dependency}
