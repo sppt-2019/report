@@ -2,7 +2,7 @@
 Test participants encountered problems with various aspects of F\#'s syntax. Such issues are to be expected when developing in a new programming language, furthermore, syntactical errors are not the main focus of this inquiry. Therefore these issues are discussed in this section.
 
 \subsubsection{Bindings and Operators}
-In F\# the \ttt{=} symbol is used to denote two different operators; the value-binding operator, and the equality operator. Notably the symbol is not used for rebinding, F\# equivalent of assignments which it is in C\#. A comparison of the two different rebinding/assignment styles can be seen in \lstref{ass-comp}. Rebindings are only allowed on \ttt{mutable} variables, which should be limited to a scope.
+In F\# the \ttt{=} symbol is used to denote two different operators; the value-binding operator, and the equality operator. Notably the symbol is not used for rebinding, F\#'s equivalent of assignments, which it is in C\#. A comparison of the two different rebinding/assignment styles can be seen in \lstref{ass-comp}. Rebindings are only allowed on \ttt{mutable} variables, which should be limited to a scope.
 
 \begin{listing}[H]
 \begin{minipage}{.45\textwidth}
@@ -22,7 +22,7 @@ x = 1;
 \label{lst:ass-comp}
 \end{listing}
 
-Furthermore, since \ttt{x = 1} is valid F\#, no errors where encountered immediately. Instead the program behaved unexpectedly and they received a warning, that the value of a boolean expression was being ignored. None of the participants where able to deduce the source of the error without assistance from the monitor. The degree of assistance required ranged from a hint to the monitor explaining the problem so that the test could continue.
+Furthermore, since \ttt{x = 1} is valid F\#, no errors were encountered immediately. Instead the program behaved unexpectedly and they received a warning, that the value of a boolean expression was being ignored. None of the participants were able to deduce the source of the error without assistance from the monitor. The degree of assistance required ranged from a hint to the monitor explaining the problem so that the test could continue.
 
 Some participants encountered minor errors when declaring variables, because variables are implicitly immutable in F\#. This is the opposite of C\#, where the \ttt{const} keyword is used to explicitly declare a variable immutable. However, once the participants realised this, they had no issue using it.
 
@@ -44,10 +44,10 @@ type FRP_FPSController() =
 \label{lst:scope-prob}
 \end{listing}
 
-Lines 7 and 8 are indented incorrectly, but the code compiles and behaves as expected. The \gls{IDE} gives a warning on both lines, but no errors are thrown until new \ttt{member} functions are defined.
+Lines 7 and 8 are indented incorrectly, but the code compiles and behaves as expected. The \gls{IDE} gives a warning on both lines, but no errors are thrown until new \ttt{member} functions are defined below \ttt{HandleMoveForward}.
 
 \subsubsection{Types and Type Inference}
-Many participants had problems with the type system and type inference. The functions provided in the sample sheets had explicitly typed parameters, which the participants partially mimicked when declaring their own functions, however participants did not specify function return types nor did they utilise typing of their variables. An example of such a function can be seen in \lstref{part-func}.
+Many participants had problems with the type system and type inference. The functions provided in the sample sheet had explicitly typed parameters, which the participants partially mimicked when declaring their own functions, however participants did not specify function return types nor did they utilise typing of their variables. An example of such a function can be seen in \lstref{part-func}.
 
 \begin{listing}[H]
 \begin{minted}{fsharp}
@@ -55,7 +55,7 @@ Many participants had problems with the type system and type inference. The func
 let getTotalWithMod (items:Item list) (attribute:Item->int) (attributeMod:Item->float32) =
 [...]
 \end{minted}
-\caption{Participant Function with Type Annotations}
+\caption{Participant function with type annotations on parameters, but not on return type.}
 \label{lst:part-func}
 \end{listing}
 
@@ -74,7 +74,7 @@ type Candy(price:int) =
 \label{lst:let-mem-incor}
 \end{listing}
 
-In addition to the confusion surrounding type definitions, participants also expressed frustration with how functions are defined. The issue stems from a problem with our sample sheet which did not contain an example of a simple function definition, plenty of functions were defined, but only ever as part of examples of other language features. Furthermore, functions share the \ttt{let} keyword with namebindings, which contributed to the confusion during the test.
+In addition to the confusion surrounding type definitions, participants also expressed frustration with how functions are defined. The issue stems from a problem with our sample sheet which did not contain an example of a simple function definition. Plenty of functions were defined, but only ever as part of examples of other language features. Furthermore, functions share the \ttt{let} keyword with namebindings, which contributed to the confusion during the test.
 %Some participants also had some problems with lambda expressions. Some users where initially thrown off by the \ttt{fun} keyword, while others where new to the concept.
 
 Several participants struggled with lambda expressions in \fs. Some of these participants expressed that they where not familiar with lambda expressions in \cs either, but even the participants with lambda expression experience from \cs had issues with them in \fs. The difference in syntax can be see in \lstref{lam-exp-syn}, with \cs on the left and \fs on the right.

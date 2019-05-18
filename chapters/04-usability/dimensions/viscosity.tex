@@ -1,6 +1,6 @@
 \subsubsection{Viscosity}
 % Participant 2, 40:40 samt 1:02:30
-In our test cases, viscosity is particularly visible in the \dquote{concurrent}-update category. The reason for this is that the participants are asked to develop a sequential solution first, followed by a parallel implementation. Generally viscosity is low in both languages. In F\# we saw the magnetism task implemented using the pipe operator. Such an implementation can be extended to a parallel solution by piping into \ttt{Async.Parallel} and then \ttt{Async.RunSynchronously} (see \lstref{fsharp:pipe:async}). A similar solution can be achieved in C\# using \gls{LINQ}, albeit the change requires the programmer to delete a semicolon.
+In our test cases, viscosity is particularly visible in the \dquote{concurrent}-update category. The reason for this is that the participants were asked to develop a sequential solution first, followed by a concurrent implementation. Generally viscosity is low in both languages. In F\# we saw the magnetism task implemented using the pipe operator. Such an implementation can be extended to a parallel solution by piping into \ttt{Async.Parallel} and then \ttt{Async.RunSynchronously} (see \lstref{fsharp:pipe:async}). A similar solution can be achieved in C\# using \gls{LINQ}.
 
 \begin{listing}[H]
     \begin{minted}{fsharp}
@@ -27,11 +27,11 @@ let UpdateAsync () =
     \label{lst:fsharp:pipe:async}
 \end{listing}
 
-As with many other dimensions, viscosity can also be affected by the programmer's style of programming. This is explified in \lstref{csharp:viscous}, which is taken from one of the solutions in C\#. In order to make implement \dquote{concurrent} update, the participant had to construct a new list in the \ttt{Update}-method and wrap the calls to the state methods in \ttt{Task.Run} (e.g. \mintinline{csharp}|updateTasks.Add(Task.Run(() => Flee(fleeingShooter)))|). This change is manageable, but imagine how much effort it would take if we wanted to add an additional state to the shooter units. If such change was to be implemented, the programmer would have to:
+As with many other dimensions, viscosity can also be affected by the programmer's style of programming. This is exemplified in \lstref{csharp:viscous}, which is taken from one of the solutions in C\#. In order to implement \dquote{concurrent} update, the participant had to construct a new list in the \ttt{Update}-method and wrap the calls to the state methods in \ttt{Task.Run} (e.g. \mintinline{csharp}|updateTasks.Add(Task.Run(() => Flee(fleeingShooter)))|). This change is manageable, but imagine how much effort it would take if we wanted to add an additional state to the units. If such change was to be implemented, the programmer would have to:
 \begin{itemize}
     \item Add an additional list and \ttt{foreach}-statement in \lstref{csharp:viscous}.
     \item Add an additional case to the switch-statement in \ttt{JoinState} in \lstref{csharp:viscous}.
-    \item Change the signature of the \ttt{TransferState}-method in \lstref{csharp:viscous:transfer} to accept an additional list and add an addtitional \ttt{else if} for the third list.
+    \item Change the signature of the \ttt{TransferState}-method in \lstref{csharp:viscous:transfer} to accept an additional list and add an additional \ttt{else if} for the third list.
     \item Add an additional case to the switch in \lstref{csharp:viscous:transfer}, and update the call to \ttt{RemoveFromList} in all other cases.
 \end{itemize}
 An alternative and less viscous solution was implemented by another participant in the test. We have listed that in \apxref{csharp:non:viscous}.
