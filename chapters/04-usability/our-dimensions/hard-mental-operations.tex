@@ -1,7 +1,7 @@
 \subsubsection{Hard Mental Operations}
 The hard mental operations dimension defines how often incomprehensible expressions occur in the code. Hard mental operations often occur in conjunction with boolean expressions\cite{green1996usability}.
 
-Boolean expressions are expressed similarly in C\# and F\#, with the only exception that C\# uses \ttt{!} to negate expressions, whereas F\# uses the \ttt{not} function. We argue that the use of the \ttt{not}-function reduces the perceived ambiguety, because it forces the programmer to parenthesise the expression. We have illustrated an example in \lstref{hard:mental:operations}. In this example the reader may incorrectly assume that the \ttt{\&\&} operator is evaluated before \ttt{!}, and that the expression is evaluated as  \csinline{!(expr1 && expr2)}. That is not the case in F\#, where the parantheses indicate the order of evaluation.
+Boolean expressions are expressed similarly in C\# and F\#, with the only exception that C\# uses \ttt{!} to negate expressions, whereas F\# uses the \ttt{not} function. We argue that the use of the \ttt{not}-function reduces the perceived ambiguity, because it forces the programmer to parenthesise the expression. We have illustrated an example in \lstref{hard:mental:operations}. In this example the reader may incorrectly assume that the \ttt{\&\&} operator is evaluated before \ttt{!}, and that the expression is evaluated as  \csinline{!(expr1 && expr2)}. That is not the case in F\#, where the parentheses indicate the order of evaluation.
 
 \begin{listing}[H]
     \begin{minipage}{.45\textwidth}

@@ -1,5 +1,13 @@
-\section{Functional Programming in Unity}
-% No explanation needed: https://github.com/sppt-2k19/unity-fsharp-integration
-% F# kit: https://assetstore.unity.com/packages/tools/utilities/f-kit-63652
-% Rx in Unity: https://assetstore.unity.com/packages/tools/integration/unirx-reactive-extensions-for-unity-17276
-% Introduction to Rx: https://gist.github.com/staltz/868e7e9bc2a7b8c1f754 
+\section{Functional Programming in Games}
+In this section we examine other projects that research functional programming in game development. These projects range from scientific articles and reports to open-source projects.
+
+\subsubsection{Functional Programming in Unity}
+In parallel to this project, another group on the Programming Technology specialisation course is researching the use of F\# in Unity as well. This project researches how well children, who are members of the Coding Pirates group, and students on the Medialogy course are able to express gameplay code in F\#. In their experiment, the participants are to complete eight tasks, which results in a space invaders game. After solving each task the participant must self-evaluate how well the exercise was completed along with how much effort it took to solve it. The authors found that ...\tmc{Mere her når vi kender konklusionen}\needcite. 
+
+There are several projects that aim to integrate functional programming in Unity. Examples of those are Unity F\# Integration\cite{fsharp2019plugin}, F\# Kit\cite{fsharp:kit} and Arcadia\cite{arcadia:github}. The two former allows the programmer to write gameplay code in F\#, whereas the latter implements Clojure in Unity. It seems that functional programming in Unity is gaining traction, at least in some communities.
+
+\subsubsection{Reactive Programming in Unity}
+Just as there are projects that seek to integrate functional programming in Unity, there are also projects that seek to integrate reactive programming. An example of such is UniRx\cite{unirx}. This project implements a series of extensions that allow the programmer to use reactive programming in Unity. The advantages of this are that keyboard, mouse and other types of input can be treated as event streams and filtered in. Furthermore, they underline the simplicity of implementing parallel and asynchronous web requests\cite{unirx:github}.
+
+\subsubsection{Functional Reactive Programming in Games}
+The scientific community has also shown interest in functional programming in games. \cite{cheong2005functional} implements a \gls{FiPS} game called FRAG in Yampa and Haskell and concludes that it requires fewer lines of code to implement concurrent updates of game objects in Yampa compared to multithreading. This idea of functional reactive programming originate from FRAN\cite{ElliottHudak97:Fran} and was later used to implement the game framework Yampa Arcade\cite{courtney2003yampa}. In previous research we have also examined the use of functional programming in game development\cite{p92018gameplay}, in particular in the game engine Nu, the game framework Helm and in the Arcadia extension for Unity. These projects aim to enable game development in respectively F\#, Haskell and Clojure.

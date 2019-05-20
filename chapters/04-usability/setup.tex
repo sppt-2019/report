@@ -8,15 +8,15 @@ The cheat-sheet served a two-fold purpose and was made available online\footnote
 During the tests we recorded the screen and audio on the test computer. The files were not transcribed, but whenever we quote one of the participants we refer to transcriptions of larger pieces of dialogue that are listed in \appendixref{user:quotes}. We do so in order to give the reader more context on the quotes and avoid \dquote{plucking} sentences out of their context.
 
 \subsubsection{Test Cases} \label{sec:usability:test:cases}
-We created a total of eight test cases, which fall into four categories; player controller, tree traversal, map-reduce and \dquote{concurrent} update. We list concurrent with double ticks here, as the tasks were designed to be implemented with \ttt{async}/\ttt{await} in C\# and asynchronous workflows in F\#. The reason we chose this was that it would be possible for the participants to implement a concurrent version with minor rework, given the right setup. Unity's concurrency models requires more boilerplate code, which we deemed would not provide any useful information.
+We created a total of eight test cases, which fall into four categories; player controller, generalised walkers, map-reduce and \dquote{concurrent} update. We list concurrent with double ticks here, as the tasks were designed to be implemented with \ttt{async}/\ttt{await} in C\# and asynchronous workflows in F\#. The reason we chose this was that it would be possible for the participants to implement a concurrent version with minor rework, given the right setup. Unity's concurrency models requires more boilerplate code, which we deemed would not provide any useful information.
 
 \begin{labeling}{\quad\quad}
     \item[FPS Controller] The participant is to implement a \gls{FiPS} controller, i.e. a component which can be added to a player character to move it around the world with the WASD-keys and rotate the camera with the mouse.
     \item[3rd Person Controller] This test case is similar to the previous test case, only that the camera must rotate around the player character.
     \item[Talent Tree-Walker] The participant is first asked to implement a data structure that can hold a talent tree. Afterwards the player is given a pre-made talent tree from which the participant must calculate two things. At first a character's bonuses in three attributes should be calculated by summing all talents that are \ttt{Picked} and afterwards the maximum achievable bonus of all attributes by summing all talents.
+    \item[Armour Graph] In this test case, the participant is given a list of armour equipped on a character. The participant is to implement code that sums the character's bonus in three attributes from the armour. In the second half of the test, we assume that certain pieces of armour can scale the attributes from all other pieces of armour and ask the participant to calculate the scaled attribute bonuses.] 
     \item[Dialogue Tree Traversal] The participant is to first implement a data structure that can hold a dialogue tree. Afterwards the participant must parse a list of dialogue options into a tree using his own data structure. Finally the participant is to find all unique dialogue paths that has a certain outcome.
     \item[Currency] The participant is presented with three different types of coin. He must first implement code that exchanges a given number of said coins into the minimum number of total coins. Afterwards he should add a function to calculate whether a player can buy a certain item from a vendor and finally implement code that buys the item and updates the player's wallet.
-    \item[Armour Graph] In this test case, the participant is given a list of armour equipped on a character. The participant is to implement code that sums the character's bonus in three attributes from the armour. In the second half of the test, we assume that certain pieces of armour can scale the attributes from all other pieces of armour and ask the participant to calculate the scaled attribute bonuses.
     \item[Unit Management (RTS)] The participant is to implement an inverse state machine, in the sense that it's a state machine that holds collections of entities for each state in the state machine. At each \ttt{Update} the state machine should map the corresponding state's update-function onto each collection to create new collections of entities. Finally the participant is asked to implement a \dquote{concurrent} mapping of the update-function.
     \item[Magnetic objects] The participant is to simulate magnetism. He is presented with a list of objects, some of them which are magnetic. All magnetic objects should be attracted to a common center-point at a given speed. In the second half of this task the participant is asked to implement a \dquote{concurrent} version of the simulation.
 \end{labeling}
@@ -28,8 +28,8 @@ We created a total of eight test cases, which fall into four categories; player 
      \hline
      \textbf{Category} & \textbf{F\# Task} & \textbf{C\# Task} \rowEnd
      Player Controller & FPS Controller & 3rd Person Controller \rowEnd
-     Tree Traversal & Talent Tree & Dialouge Tree \rowEnd
-     Map-Reduce & Armour Graph & Currency \rowEnd
+     Generalised Walkers & Talent Tree & Armour Graph \rowEnd
+     Map-Reduce & Dialogue & Currency \rowEnd
      \dquote{Concurrent} Update & Magnetism & Unit Management \rowEnd
  }{Categories and their associated tasks}{task:categories}
 

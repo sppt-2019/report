@@ -32,9 +32,9 @@ public static async Task<int> SumLeaves(Tree<int> tree, int workBias)
     var sums = tree.Children.Select(c => SumLeaves(c, workBias)).ToList();
     
 #if !DELAY_DEPENDS_ON_LR
-    var wb = Task.Run(() => DoFakeWork(workBias));
+    var workBias = Task.Run(() => DoFakeWork(workBias));
     await Task.WhenAll(sums);
-    var fakeSum = await wb;
+    var fakeSum = await workBias;
 #else
     await Task.WhenAll(sums);
     var fakeSum = DoFakeWork(workBias);
