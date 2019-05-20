@@ -62,6 +62,16 @@ function clear {
 	touch "latex.log"
 }
 
+function extract-log {
+	if [ $# == 1 ] ; then
+		if [ $1 == 'warnings' ] ; then
+			cat latex.log | grep -n "Warning"
+		elif [ $1 == 'errors' ] ; then
+			cat latex.log | grep -n "Error"
+		fi
+	fi
+}
+
 function output {
 	echo "$solid"
 	if [ -e "$build/$target.pdf" ] ; then
@@ -74,31 +84,31 @@ function output {
 	printf "${red}"
 	echo "Errors"
 	echo "$dashed"
-	cat latex.log | grep -n "Error"
+	extract-log 'errors'
 	printf "${clear}"
 
 	echo "$solid"
 	printf "${yellow}"
 	echo "Warnings"
 	echo "$dashed"
-	cat latex.log | grep -n "Warning"
+	extract-log 'warnings'
 	printf "${clear}"
 }
 
 function compile {
 	echo "$solid"
 	if [ $# == 2 ] ; then
-		if [ $2 == "-h" || $2 == "--help" ] ; then
+		if [ $2 == "-h" ] || [ $2 == "--help" ] ; then
 			help
-	    	elif [ $2 == "-q" || $2 == "--quick" ] ; then
+	    	elif [ $2 == "-q" ] || [ $2 == "--quick" ] ; then
 			quick
 			output
-		elif [ $2 == "-rq" || $2 == "--really-quick" ] ; then
+		elif [ $2 == "-rq" ] || [ $2 == "--really-quick" ] ; then
 			really-quick
 			output
      		fi
 	elif [ $# -eq 1 ] ; then
-		if [ $1 == "-h" || $1 == "--help"] ; then
+		if [ $1 == "-h" ] || [ $1 == "--help"] ; then
 			help
 		fi
 	elif [ $# -eq 0 ] ; then
