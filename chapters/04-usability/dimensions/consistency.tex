@@ -19,7 +19,7 @@ In \lstref{type-conf} the participant correctly types the \ttt{\_velocity} varia
 \begin{minted}{fsharp}
 let moveMagneticBalls (objs:GameObject[]) (center:GameObject) =
   objs center |> Array.map (fun i ->
-    i.transform.LookAr(center.transform)
+    i.transform.LookAt(center.transform)
     i.transform.Translate(i.transform.forward * Time.deltaTime * speed))
 \end{minted}
 \caption{Closure Misunderstanding}
