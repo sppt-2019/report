@@ -1,4 +1,4 @@
-\chapter{Conciseness Examples} \label{app:terse-diff-comp}
+\chapter{Code Examples} \label{app:terse-diff-comp}
 \begin{listing}[H]
 \begin{minted}{csharp}
 using System;
@@ -159,4 +159,53 @@ type FRP_ArmourBehaviour() =
 \end{minted}
 \caption{Armour Graph \fs Solution Part 2}
 \label{lst:armour-graph-fs-2}
+\end{listing}
+
+\section{A Less Viscous Implementation of Unit Management} \label{app:csharp:non:viscous}
+\begin{listing}
+\begin{minted}{csharp}
+class StateMachine : MonoBehaviour
+{
+    [...] //Pre-implemented code, such as JoinState
+
+    public List<Shooter> shooterList = new List<Shooter>();
+    public List<State> stateList = new List<State>();
+
+    public void JoinState(Shooter shooter, State state)
+    {
+        shooterList.Add(shooter);
+        stateList.Add(state);
+    }
+
+    public void TransferState(Shooter shooter, State state)
+    {
+        if (shooterList.Contains(shooter))
+        {
+            stateList[shooterList.IndexOf(shooter)] = state;
+        }
+    }
+
+    private void Update()
+    {
+        for (int i = 0; i < shooterList.Count; i++)
+        {
+            switch (stateList[i])
+            {
+                case State.Attacking:
+                    Attack(shooterList[i]);
+                    break;
+                case State.Fleeing:
+                    Flee(shooterList[i]);
+                    break;
+                case State.Moving:
+                default:
+                    Move(shooterList[i]);
+                    break;
+            }
+        }
+    }
+
+    [...] //methods for each unit state
+}
+\end{minted}
 \end{listing}

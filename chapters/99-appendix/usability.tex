@@ -1,50 +1,37 @@
 \chapter{Usability Quote Transcriptions} \label{app:user:quotes}
 
-\section{A Less Viscous Implementation of Unit Management} \label{app:csharp:non:viscous}
-\begin{listing}
-\begin{minted}{csharp}
-class StateMachine : MonoBehaviour
-{
-    [...] //Pre-implemented code, such as JoinState
+\section{Participant 1: F\# Cost/Benefit} \label{app:p1-fs-cost-benefit}
+\monitor{I think we are done uh we are with the test now.}
+\partic{Ok}
+\monitor{What did you think, especially about the first part, of the test?}
+\partic{Yea, I think it was too bad I wasn't better at understanding it.}
+\monitor{Don't think about it like that.}
+\partic{Because I can see the idea behind it. The idea behind instead of running Update, which was my first approach, but instead of relaying on Update just setup event listeners. And handle them, if I had a bit better understanding, I could have done it smarter than handle S, handle A and such. Instead use GetAxis if I had figured that out. In that way it pretty smart and yields more readable code compared to doing it all in Update, which is what I did here.}
+\monitor{So you felt like it forced you to split code into smaller bites? Is that correct?}
+\partic{Yes at least in the case with player controllers, you need to input parse all the time. There it makes much more sense, because generally when we write software we basically never use Update. Because everything we make is usually event based. And it gives much more readable code. We are many that write the same, instead of picking up the phone and asking if anyone is there all the time, it is better to have an event that says: the phone is ringing. I like that a lot, I am a big fan. Syntax-wise I was quite lost.}
+\monitor{Ok, is that something you could get used to or do think it is terrible to read?}
+\partic{It would take a long time. I prefer, which \cs doesn't need to be, very strictly typed, on everything. I can tell imedietly what [type] values are but there are a lot of languages that don't adhere to that. That I don't need to specify it is a float or whatever.}
+\monitor{So types are what would be the hardest to get used to?}
+\partic{Yea, I mean it is only a question of time before you get used to not making semicolons and curly brackets. If that makes more or less readable is difficult to say, because if you are used to the other thing it is probably more readable.}
+\monitor{Would you use this kind of framework for a real project? If you didn't have these issues with syntax and event setup.}
+\partic{That is a good question. No I don't think so.}
+\monitor{How come?}
+\partic{I think I am too used to \cs, especially. I think in the context of what I would be assigned to do, if someone assigned this to me I would do it, but typically it is the more popular languages you are assigned. Some kind of Java derivative, Python, C languages, \cpp or \cs, we never use C today.}
+\monitor{What if it [\fs] offered implicit parallelism, would you use it then?}
+\partic{No, not unless I was assigned to use it. If my boss told me to do it, then I would use it I wouldn't refuse. But I wouldn't use it in my spare time, \cs is too well documented and familiar. It would take a while to get into \fs and the functions I am familiar with from \cs, which also probably exist in \fs. I like this event approach, that you just setup, in start or awake, just setup what you want. And then just get and deal with the code when you need it instead of checking every time. This could also be setup in \cs.}
 
-    public List<Shooter> shooterList = new List<Shooter>();
-    public List<State> stateList = new List<State>();
+\section{Participant 4: F\# Cost/Benefit} \label{app:p4-fs-cost-benefit}
+\monitor{What do you think of the experiment, especially the \fs part}
+\partic{It was very difficult to look at a new language again after such a long time.
 
-    public void JoinState(Shooter shooter, State state)
-    {
-        shooterList.Add(shooter);
-        stateList.Add(state);
-    }
-
-    public void TransferState(Shooter shooter, State state)
-    {
-        if (shooterList.Contains(shooter))
-        {
-            stateList[shooterList.IndexOf(shooter)] = state;
-        }
-    }
-
-    private void Update()
-    {
-        for (int i = 0; i < shooterList.Count; i++)
-        {
-            switch (stateList[i])
-            {
-                case State.Attacking:
-                    Attack(shooterList[i]);
-                    break;
-                case State.Fleeing:
-                    Flee(shooterList[i]);
-                    break;
-                case State.Moving:
-                default:
-                    Move(shooterList[i]);
-                    break;
-            }
-        }
-    }
-
-    [...] //methods for each unit state
-}
-\end{minted}
-\end{listing}
+And I have worked with \cs and \unity almost everyday and I am as familiar with \cs as is needed in \unity, even though there are still things I want to learn like lambda expressions and such, but haven't needed. Therefore I got totally confused by \fs because it is completely different from what I have done before. Therefore I can't tell what it would be like to learn \fs first, whether I would find it easier, because I remember when learning \cpp and \cs with that bracket there and such. It was actually the same thing I was struggling with here, with this F, is called F or \fs?}
+\monitor{\fs}
+\partic{Alright, so it isn't anything I would ever use, but that is because I have used this since 2011.
+It is so integrated in me that I just do that, that, and that and I am happy that I am at the point where I don't need to think about syntax errors, because it is usually logic errors I get. In that regard I am too lazy to learn a new language, but that is also because I use this outside of here, in my spare time, where I don't want to spend a lot of time learning a new language...}
+\monitor{What this way of thinking about the game as events?}
+\partic{I like the way of thinking, because I can see where it is going where you can avoid a lot of unit testing and or not I don't know. What's it called, I mean like older games where errors where unacceptable, but today games just have these kinds of errors because you can just patch it. Whoops, deadlines! Patch, patch, patch, you couldn't do that before. This a language where you really need to know what needs to be in and that this variable mustn't change otherwise things fuck up, possibly. The is just there, the package, it works and you can of course make mutable, but the idea is to try to avoid it, right? The idea of events, I like when things are event based, so you avoid having 3000 update loops spinning around whether or not it is supposed to run, which it isn't 69 times out of a 100 times.
+In that way I can see that it makes sense. It requires, maybe, that you design properly and think this is what I need, of course you can correct the code, but yes that is what I think.}
+\monitor{Do we have any other questions? Yes, what if \fs offered a performance gain, such as implicit parallelism?}
+\partic{I need that explained.}
+\monitor{It means that the code you have written now could be run on multiple cores without additional changes.}
+\partic{As is, I can't see the advantage of that because I already use \unity which manages everything. So there isn't as such any thing [requirement] there. I look at as it works there, there and there, but with to my knowledge I can't see an advantage}
