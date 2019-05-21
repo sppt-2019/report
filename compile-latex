@@ -62,12 +62,20 @@ function clear {
 	touch "latex.log"
 }
 
+function scour {
+	echo "Not implemented yet."
+}
+
 function extract-log {
 	if [ $# == 1 ] ; then
 		if [ $1 == 'warnings' ] ; then
 			cat latex.log | grep -n "Warning"
 		elif [ $1 == 'errors' ] ; then
 			cat latex.log | grep -n "Error"
+		elif [ $1 == 'warnings complex' ] ; then
+			scour 'warnings'
+		elif [ $1 == 'errors complex' ] ; then
+			scour 'errors'
 		fi
 	fi
 }
@@ -97,26 +105,15 @@ function output {
 
 function compile {
 	echo "$solid"
-	if [ $# == 2 ] ; then
-		if [ $2 == "-h" ] || [ $2 == "--help" ] ; then
+	if [ $# -eq 1 ] ; then
+		if [ $1 == "-h" ] || [ $1 == "--help" ] ; then
 			help
-	    	elif [ $2 == "-q" ] || [ $2 == "--quick" ] ; then
+    		elif [ $1 == "-q" ] || [ $1 == "--quick" ] ; then
 			quick
 			output
-		elif [ $2 == "-rq" ] || [ $2 == "--really-quick" ] ; then
+		elif [ $1 == "-rq" ] || [ $1 == "--really-quick" ] ; then
 			really-quick
 			output
-     		fi
-	elif [ $# -eq 1 ] ; then
-		if [ $1 == "-h" ] || [ $1 == "--help"] ; then
-			help
-		fi
-	elif [ $# -eq 0 ] ; then
-		if default-name ; then
-			full
-			output
-		else
-			echo "No build candidate found."
 		fi
 	else
 		full
@@ -186,19 +183,31 @@ function default-name {
 
 function main {
 	if [ $# -gt 0 ] ; then
-		if present ; then
-			clear
-			if [ $# == 2 ] ; then
-				compile $1 $2
+		if [[ $1 == *".tex}" ]] ; then
+			if present ; then
+				clear
+				if [ $# == 2 ] ; then
+					compile $2
+				else
+					compile $1
+				fi
 			else
-				compile $1
+				echo "$1 is not a valid source file."
+				exit 1
 			fi
-		else
-			echo "$1 is not a valid source file."
-			exit 1
+		elif [[ $1 == "-"* ]] ; then
+			clear
+			if default-name ; then
+	                	compile $1
+			else
+				echo "No build candidate found."
+			fi
 		fi
-	else
+	elif default-name ; then
+		clear
 		compile
+	else
+		echo "$1 is not a valid source file and no build candidate was found."
 	fi
 }
 
