@@ -1,1 +1,29 @@
 \chapter{Conclusion}
+In this chapter we conclude on the project by first summarising the project and afterwards answering the research questions that were presented in \secref{problem_statement}. 
+
+\section{Summary}
+In this project we examined the claims of two game development, John Carmack and Tim Sweeney. Their suggestion was to increase the use of functional programming in game development. We examined if their point-of-view were shared by the game development industry in Aalborg by conducting a usability evaluation, where the participants were tasked with implementing gameplay code in F\#. We found that the programmers were reluctant to adopt F\# because they believed that the cost of learning a new language would out-weigh the benefits that F\# could provide. 
+
+In need of stronger incentive to promote F\# we decided to examine if F\# could provide more performant concurrent code than C\#. We found that F\# introduces a performance penalty compared to C\#, which is especially noticeable as problem sizes grow. Furthermore, the Async Workflows concurrency strategy employed by F\# seems to result in less performant parallel code compared to the Task model employed in C\#. The same results were obtained when benchmarking F\# in Unity, where \ttt{MonoBehaviour}s implemented in F\# was a little less performant than those in C\#. The performance of our \gls{FRP} system was even worse, which was caused by a simple and suboptimal implementation, where each \ttt{FRPBehaviour} is in fact a full-blown \gls{FRP} system.
+
+\section{Research Questions}
+We relist the research questions here for convenience:
+\begin{center}
+    \begin{enumerate}
+        \item \textbf{How well does experienced game developers express gameplay code in F\#?}
+        \item How can F\# be incorporated in game development?
+        \item What are the advantages and disadvantages of using functional programming in a game development setting?
+        \item What are the performance impacts of using F\# in a game engine?
+    \end{enumerate}
+\end{center}
+
+\subsection{Expressing Gameplay Code in F\#}
+
+\subsection{Incorporating F\# in Game Development}
+In this project we chose to add support for F\# in Unity by installing a 3rd party plugin. Using this plugin we implemented a simple \gls{FRP} system that allows gameplay programmers to employ the functional reactive programming paradigm. The participants of the usability evaluation agreed that event-driven programming is well-suited in game development and voiced that it would improve quality of their code.
+
+\subsection{Advantages and Disadvantages of Functional Programming in Game Development}
+
+
+\subsection{Performance Impacts of F\#}
+Using a set of benchmarks we determined that F\# introduces an overhead compared to C\#. We implemented three different benchmarks in this project; binary tree summation/accumulation, matrix summation and unit management. All the benchmarks showed that F\# was slightly slower than equivalent code in C\#. Furthermore, the binary tree summation/accumulation benchmark showed that the Async Workflow concurrency model in F\# was much slower the other concurrent implementations. As C\# and F\# run on the same platform, programmers may use C\#'s Task model in F\#, which yields only slightly slower code in F\#.
