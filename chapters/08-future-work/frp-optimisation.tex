@@ -1,4 +1,4 @@
-\subsection{FRP Optimisation}
+\subsection{FRP Optimisation} \label{sec:fw:frp:optimisation}
 The problems with the \gls{FRP} system is that each \ttt{FRPBehaviour} is actually a full-blown \gls{FRP}-system with condition-checking and event-dispatching. The \gls{FRP} system could well be a singleton, as this means that conditions are only checked once.
 
 Solving this problem would require a larger refactoring, as this relates to the Unity lifecycle of \ttt{GameObject}s. First and foremost some Unity methods are required to be tied to the \ttt{GameObject} they belong to. Examples of such methods are \ttt{OnCollisionEnter} and \ttt{OnTriggerExit}. Other methods, such as \ttt{Update} and reacting to keyboard strokes could, on the other hand, be tied to a \ttt{FRPEngine}. In this approach the programmer will register each \ttt{FRPBehaviour} to the set of events he would like to react to along with a condition and a handler.
