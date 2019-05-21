@@ -124,6 +124,14 @@ After overcoming the initial overhead, the concurrent solutions handle increasin
     \plotData{Tasks}{\matrixSumData}
 }
 
+In \figref{linpack-summation-cs-vs-fs} we have plotted the concurrent implementations in C\# and F\#. This plot shows that the Task implementation in F\# is faster with smaller problem sizes. It remains the fastest up until N is around 128. After that point the C\# Task implementation becomes the fastest and continues to remain so. It seems to scale better with problem sizes than the other implementations. The parallel foreach implementations lie around the same running time, meaning that the languages are equally performant with that concurrency strategy.
+\barChart*[7][\linpackSymbolics][Run Time (ns)][Size of matrix colums and rows]{Matrix Summation in C\# compared to F\#}{linpack-summation-cs-vs-fs}{
+    \plotDataWithErrorAndLegend{Parallel Foreach}{\matrixSumDataCsharp}{C\# Parallel Foreach}
+    \plotDataWithErrorAndLegend{Tasks}{\matrixSumDataCsharp}{C\# Tasks}
+    \plotDataWithErrorAndLegend{Parallel Foreach}{\matrixSumData}{F\# Parallel Foreach}
+    \plotDataWithErrorAndLegend{Tasks}{\matrixSumData}{F\# Tasks}
+}
+
 \subsection{Discussion}
 Our results show, first and foremost, that there is an initial overhead in concurrent programming. In order to speed up a computation the task sizes must exceed a certain threshold. Our results show that this threshold lies around the size of 1024-4096 iterations in a for-loop that increments a variable\tmc{Måske skal vi tælle nogle instruktioner her?}, but also that it varies with the type of problem. Furthermore, the results show that the concurrency of lenient evaluation strategy in these cases is similar to that of classic concurrency strategies, but that the choice of problems in \cite{DBLP:journals/cl/Tremblay-parallel} is not well suited to parallelisation. Finally C\#'s \ttt{Task}-model seems to handle the matrix summation problem well, after exceeding the threshold of roughly 512 summations in each column.
 
