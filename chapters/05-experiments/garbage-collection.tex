@@ -191,7 +191,7 @@ In general, the incremental \gls{GC} has lower variation, except from Mono after
   \plotDataWithError{Incremental Mono}{\aiCsharpGCDataCol}
 }
 
-We also tested the two \glspl{GC} with the \gls{FRP}-system we developed in F\#. The results are plotted in \figref{ai:benchmark:fsharp:gc:bar}. These results show that the incremental \gls{GC} performs slightly better than the original one. However, it comes at the cost of much higher variation in the framerate, especially in the Mono runtime. The IL2CPP incremental curve has large spikes up until around the 200th frame, after which point it stabilises within 5-8 \gls{FPS} variation. The Mono curve continues to variate with nearly 30 \gls{FPS}.
+We also tested the two \glspl{GC} with the \gls{FRP}-system we developed in F\#. The results are plotted in \figref{ai:benchmark:fsharp:gc:bar}. These results show that the incremental \gls{GC} performs slightly better than the original one. However, it comes at the cost of much higher variation in the framerate, especially in the Mono runtime. The IL2CPP incremental curve has large spikes up until around the 200th frame, after which point it stabilises. The Mono curve continues to variate between an average of 10 \gls{FPS} to over 30 \gls{FPS}.
 
 \barChart[5][enlarge x limits={value=0.035,auto},width=1.3\textwidth,xtick=data,\symbolic{0-49,50-99,100-149,150-199,200-249,250-299,300-349,350-399,400-449,450-499,500-549,550-599,600-649,650-699,700-749,750-799,800-849,850-899}][FPS][Frame No.]{FPS for each frame in F\# using the two different Unity GC}{ai:benchmark:fsharp:gc:bar}{
   \plotDataWithError{il2cpp}{\aiFsharpGCDataCol}
