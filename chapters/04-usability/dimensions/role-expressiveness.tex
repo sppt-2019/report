@@ -1,4 +1,9 @@
+\subsection{Role-expressiveness}
+In F\# the last expression in a function body is implicitly what it returns. In some cases that should not be the case and the function should return \ttt{Unit} (equivalent to C\#'s \ttt{void}). This can be done by adding \ttt{()} as the last line of the function body. This confused some of the participants, as they felt that it was unnecessary to explicitly indicate a non-existing return type. One of the participants even asked directly what \ttt{Unit} and the monitor answered with an explanation. Approximately fifteen minutes later the participant encountered another \ttt{Unit}-type problem and was unable to recover single-handedly.
 
+Another role-expressiveness problem we encountered was that some participants attempted to \ttt{let} declare multiple values without initialising them. We assumed that \ttt{let} declarations without assignment would result in default values (such as \ttt{null} for classes). The same participant also attempted to add a class to his solution and did not realise that the brackets after the type's name could be used to pass constructor arguments, before he was told by the monitor. 
+
+A single participant also claimed that he found the F\# pipe operations were \dqoute{not nice to read}. He stated that he would rather prefer the SQL-like variation of \gls{LINQ} in C\# because it is closer to plain English. The monitor asked if it was related to the names of the functions (\ttt{map} and \ttt{reduce} or \ttt{Select} and \ttt{Aggregate}), to which the participant stated that it was solely related to the way pipe operations were structured.
 % Participant 6: Hvad betyder () - 4:30 + Unit!? - 20:30
 % Default værdier på variable using let
 % Participant 6: Type constructors
