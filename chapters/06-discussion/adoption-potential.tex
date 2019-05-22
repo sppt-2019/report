@@ -8,19 +8,43 @@ Several participants stated that \cs was simply more prevalent, therefore additi
 
 Participant 1 states that they would not use \fs, unless specifically asked to do so. Learning a new language or tool takes too long time, even when the benefits of the tool or language are evident. This is echoed by participant 4.
 
-\quoteParticipant{It was very difficult to look at a new language again after such a long time. And I have worked with \cs and \unity almost everyday and \textbf{I am as familiar with \cs as is needed in \unity}
-[...]\\.
+\quoteParticipant{And I have worked with \cs and \unity almost everyday and \textbf{I am as familiar with \cs as is needed in \unity}
+[...]\\
 Alright, so it isn't anything I would ever use, but that is because I have used this since 2011. \textbf{It is so integrated in me that I just do that, that, and that} and I am happy that I am at the point where I don't need to think about syntax errors, because it is usually logic errors I get.}{Participant 4}{p4-debrief}
 
 This is inline with the literature, which states (among other things) that developers tend to select languages they feel they know\cite{meyerovich2013empirical}. However participant 4's sentiment; that new languages are mainly useful for larger development studios, is in contradiction with the literature where evidence points to the opposite. Finally, the domain specificity i.e. the \gls{FRP} system, is a factor for adoption. This is also inline with the research.
 
 \subsection{Learning Overhead \& Cost}
-All participants struggled with \fs's syntax, which was expected, this can be seen in \tabref{participant-scores}. This was also a factor in participants decision making process. While \fs was a new language, it also presented a new paradigme. This paradigme shift was noted by several participants as a difficulty factor.
+All participants struggled with \fs's syntax, which was expected, this can be seen in \tableref{participant-scores}. This was also a factor in participants' decision making process. While \fs was a new language, it also presented a new paradigme. This paradigme shift was a difficulty factor for the participants, but few mentioned the shift directly.
+
+\quoteParticipant{I really like functional, but now that I tried programming for games I am not sure. I have talked about wanting to try using functional programming for games.}{Participant 6}{p6-debrief}
+
+However, most participants did not take note of the paradigmatic changes directly. Instead their focus was on the syntactical differences as well as the new keywords and operators. This may be caused by the their limited experience with \fs and that the paradigme shift may become more apparent to the participants.
 
 \quoteParticipant{It was very difficult to look at a new language again after such a long time.}{Participant 4}{p4-debrief}
 
 \quoteParticipant{However syntax-wise I was quite lost.}{Participant 1}{p1-debrief}
 
-Participants where made aware of a potential advantage of \fs; the higher parallelisability, which may afford developer greater utilisation of the system resources. However, participant 5 pointed out that \dquote{\textit{Performance is provided by the engine, not the game}}\footnote{The footage of the fifth test was lost, therefore any and all quotes from participant 5 are those recorded by the test observer during the test.}, which explains why none of the participants where particularly interessered in \fs's potential for easier or even implicit parallelisation. Therefore the fact that \cs is the only officially supported language in \unity.
+All participants, except 6, had very limited experience with the functional paradigme. The five first participants had Medialogy educations and this course does not teach functional programming and, according to the literature, only 15\% of computer science students learn functional programming languages if they are not taught during their education\cite{meyerovich2013empirical}. Therefore participants face a high learning cost in regards to \fs. They must acquaint themselves with both a new paradigme and language.
+
+Participants where made aware of a potential advantage of \fs; the higher parallelisability, which may afford developer greater utilisation of the system resources. However, participant 5 pointed out that \dquote{\textit{Performance is provided by the engine, not the game}}\footnote{The footage of the fifth test was lost, therefore any and all quotes from participant 5 are those recorded by the test observer during the test.}, which explains why none of the participants where particularly interessered in \fs's potential for easier or even implicit parallelisation.
 
 \subsection{Comfort Zone}
+As earlier stated developers tend to select programming languages that they are familiar with\cite{meyerovich2013empirical}, this is reflected by the participants as well. Both participants 1 and 4 suggested that they where too used to \cs to switch to \fs. Furthermore, participant 1 stated that the languages used tended to be the more popular languages.
+
+\quoteParticipant{I think in the context of what I would be assigned to do, if someone assigned this to me I would do it, but typically it is the more popular languages you are assigned.}{Participant 1}{p1-debrief}
+
+In addition most participants had developed habits from \cs that they would have to unlearn or manage to productively write \fs. Syntactically the habits consisted of writing semicolons, curly braces and explicitly writing types in front of variables. On the semantic side, the inversion of access modifier defaults, immutability and implicit returns posed the largest challenge.
+
+\quoteParticipant{Yea, I mean it is only a question of time before you get used to not making semicolons and curly brackets.}{Participant 1}{p1-debrief}
+
+\quoteParticipant{It would help a lot if I had longer time work with a project.}{Participant 6}{p6-debrief}
+
+Participants largely agreed that the habitual issues would disappear with more practice. Given more experience with \fs and experience with actual projects and problems, the paradigmatic differences may become more apparent to the participants.
+
+\subsection{Difference of Priority}
+Some of the potential benefits offered by \fs are not as appealing to the participants as initially believed. Surprisingly multiple  participant expressed that performance was not a concern, this is in direct conflict with literature on software developers in general\cite{meyerovich2013empirical}. In addition productivity was deemed more important than program correctness.
+
+\quoteParticipant{As is, I can't see the advantage of that because I already use \unity which manages everything. So there isn't as such any thing [requirement] there.}{Participant 4}{p4-debrief}
+
+Participant 5 expressed that \fs was more readable because it forced correct program structure, but still maintained that this was less important than the productivity of the developer writing the program. Due to internet distribution platforms, bugs can be fixed at a later date and meeting the initial deadline is the main challenge. Furthermore, we speculate that games have a shorter lifetime than other software products and therefore maintenance is of lower priority.
