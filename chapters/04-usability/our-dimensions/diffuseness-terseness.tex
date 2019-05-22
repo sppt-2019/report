@@ -31,9 +31,9 @@ The approach taken in \fs is somewhat different, the solution can be seen in \ls
 
 The \fs is slightly longer then the \cs implementation, this is due to dividing the functionality into several smaller functions. This lengthened the implementation of the first solution, but reduced the overall length of the code. The \cs code ended up being 35 lines longer than the \fs code. The full examples can be seen in \appref{terse-diff-comp}.
 
-The most prominent syntactic differences between \cs and \fs are the operators, scope delimiters and line end delimiters. In \cs blocks are denoted using the \m{\{} and \m{\}} symbols, where in \fs indents are used. In addition statements are terminated using a \m{;} in \cs, where a newline character is used in \fs. These differences mean that \fs uses fewer symbols in general than \cs, however some programmers find the "light" syntax more difficult to read \needcite.
+The most prominent syntactic differences between \cs and \fs are the operators, scope delimiters and line end delimiters. In \cs blocks are denoted using the \m{\{} and \m{\}} symbols, where in \fs indents are used. In addition statements are terminated using a \m{;} in \cs, where a newline character is used in \fs. These differences mean that \fs uses fewer symbols in general than \cs, however some programmers find the "light" syntax more difficult to read\cite{fsharp:light:love}.
 
-Another difference that greatly affects terseness/diffuseness is approach to code reuse the languages use. In \cs inheritance and the Composite Pattern \needcite are often used \needcite. In \fs function composition or chaining, is often used to increase code reuse. Both approaches reduce the codebase, but do so in different ways.
+Another difference that greatly affects terseness/diffuseness is approach to code reuse the languages use. In \cs inheritance and the Composite Pattern\cite{composite:pattern} are often used\cite{csharp:composite:pattern}. In functional languages function composition, chaining and currying is often used to implement design patterns\cite{functional:design:patterns}. Both approaches reduce the codebase, but do so in different ways.
 
 \begin{listing}[H]
 \begin{minted}{fsharp}
