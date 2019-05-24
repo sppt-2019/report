@@ -2,11 +2,11 @@
 
 # Separate the filename and extension
 if [ $# -gt 0 ] ; then
-    IFS='.' read -r target extension _ <<<"$1"
-    [[ $target ]] || { echo "File name invalid." >&2; exit 1; }
+	IFS='.' read -r target extension _ <<<"$1"
+	[[ $target ]] || { echo "File name invalid." >&2; exit 1; }
     if [[ $extension && $extension != "tex" ]] ; then
-	echo "File extensions: $extension not supported." >&2
-	exit 1
+		echo "File extensions: $extension not supported." >&2
+		exit 1
     fi
 fi
 
@@ -31,11 +31,11 @@ green="\033[0;32m"
 clear="\033[0m"
 
 # pdflatex arguements
-args="-shell-escape -interaction=nonstopmode -output-directory=$build"
+args="-shell-escape -interaction=nonstopmode -file-line-error -output-directory=$build"
 
 # Functions
 function help {
-    echo "compile-latex use"
+	echo "compile-latex use"
     echo  "$dashed"
     echo "'compile-latex [FILE, FILE.tex] compiles the file tree times with pdflatex and once with bibtex"
     echo "$dashed"
@@ -48,86 +48,77 @@ function help {
 
 function clear {
     # Clear output directory
-    if [ -e "$build" ] ; then
-	     rm -rf $build
-	     mkdir $build
+	if [ -e "$build" ] ; then
+		rm -rf $build
+	    mkdir $build
     else
-	     mkdir $build
+		mkdir $build
     fi
 
     # Clear log file, maybe this is unnecessary
     if [ -e latex.log ] ; then
-	     rm "latex.log"
+		rm "latex.log"
     fi
     touch "latex.log"
 }
 
 function extract-log {
-    if [ $1 == 'errors' ] ; then
-    python3 << END
+    python3 - $1 << END
 import re
+import sys
 
-errors = []
-error = ""
-file_name = ''
-reading = False
-
+lines = []
 with open("latex.log") as file:
 	lines = file.readlines()
-linenum = 0
-for line in lines:
-	if(reading == False):
-		if(line.startswith('! ')):
+
+def read_errors() -> list:
+	messages = []
+	for line in lines:
+		match = re.match('[a-zA-z/\\.]+:[0-9]+:.*', line)
+		if(match != None):
+			res = match.group(0).split(':')
+			if(not 'build/' in res[0]):
+				messages.append((res[0].replace('./',''), res[1], res[2]))
+	return messages
+
+def read_warnings() -> list:
+	messages = []
+	message = ''
+	reading = False
+	for line in lines:
+		if(reading == True):
+			if(line is '\n'):
+				messages.append(message)
+				reading = False
+			else:
+				message = message + line
+		elif('Warning:' in line or 'warning' in line):
+			message = '' + line
 			reading = True
-			error = ''
-			error = error + line
-			file_name = ''
-			for i in range(linenum, 0, -1):
-				if('(./' in lines[i] and not ')' in lines[i]):
-					file_name = lines[i]
-					file_name = file_name.split('(./', 2)[1].split(' ', 2)[0]
-					break
-	elif(not line.startswith('l.')):
-		error = error + line
-	else:
-		lnnum = line
-		lnnum = lnnum.splitlines()[0].replace('l.','')
-		lnnum = re.sub("[^0-9]", "", lnnum)
-		errors.append((file_name, error, lnnum))
-		reading = False
-		error = ""
-		file_name = ''
-	linenum += 1
-print("Errors: " + str(len(errors)))
-print("---------------------------------------")
-for er in errors:
-	f, e, l = er
-	etext = " ".join(e.split())
-	print('{0:75.75} {2:6.5}{1}'.format(f.strip(), etext, l))
+	return messages
+
+def print_errors() -> None:
+	errors = read_errors()
+	print("Errors: " + str(len(errors)))
+	print("---------------------------------------")
+	for er in errors:
+		f, l, e = er
+		etext = ' '.join(e.split())
+		print('{0:60.60} {2:6.5}{1}'.format(f.strip(), etext, l))
+
+def print_warnings() -> None:
+	warnings = read_warnings()
+	print("Warnings: " + str(len(warnings)))
+	print("---------------------------------------")
+	for war in warnings:
+		w = ' '.join(war.split())
+		print(w)
+if(sys.argv[1] == 'errors'):
+	print_errors()
+elif(sys.argv[1] == 'warnings'):
+	print_warnings()
+
 END
-    elif [ $1 == 'warnings' ] ; then
-        python3 << END
-warnings = []
-with open("latex.log") as file:
-	lines = file.readlines()
-file_name = ''
-linenum = 0
-for line in lines:
-	if ('Warning: ' in line):
-		for i in range(linenum, 0, -1):
-			if('(./' in lines[i] and not ')' in lines[i]):
-				file_name = lines[i]
-				file_name = file_name.split('(./', 2)[1].split(' ', 2)[0]
-				break
-		warnings.append((file_name, line))
-	linenum += 1
-print("Warnings: " + str(len(warnings)))
-print("---------------------------------------")
-for war in warnings:
-	f, w = war
-	print('{0:81.75} {1}'.format(f.strip(), w.strip()))
-END
-fi
 }
 
 function output {
