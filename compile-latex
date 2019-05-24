@@ -2,12 +2,12 @@
 
 # Separate the filename and extension
 if [ $# -gt 0 ] ; then
-	IFS='.' read -r target extension _ <<<"$1"
-	[[ $target ]] || { echo "File name invalid." >&2; exit 1; }
-	if [[ $extension && $extension != "tex" ]] ; then
-		echo "File extensions: $extension not supported." >&2
-		exit 1
-	fi
+    IFS='.' read -r target extension _ <<<"$1"
+    [[ $target ]] || { echo "File name invalid." >&2; exit 1; }
+    if [[ $extension && $extension != "tex" ]] ; then
+	echo "File extensions: $extension not supported." >&2
+	exit 1
+    fi
 fi
 
 # Output directory
@@ -35,49 +35,99 @@ args="-shell-escape -interaction=nonstopmode -output-directory=$build"
 
 # Functions
 function help {
-	echo "compile-latex use"
-	echo  "$dashed"
-	echo "'compile-latex [FILE, FILE.tex] compiles the file tree times with pdflatex and once with bibtex"
-	echo "$dashed"
-	echo "Arguements"
-	echo "$dashed"
-	echo "'-h' displays this help message"
-	echo "'-q' option or quick mode, compiles the given file twice with pdflatex"
-	echo "'-rq' option or really quick mode, compiles the given file with pdflatex once"
+    echo "compile-latex use"
+    echo  "$dashed"
+    echo "'compile-latex [FILE, FILE.tex] compiles the file tree times with pdflatex and once with bibtex"
+    echo "$dashed"
+    echo "Arguements"
+    echo "$dashed"
+    echo "'-h' displays this help message"
+    echo "'-q' option or quick mode, compiles the given file twice with pdflatex"
+    echo "'-rq' option or really quick mode, compiles the given file with pdflatex once"
 }
 
 function clear {
-	# Clear output directory
-	if [ -e "$build" ] ; then
-	    rm -rf $build
-	    mkdir $build
-	else
-	    mkdir $build
-	fi
+    # Clear output directory
+    if [ -e "$build" ] ; then
+	     rm -rf $build
+	     mkdir $build
+    else
+	     mkdir $build
+    fi
 
-	# Clear log file, maybe this is unnecessary
-	if [ -e latex.log ] ; then
-	    rm "latex.log"
-	fi
-	touch "latex.log"
-}
-
-function scour {
-	echo "Not implemented yet."
+    # Clear log file, maybe this is unnecessary
+    if [ -e latex.log ] ; then
+	     rm "latex.log"
+    fi
+    touch "latex.log"
 }
 
 function extract-log {
-	if [ $# == 1 ] ; then
-		if [ $1 == 'warnings' ] ; then
-			cat latex.log | grep -n "Warning"
-		elif [ $1 == 'errors' ] ; then
-			cat latex.log | grep -n "Error"
-		elif [ $1 == 'warnings complex' ] ; then
-			scour 'warnings'
-		elif [ $1 == 'errors complex' ] ; then
-			scour 'errors'
-		fi
-	fi
+    if [ $1 == 'errors' ] ; then
+    python3 << END
+import re
+
+errors = []
+error = ""
+file_name = ''
+reading = False
+
+with open("latex.log") as file:
+	lines = file.readlines()
+linenum = 0
+for line in lines:
+	if(reading == False):
+		if(line.startswith('! ')):
+			reading = True
+			error = ''
+			error = error + line
+			file_name = ''
+			for i in range(linenum, 0, -1):
+				if('(./' in lines[i] and not ')' in lines[i]):
+					file_name = lines[i]
+					file_name = file_name.split('(./', 2)[1].split(' ', 2)[0]
+					break
+	elif(not line.startswith('l.')):
+		error = error + line
+	else:
+		lnnum = line
+		lnnum = lnnum.splitlines()[0].replace('l.','')
+		lnnum = re.sub("[^0-9]", "", lnnum)
+		errors.append((file_name, error, lnnum))
+		reading = False
+		error = ""
+		file_name = ''
+	linenum += 1
+print("Errors: " + str(len(errors)))
+print("---------------------------------------")
+for er in errors:
+	f, e, l = er
+	etext = " ".join(e.split())
+	print('{0:75.75} {2:6.5}{1}'.format(f.strip(), etext, l))
+END
+    elif [ $1 == 'warnings' ] ; then
+        python3 << END
+warnings = []
+with open("latex.log") as file:
+	lines = file.readlines()
+file_name = ''
+linenum = 0
+for line in lines:
+	if ('Warning: ' in line):
+		for i in range(linenum, 0, -1):
+			if('(./' in lines[i] and not ')' in lines[i]):
+				file_name = lines[i]
+				file_name = file_name.split('(./', 2)[1].split(' ', 2)[0]
+				break
+		warnings.append((file_name, line))
+	linenum += 1
+print("Warnings: " + str(len(warnings)))
+print("---------------------------------------")
+for war in warnings:
+	f, w = war
+	print('{0:81.75} {1}'.format(f.strip(), w.strip()))
+END
+fi
 }
 
 function output {
@@ -90,15 +140,10 @@ function output {
 	fi
 	echo "$solid"
 	printf "${red}"
-	echo "Errors"
-	echo "$dashed"
 	extract-log 'errors'
 	printf "${clear}"
-
 	echo "$solid"
 	printf "${yellow}"
-	echo "Warnings"
-	echo "$dashed"
 	extract-log 'warnings'
 	printf "${clear}"
 }
@@ -211,5 +256,5 @@ function main {
 	fi
 }
 
-# Main script behaviour	
+# Main script behaviour
 main $@
