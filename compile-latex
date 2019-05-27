@@ -51,15 +51,21 @@ function clear {
 	if [ $1 == "log" ] ; then
     	if [ -e latex.log ] ; then
 			rm $log
+			echo "$log cleared"
 	    fi
     	touch $log
 	elif [ $1 == "build" ] ; then
 		rm -rf $build
 		rm -rf _minted*
+		echo "$build cleared"
+		echo "minted cache cleared"
 	elif [ $1 == "all" ] ; then
 		rm -rf $build
 		rm -rf _minted*
 		rm $log
+		echo "$build cleared"
+		echo "minted cache cleared"
+		echo "$log cleared"
 	fi
 }
 
