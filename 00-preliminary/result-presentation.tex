@@ -62,8 +62,11 @@ symbolic x coords={,
 % m #6 Label
 % m #7 Plots
 \NewDocumentCommand\lineChart{sO{}O{Logarithmic Run Time (ns)}O{Lower is better}mmm}{%
+
 \begin{figure}[H]
 \makebox[\textwidth][c]{
+\tikzexternalenable
+\tikzsetnextfilename{#6}
 \begin{tikzpicture}
     \begin{axis}[
         ylabel={#3},
@@ -87,7 +90,8 @@ symbolic x coords={,
     ]
     #7
     \end{axis}
-\end{tikzpicture}}
+\end{tikzpicture}
+\tikzexternaldisable}
 \caption{#5}
 \label{fig:#6}
 \end{figure}
@@ -105,6 +109,8 @@ symbolic x coords={,
 \NewDocumentCommand\barChart{sO{12}O{}O{Run Time (ns)}O{Lower is better}mmm}{%
     \begin{figure}[H]
     \makebox[\textwidth][c]{
+    \tikzexternalenable
+    \tikzsetnextfilename{#7}
     \begin{tikzpicture}
         \begin{axis}[
             ylabel={#4},
@@ -130,7 +136,8 @@ symbolic x coords={,
         ]
         #8
         \end{axis}
-    \end{tikzpicture}}
+    \end{tikzpicture}
+    \tikzexternaldisable}
     \caption{#6}
     \label{fig:#7}
 \end{figure}

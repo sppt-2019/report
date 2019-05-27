@@ -68,7 +68,9 @@
 \usepackage{pgfplotstable}
 \pgfplotsset{compat=1.15}
 \usepackage{tikz}
-\usetikzlibrary{arrows,arrows.meta, fit, backgrounds, positioning, automata, shapes}
+\usetikzlibrary{arrows,arrows.meta, fit, backgrounds, positioning, automata, shapes, external}
+\tikzsetexternalprefix{prefix=diagrams/}
+\tikzset{external/system call={pdflatex -shell-escape -halt-on-error -interaction=nonstopmode -jobname "\image" "\texsource"}}
 \usepackage{enumitem}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Mathematics
@@ -140,7 +142,10 @@
   textwidth=\marginparwidth, %set the width of the todonotes
   textsize=scriptsize, %size of the text in the todonotes
   ]{todonotes}
-
+%%% todonotes thing %%%
+\makeatletter
+\renewcommand{\todo}[2][]{\tikzexternaldisable\@todo[#1]{#2}\tikzexternalenable}
+\makeatother
 \usepackage[T1]{fontenc}
 \usepackage{inconsolata}
 \usepackage{color}
@@ -191,7 +196,12 @@
     }
 }}
 
-\usepackage[outputdir=build]{minted}
+\ifcsname tikzexternalrealjob\endcsname
+    \usepackage[draft, outputdir=build]{minted}
+\else
+    \usepackage[cache, outputdir=build]{minted}
+\fi
+
 \input{00-preliminary/minted-options.tex}
 % Quotations package
 \usepackage[autostyle]{csquotes}
