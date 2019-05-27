@@ -77,7 +77,7 @@ def read_errors() -> list:
 		match = re.match('[a-zA-z/\\.]+:[0-9]+:.*', line)
 		if(match != None):
 			res = match.group(0).split(':')
-			if(not 'build/' in res[0]):
+			if(not 'minted' in res[0]):
 				messages.append((res[0].replace('./',''), res[1], res[2]))
 	return messages
 
@@ -104,7 +104,7 @@ def print_errors() -> None:
 	for er in errors:
 		f, l, e = er
 		etext = ' '.join(e.split())
-		print('{0:60.60} {2:6.5}{1}'.format(f.strip(), etext, l))
+		print('{1} {0} {2}'.format(f.strip(), etext, l))
 
 def print_warnings() -> None:
 	warnings = read_warnings()
