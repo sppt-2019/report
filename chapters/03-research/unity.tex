@@ -7,7 +7,7 @@ Unity's C\# Job System provides a \textit{"simple and safe"} way of writing mult
 Jobs in Unity must be implemented as \ttt{struct}s that implement one of the \ttt{IJob}-interfaces. This interface defines an \ttt{Execute}-method, in which the concurrent code must be written. Jobs can be scheduled by calling one of the \ttt{Schedule}-methods, which returns a \ttt{JobHandle}, which can be used to manage dependencies between jobs. The developer is fully in charge of figuring out the dependencies between the jobs, as Unity does not provide any means of dependency management\cite{unity:csharp:job:system}.
 
 \lstref{unity:job:example} shows an example that moves forward all bullets in a game using a job.
-\begin{listing}
+\begin{listing}[H]
 \begin{minted}{csharp}
 public class BulletJobSystem : MonoBehaviour {
     //This array holds all bullets that need to be moved
@@ -70,7 +70,7 @@ The advantage of \glspl{ECS}, compared to scene graphs, are that they tend to in
 
 \begin{listing}
 \begin{minted}{csharp}
-//MoveForward component. Defines data that is needed to move forward    
+//MoveForward component. Defines data that is needed to move forward
 struct MoveForward {
     public float Speed;
 }
