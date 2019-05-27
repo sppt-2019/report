@@ -48,12 +48,15 @@ function help {
 
 function clear {
     # Clear output directory
-	if [ -e "$build" ] ; then
-		rm -rf $build
-	    mkdir $build
-    else
+	if [ ! -e "$build" ] ; then
 		mkdir $build
-    fi
+		mkdir "$build/diagrams"
+	elif [ ! -e "$build/diagrams" ] ; then
+			mkdir "$build/diagrams"
+		fi
+	if [ ! -e "diagrams" ] ; then
+		mkdir "diagrams"
+	fi
 
     # Clear log file, maybe this is unnecessary
     if [ -e latex.log ] ; then
@@ -162,11 +165,11 @@ function compile {
 function full {
     start=$SECONDS
     echo -ne "Compiling $zero"
-    pdflatex $args "$target.tex" > "latex.log"
+    pdflatex $args "-draftmode" "$target.tex" > "latex.log"
     echo -ne "Compiling $twentyfive"
     biber "$build/$target.bcf" > "latex.log"
     echo -ne "Compiling $fifty"
-    pdflatex $args "$target.tex" > "latex.log"
+    pdflatex $args "-draftmode" "$target.tex" > "latex.log"
     echo -ne "Compiling $seventyfive"
     pdflatex $args "$target.tex" > "latex.log"
     echo -ne "Compiling $hundred"
