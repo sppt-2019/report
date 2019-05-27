@@ -1,4 +1,4 @@
-\section{Implicit Parallelisation}
+\section{Implicit Parallelisation}\label{sec:implicit-para}
 Functional programming has long claimed to be inherently parallelisable\cite{hudak1986functional, loidl1998granularity}. The claimed advantage of functional programs is the high degree of modularity, which simplifies the parallelisation process. A number of languages have attempted to implement programming systems the utilise this advantage, however few have reached mainstream use. In this section we will explores the theoretical background for a implementing a implicitly parallelisable system in \fs.
 
 First different evaluation strategies are explored, since \fs supports both strict and non-strict evaluation. In addition to these to dominant evaluation strategies, another promising strategy, called lenient evaluation, is examined. Once the strategies are outlined, the question of when to parallelise is addressed with the work/span methodology.
