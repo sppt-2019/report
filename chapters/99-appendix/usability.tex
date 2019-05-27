@@ -1,24 +1,24 @@
 \chapter{Usability Quote Transcriptions} \label{app:user:quotes}
 
 \section{Participant 1: F\# Debrief} \label{app:p1-debrief}
-\monitor{I think we are done uh we are with the test now.}
+\monitor{I think we are done... uh... we are done with the test now.}
 \partic{Ok}
 \monitor{What did you think, especially about the first part, of the test?}
-\partic{Yea, I think it was too bad I wasn't better at understanding it.}
+\partic{Yea, I think it was too bad that I wasn't better at understanding it.}
 \monitor{Don't think about it like that.}
-\partic{Because I can see the idea behind it. The idea behind instead of running Update, which was my first approach, but instead of relaying on Update just setup event listeners. And handle them, if I had a bit better understanding, I could have done it smarter than handle S, handle A and such. Instead use GetAxis if I had figured that out. In that way it pretty smart and yields more readable code compared to doing it all in Update, which is what I did here.}
+\partic{Because I can see the idea behind it. The idea behind instead of running Update, which was my first approach anyway, but instead of running Update you just setup event listeners. And handle them, if I had a bit better understanding, I could have done it smarter than handle W, handle S, handle A and such. Instead use GetAxis if I had figured that out. In that way it pretty smart and yields more readable code compared to doing it all in Update, which is what I did here.}
 \monitor{So you felt like it forced you to split code into smaller bites? Is that correct?}
-\partic{Yes at least in the case with player controllers, you need to input parse all the time. There it makes much more sense, because generally when we write software we basically never use Update. Because everything we make is usually event based. And it gives much more readable code. We are many that write the same, instead of picking up the phone and asking if anyone is there all the time, it is better to have an event that says: the phone is ringing. I like that a lot, I am a big fan. However syntax-wise I was quite lost.}
+\partic{Yes at least in the case with player controllers, you need to input parse all the time. There it makes much more sense, because generally when we write software we basically never use Update. Because everything we make is usually event based. And it gives much more readable code. We are many that write the same, instead of picking up the phone and asking if anyone is there all the time, it is better to have an event that says: the phone is ringing. I like that a lot, I am a big fan and I think you'll find many... However syntax-wise I was quite lost.}
 \monitor{Ok, is that something you could get used to or do think it is terrible to read?}
 \partic{It would take a long time. I prefer, which \cs doesn't need to be, very strictly typed, on everything. I can tell immediately what [type] values are but there are a lot of languages that don't adhere to that. That I don't need to specify it is a float or whatever.}
 \monitor{So types are what would be the hardest to get used to?}
-\partic{Yea, I mean it is only a question of time before you get used to not making semicolons and curly brackets. If that makes more or less readable is difficult to say, because if you are used to the other thing it is probably more readable.}
+\partic{Yea, I mean it is only a question of time before you get used to not making curly brackets and semicolons. If that makes more or less readable is difficult to say, because if you are used to the other thing it is probably more readable.}
 \monitor{Would you use this kind of framework for a real project? If you didn't have these issues with syntax and event setup.}
 \partic{That is a good question. No I don't think so.}
 \monitor{How come?}
 \partic{I think I am too used to \cs, especially. I think in the context of what I would be assigned to do, if someone assigned this to me I would do it, but typically it is the more popular languages you are assigned. Some kind of Java derivative, Python, C languages, \cpp or \cs, we never use C today.}
 \monitor{What if it [\fs] offered implicit parallelism, would you use it then?}
-\partic{No, not unless I was assigned to use it. If my boss told me to do it, then I would use it I wouldn't refuse. But I wouldn't use it in my spare time, \cs is too well documented and familiar. It would take a while to get into \fs and the functions I am familiar with from \cs, which also probably exist in \fs. I like this event approach, that you just setup, in start or awake, just setup what you want. And then just get and deal with the code when you need it instead of checking every time. This could also be setup in \cs.}
+\partic{No I don't think so, not unless I was assigned to use it. If my boss told me to do it, then I would use it, I wouldn't refuse. But I wouldn't use it in my spare time and in my own projects, \cs is too well documented and familiar. It would take a while to get into \fs and the functions I am familiar with from \cs, which also probably exist in \fs. I like this event approach, that you just setup, in Start or Awake, just setup what you want. And then just get and deal with the code when you need it instead of checking every time. This could also be setup in \cs.}
 
 \section{Participant 4: F\# Debrief} \label{app:p4-debrief}
 \monitor{What do you think of the experiment, especially the \fs part}
@@ -32,11 +32,11 @@ In that way I can see that it makes sense. It requires, maybe, that you design p
 \monitor{Do we have any other questions? Yes, what if \fs offered a performance gain, such as implicit parallelism?}
 \partic{I need that explained.}
 \monitor{It means that the code you have written now could be run on multiple cores without additional changes.}
-\partic{As is, I can't see the advantage of that because I already use \unity which manages everything. So there isn't as such any thing [requirement] there. I look at as it works there, there and there, but with to my knowledge I can't see an advantage}
+\partic{As is, I can't see the advantage of it because I already use \unity which manages everything. So there isn't as such any thing [requirement] there. I look at as it works there, there and there, but with to my knowledge I can't see an advantage}
 
 \section{Participant 6: F\# Debrief} \label{app:p6-debrief}
-\monitor{Good, what do you think of, especially the \fs way, of programming games?}
-\partic{I really like functional, but now that I tried programming for games I am not sure. I have talked about wanting to try using functional programming for games. It might give something and will proberbly need more time with it, to actually do it. Because this is the first time I'm doing it [\fs] with \unity. It would help a lot if I had longer time work with a project.}
+\monitor{Well, what do you think of, especially the \fs way, of programming games?}
+\partic{I really like functional, but now that I tried programming for games I am not sure. I have talked about wanting to try using functional programming for games. It might provide something and I will proberbly need more time with it, to actually do it. Because this is the first time I'm doing it [\fs] with \unity. It would help a lot if I had longer time work with a project.}
 [...]
 \monitor{What advantages and disadvantages can you see with using \fs?}
-\partic{Some things are just easier in functional. The task was a tree problem, but I actually think trees are more intuitive due to recursion in functional. Where as you need make too many hacks in imperative than in functional where you can make a nice tree traversal. But things like instantiation of objects, when we need 4 players at this position, that is just easier in \cs. List handling is also good in functional.}
+\partic{Some things are just easier in functional. The task was a tree problem, but I actually think trees are more intuitive due to recursion in functional. Where as you need to make too many hacks in imperative than in functional, where you can make a nice tree traversal. But things like instantiation of objects, when we need 4 players at this position, that is just easier in \cs. List handling is also good in functional.}
