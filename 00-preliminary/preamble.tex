@@ -126,6 +126,7 @@
 \renewcommand{\headrulewidth}{0pt} %remove the horizontal line in the header
 \fancyfoot[C]{\thepage} %page number on all pages
 \setlength{\headheight}{14pt}
+\setlength{\marginparwidth}{2cm}
 % Do not stretch the content of a page. Instead,
 % insert white space at the bottom of the page
 \raggedbottom
@@ -134,9 +135,9 @@
 \usepackage{calc}
 
 \usepackage[
-%  disable, %turn off todonotes
+%  disable, %turn off notes
   colorinlistoftodos, %enable a coloured square in the list of todos
-  textwidth=1.1\marginparwidth, %set the width of the todonotes
+  textwidth=\marginparwidth, %set the width of the todonotes
   textsize=scriptsize, %size of the text in the todonotes
   ]{todonotes}
 
@@ -161,20 +162,6 @@
 \definecolor{xmlcomments}{rgb}{0.5,0.5,0.5}
 \definecolor{types}{rgb}{0.17,0.57,0.68}
 
-\usepackage{hyperref}
-\hypersetup{%
-	plainpages=false,%
-	pdfauthor={\group\ - Tobias Morell, Thomas Gwynfryn McCollin},%
-	pdftitle={\group\ - \projectTitle},%
-	pdfsubject={Project Report},%
-	bookmarksnumbered=true,%
-	colorlinks,%
-	citecolor=aaublue,%
-	filecolor=aaublue,%
-	linkcolor=aaublue,% you should probably change this to black before printing
-	urlcolor=aaublue,%
-	pdfstartview=FitH%
-}
 % PDF package
 \usepackage[final]{pdfpages}
 \usepackage{glossaries}
@@ -210,6 +197,21 @@
 \usepackage[autostyle]{csquotes}
 
 \input{00-preliminary/result-presentation.tex}
+
+\usepackage{hyperref}
+\hypersetup{%
+	plainpages=false,%
+	pdfauthor={\group\ - Tobias Morell, Thomas Gwynfryn McCollin},%
+	pdftitle={\group\ - \projectTitle},%
+	pdfsubject={Project Report},%
+	bookmarksnumbered=true,%
+	colorlinks,%
+	citecolor=aaublue,%
+	filecolor=aaublue,%
+	linkcolor=aaublue,% you should probably change this to black before printing
+	urlcolor=aaublue,%
+	pdfstartview=FitH%
+}
 
 \pgfplotstableread[col sep = comma]{00-data/fsharp/accumulation.csv}\accumulationData
 \pgfplotstableread[col sep = comma]{00-data/fsharp/sum.csv}\summationData
