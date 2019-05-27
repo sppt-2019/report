@@ -39,7 +39,7 @@ let value = sqr 10
 \label{lst:coer-lack}
 \end{listing}
 
-Programmers may inadvertently change the parameters of a function by separating parameters using commas, see \lstref{para-err}. Often this is still valid \fs and compiles, however the function now takes a single tuple parameter. This mistake can occur without the programmer noticing any difference, before they have to invoke the function. At this point the invocation has changed from \fsline{add 2 4}(two parameters) to \fsline{add (2, 4)}(tuple parameter). Initially, programmers may have no issue with this behaviour, until the function is on lists via list operations and each element needs to be converted to a tuple\tmc{Jeg forstår ikke problemstillingen her.}.
+Programmers may inadvertently change the parameters of a function by separating parameters using commas, see \lstref{para-err}. Often this is still valid \fs and compiles, however the function now takes a single tuple parameter. This mistake can occur without the programmer noticing any difference, before they have to invoke the function. At this point the invocation has changed from \fsline{add 2 4}(two parameters) to \fsline{addTupled (2, 4)}(tuple parameter). Both declarations are valid, but the latter may cause confusion when the programmer attempts to use the functions as higher-order, as he would have to pack all arguments in tuples. We have listed examples in \lstref{para-err}.
 
 \begin{listing}[H]
 \begin{minted}{fsharp}
@@ -47,7 +47,14 @@ Programmers may inadvertently change the parameters of a function by separating 
 let add x y = x + y
 
 // Single parameter
-let add (x, y) = x + y
+let addTupled (x, y) = x + y
+
+//Sum list without tupled parameters
+let sum = [1..10] |> List.reduce add
+
+//Sum list with tupled parameters
+let sum = [1..10] 
+|> List.reduce (fun acc elm -> addTupled (acc, elm)) 
 \end{minted}
 \caption{Parameter Error}
 \label{lst:para-err}
