@@ -12,6 +12,7 @@ fi
 
 # Output directory
 build="build"
+log="latex.log"
 
 # Progress pretty printing
 zero="|                    | (00%)      \r"
@@ -47,7 +48,28 @@ function help {
 }
 
 function clear {
-    # Clear output directory
+	if [ $1 == "log" ] ; then
+    	if [ -e latex.log ] ; then
+			rm $log
+			echo "$log cleared"
+	    fi
+    	touch $log
+	elif [ $1 == "build" ] ; then
+		rm -rf $build
+		rm -rf _minted*
+		echo "$build cleared"
+		echo "minted cache cleared"
+	elif [ $1 == "all" ] ; then
+		rm -rf $build
+		rm -rf _minted*
+		rm $log
+		echo "$build cleared"
+		echo "minted cache cleared"
+		echo "$log cleared"
+	fi
+}
+
+function prep {
 	if [ ! -e "$build" ] ; then
 		mkdir $build
 		mkdir "$build/diagrams"
@@ -57,12 +79,6 @@ function clear {
 	if [ ! -e "diagrams" ] ; then
 		mkdir "diagrams"
 	fi
-
-    # Clear log file, maybe this is unnecessary
-    if [ -e latex.log ] ; then
-		rm "latex.log"
-    fi
-    touch "latex.log"
 }
 
 function extract-log {
@@ -153,6 +169,8 @@ function compile {
 		elif [ $1 == "-rq" ] || [ $1 == "--really-quick" ] ; then
 			really-quick
 			output
+		elif [ $1 == "-c" ] || [ $1 == "--clear" ] ; then
+			clear "all"
 		fi
 	else
 		full
@@ -224,7 +242,7 @@ function main {
 	if [ $# -gt 0 ] ; then
 		if [[ $1 == *".tex}" ]] ; then
 			if present ; then
-				clear
+				prep
 				if [ $# == 2 ] ; then
 					compile $2
 				else
@@ -235,7 +253,7 @@ function main {
 				exit 1
 			fi
 		elif [[ $1 == "-"* ]] ; then
-			clear
+			prep
 			if default-name ; then
 	                	compile $1
 			else
@@ -243,7 +261,7 @@ function main {
 			fi
 		fi
 	elif default-name ; then
-		clear
+		prep
 		compile
 	else
 		echo "$1 is not a valid source file and no build candidate was found."
