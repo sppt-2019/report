@@ -1,29 +1,43 @@
 \chapter{Conclusion}
-In this chapter we conclude on the project by first summarising the project and afterwards answering the research questions that were presented in \secref{problem_statement}. 
+This chapter serves as the conclusion of the report. Here the work undertaken during this project is surmised in detail, whereafter the research questions posed in the problem statement (see \secref{problem_statement}) are answered.
 
-\section{Summary}
-In this project we examined the claims of two game development, John Carmack and Tim Sweeney. Their suggestion was to increase the use of functional programming in game development. We examined if their point-of-view were shared by the game development industry in Aalborg by conducting a usability evaluation, where the participants were tasked with implementing gameplay code in F\#. We found that the programmers were reluctant to adopt F\# because they believed that the cost of learning a new language would out-weigh the benefits that F\# could provide. 
+\section{Project Summary}
+In this project we examined the claims of two game development gurus; John Carmack and Tim Sweeney. These claims suggested that increased use of functional programming in game development would be beneficial. These potential benefits of functional languages where examined. Tim Sweeney directly suggested two features; explicit effects typing and lenient evaluation strategy. The performance impact of these potential benefits where examined as well as other related boons, such as \gsl{FRP}, implicit parallelism and other concurrency benefits.
 
-In need of stronger incentive to promote F\# we decided to examine if F\# could provide more performant concurrent code than C\#. We found that F\# introduces a performance penalty compared to C\#, which is especially noticeable as problem sizes grow. Furthermore, the Async Workflows concurrency strategy employed by F\# seems to result in less performant parallel code compared to the Task model employed in C\#. The same results were obtained when benchmarking F\# in Unity, where \ttt{MonoBehaviour}s implemented in F\# was a little less performant than those in C\#. The performance of our \gls{FRP} system was even worse, which was caused by a simple and suboptimal implementation, where each \ttt{FRPBehaviour} is in fact a full-blown \gls{FRP} system.
+We examined if their point-of-view was shared by game development professionals in Aalborg, by conducting a usability evaluation, where the participants were tasked with implementing gameplay code in \fs. The test consisted of gameplay programming tasks inspired by game development. The developers where asked to implement solutions to these tasks in \fs and \cs. We found that the programmers were reluctant to adopt \fs because they believed that the cost of learning a new language would out-weigh the benefits that \fs could provide.
+
+In need of a stronger incentive to promote \fs we decided to examine if \fs could provide more performant concurrent code than \cs. We found that \fs introduces a performance penalty compared to \cs, which is especially noticeable as problem sizes grow. Furthermore, the \m{async} Workflows concurrency strategy employed by \fs seems to result in less performant parallel code compared to the Task model employed in \cs. The same results were obtained when benchmarking \fs in Unity, where \ttt{MonoBehaviour}s implementation in \fs was a little less performant than those in \cs. The performance of our \gls{FRP} system was worse, which was caused by a simple and suboptimal implementation, where each \ttt{FRPBehaviour} is in fact a full-blown \gls{FRP} system. However, the \gls{FRP} and \m{async} workflows where well understood by the participants during the test.
 
 \section{Research Questions}
-We relist the research questions here for convenience:
+In this section we will answer the exploratory questions, which have guided research in project. The research questions are listed here for convenience:
 \begin{center}
     \begin{enumerate}
-        \item \textbf{How well does experienced game developers express gameplay code in F\#?}
+        \item \textbf{How well do experienced game developers express gameplay code in F\#?}
         \item How can F\# be incorporated in game development?
-        \item What are the advantages and disadvantages of using functional programming in a game development setting?
         \item What are the performance impacts of using F\# in a game engine?
+        \item What is Required of F\# to be Adopted by Game Developers?
     \end{enumerate}
 \end{center}
 
-\subsection{Expressing Gameplay Code in F\#}
+\subsection{Expressing Gameplay Code in \fs}
+The game developers struggled with various aspects of \fs and the \gls{FRP} system, however they managed to produce decent gameplay code (see \secref{syntax}, \tabref{comp-matrix} and \secref{test-conc}). In some cases the \fs code was shorter than the \cs code written during the test (see \appref{terse-diff-comp}). While the \fs code produced during the test had qualities lacking in the \cs code produced, developers where unsure of whether \fs was worth investing time in, this can be clearly seen in \tabref{att-inv-findings}. Several developers recognised the benefits of \fs, but remained unsure if it was worth the risk, to switch to the language.
 
-\subsection{Incorporating F\# in Game Development}
-In this project we chose to add support for F\# in Unity by installing a 3rd party plugin. Using this plugin we implemented a simple \gls{FRP} system that allows gameplay programmers to employ the functional reactive programming paradigm. The participants of the usability evaluation agreed that event-driven programming is well-suited in game development and voiced that it would improve quality of their code.
+Of the findings from the usability test, the most surprising\tmcc{er dette et fy-ord?} result was the difference of priorities (see \secref{diff-pri}). It was expected that developers would be mindful of risks associated with learning a new tool and that they may be reluctant to try something completely new, but developers disregarded advantages of \fs because they where unnecessary. The participants did not explicitly state the concrete reason why these features are unnecessary, but we believe the rapid and short life cycle of modern games is the cause.
 
-\subsection{Advantages and Disadvantages of Functional Programming in Game Development}
+\subsection{Incorporating \fs in Game Development}
+In this project we chose to add support for \fs in Unity by installing a 3rd party plugin. Using this plugin we implemented a simple \gls{FRP} system that allows gameplay programmers to employ the functional reactive programming paradigm. The participants of the usability evaluation agreed that event-driven programming is well-suited for game development and would improve code quality.
 
+The \gls{FRP} system makes use of a paradigm within the functional paradigm, which forces developers to think about their code in a different way (see \secref{frp} and \secref{frp-sys}). This served as a segue into the functional paradigm. Many of the traditional presentations of functional programming are not necessarily useful in real-world game development.
 
 \subsection{Performance Impacts of F\#}
-Using a set of benchmarks we determined that F\# introduces an overhead compared to C\#. We implemented three different benchmarks in this project; binary tree summation/accumulation, matrix summation and unit management. All the benchmarks showed that F\# was slightly slower than equivalent code in C\#. Furthermore, the binary tree summation/accumulation benchmark showed that the Async Workflow concurrency model in F\# was much slower the other concurrent implementations. As C\# and F\# run on the same platform, programmers may use C\#'s Task model in F\#, which yields only slightly slower code in F\#.
+Using microbenchmarking techniques and a set of benchmarks, we examined the performance of \fs inside and out of \unity (see \secref{benchmarks}). It was clear that \fs introduces an overhead compared to \cs, however this overhead is not statistically significant (see \secref{perf-diff}). We implemented three different benchmarks in this project: binary tree summation/accumulation, matrix summation and unit management (see \secref{bench-impls}). All the benchmarks showed that \fs was slightly slower than equivalent code in \cs. Furthermore, the binary tree summation/accumulation benchmark showed that the Async Workflow concurrency model in \fs was much slower the other concurrent implementations (see \secref{bench-res}). As \cs and \fs run on the same platform, programmers may use \cs's Task model in \fs, which yields only slightly slower code in \fs.
+
+\subsection{F\# Adoption Requirements}
+The plausibility of the participants adopting \fs has been discussed in \secref{test-conc}. The participants list a number of problems that need to addressed before they would consider \fs. The primary concerns raised by the participants are the cost of learning the language and the mismatch between desired benefits and gained benefits.
+
+Easing the learning process may also alleviate another issue with \fs; the availability of \unity/\fs documentation\footnote{While \fs has ample documentation, very limited documentation is available for using \fs with unity.}. Additional documentation and assistance would allow developers to learn much more rapidly, which was a major concern for most participants.
+
+The benefits provided by \fs where modularity and maintainability. Some participants noted that \fs is ideal if you know the game you want to implement well, however they concluded that this is not the case in most game development scenarios (see \secref{test-conc} and \appref{p4-debrief}). The modularity afforded by \fs was not considered an indicator for faster development, but rather an indicator of more maintainable code.
+
+\section{Closing Remarks}
+In conclusion, \fs was meet with mixed enthusiasm from the participants while \gls{FRP} was meet with almost unanimous approval. The primary reasons identified, for the participants stance on \fs, was high perceived cost of learning the language and cultural shock of the functional paradigm. The benefits of \fs where clear to several participants, but many did not consider them relevant to game development, where productivity is of utmost importance. This schism, may be caused by participants not fully grasping the advantages, but this requires additional testing\tmcc{Too much?}.
