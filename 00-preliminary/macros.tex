@@ -18,12 +18,12 @@
 % 1: Table Latex
 % 2: Caption
 % 3: Label
-\definecolor{lightgray}{gray}{0.95}
+\definecolor{lightgray}{html}{#AAA}
 \newcommand{\makeTable}[3]{
     \rowcolors{1}{}{lightgray}
     \begin{table}[H]
         \sisetup{round-mode=places}
-        \makebox[\textwidth][c]{
+        \alignCenter{
         \begin{tabular}
             #1
         \end{tabular}}
@@ -49,6 +49,7 @@
 }
 
 \newcommand{\tableref}[1]{Table \ref{tab:#1}}
+\newcommand{\tabref}[1]{\tableref{#1}}
 \newcommand{\figureref}[1]{Figure \ref{fig:#1}}
 \newcommand{\figref}[1]{Figure \ref{fig:#1}}
 \newcommand{\coderef}[1]{Code \ref{code:#1}}
