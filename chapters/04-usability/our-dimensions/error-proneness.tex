@@ -1,7 +1,8 @@
 \subsubsection{Error-proneness}
-Errors produced by the programmer fall into one of two categories, either the error is a slip: instances where the programmer knows what to do, but did something else by accident, or a mistake: when a programmer makes a logical error. These errors can be exacerbated by language features.
+Errors produced by the programmer fall into one of two categories, either the error is a slip or a mistake. Slips are instances where the programmer knows what to do, but did something else by accident and mistakes are instances when a programmer makes a logical error. These errors can be exacerbated by language features.
 
-According to \cite{green1996usability}, textual programming languages are inherently more error-prone than visual languages. The given examples are implicit declaration, line-ends and delimiters. Implicit declarations are not applicable in either \cs or \fs, however line-ends are used in both languages. \cs uses \m{;} to denote line-ends where \fs uses newlines. A C-family programmer may find it difficult to overview \fs code for this reason. In \cs a \m{;} need not be followed by a line-end and depending on the type of statement the programmer is dealing with the practices may differ (it is not typical to break lines in \ttt{for}-loop declarations, but it is after variable declarations). The \fs approach of using newlines and indentation to delimit scopes and lines uses fewer characters and promotes more readable code \needcite\tmc{Jeg er ikke enig i denne observation, men hvis der findes en kilde som siger det kan vi godt lade den stå.}. An example of this can be seen in \lstref{con-comp}.
+According to \cite{green1996usability}, textual programming languages are inherently more error-prone than visual languages. The given examples are implicit declaration, line-ends and delimiters. Implicit declarations are not applicable in either \cs or \fs, however line-ends are used in both languages. \cs uses \m{;} to denote line-ends whereas \fs uses newlines. A C-family programmer may find it difficult to overview \fs code for this reason. In \cs a \m{;} need not be followed by a line-end and depending on the type of statement, practices may differ (it is not typical to break lines in \ttt{for}-loop declarations, but it is after variable declarations).
+The \fs approach of using newlines and indentation to delimit scopes and lines uses fewer characters and promotes more readable code \needcite\tmc{Jeg er ikke enig i denne observation, men hvis der findes en kilde som siger det kan vi godt lade den stå.}. An example of this can be seen in \lstref{con-comp}.
 
 \begin{listing}[H]
 \begin{minted}{csharp}
@@ -27,19 +28,9 @@ type Person(name: string, birthday: DateTime ) =
 \label{lst:con-comp}
 \end{listing}
 
-The strong type system used in \fs can also cause unexpected errors. While the system prevents some errors down the line, C-family programmers would expect type coercion to assist with operations on integer values of different sizes. An example of this can be seen in \lstref{coer-lack}. The function on line 1 takes a 16-bit integer and returns its square. The programmer then attempts to calculate the square of the integer literal 10, however, 10 is not a 16-bit integer and an error is thrown. This causes initial errors, but may prevent type errors later in development\cite{ray2014large}.
+The strong type system used in \fs can also cause unexpected errors. While the system prevents some errors down the line, C-family programmers would expect type coercion to assist with operations on integer values of different sizes. We gave an example of this in \lstref{type-incompat}, which yields an error because an \ttt{int} and \m{int16} are multiplied. This causes initial errors, but may prevent type errors later in development\cite{ray2014large}.
 
-\begin{listing}[H]
-\begin{minted}{fsharp}
-let sqr (x: int16) = x * x
-
-let value = sqr 10
-\end{minted}
-\caption{Lack of Type Coercion}
-\label{lst:coer-lack}
-\end{listing}
-
-Programmers may inadvertently change the parameters of a function by separating parameters using commas, see \lstref{para-err}. Often this is still valid \fs and compiles, however the function now takes a single tuple parameter. This mistake can occur without the programmer noticing any difference, before they have to invoke the function. At this point the invocation has changed from \fsline{add 2 4}(two parameters) to \fsline{addTupled (2, 4)}(tuple parameter). Both declarations are valid, but the latter may cause confusion when the programmer attempts to use the functions as higher-order, as he would have to pack all arguments in tuples. We have listed examples in \lstref{para-err}.
+Programmers may inadvertently change the parameters of a function by separating parameters using commas (see \lstref{para-err}). In most cases this is valid \fs and compiles, however the function now takes a single tuple parameter. This mistake can occur without the programmer noticing any difference, until they have to invoke the function. At this point the invocation has changed from \fsline{add 2 4}(two parameters) to \fsline{addTupled (2, 4)}(tuple parameter). Both declarations are valid, but the latter may cause confusion when the programmer attempts to use the functions as higher-order, as he would have to pack all arguments in tuples. We have listed examples in \lstref{para-err}.
 
 \begin{listing}[H]
 \begin{minted}{fsharp}

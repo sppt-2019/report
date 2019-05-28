@@ -5,7 +5,7 @@ In this section we present usability evaluation methods for programming language
 \gls{IDA} is an analysis strategy, which is meant to be used with think-aloud based usability evaluation techniques\cite{kjeldskov2004instant}. \cite{kjeldskov2004instant} suggests conducting between four and six usability evaluation sessions, which are followed by a one hour \gls{IDA} brainstorming session. During the brainstorming session the data-logger and test monitor discuss the usability problems found during the sessions. Meanwhile, the facilitator takes notes, categorises the problems, asks questions for clarification and directs the discussion. After the brainstorming session, the facilitator writes down a prioritised list of usability problems, which ranks their severity, placement in the software system and gives a short description of the problem. The \gls{IDA} method has the advantage that a full-scale usability evaluation can be conducted in a single day, while still discovering a majority of the problems\cite{kjeldskov2004instant}.
 
 \subsection{Discount Method for Language Evaluation} \label{sec:discount-method}
-Discount Method for Language Evaluation is a work-in-progress method based on \gls{IDA}\cite{kurtev2016discount} and the Discount Usability Evaluation Method \cite{benyon2014designing}. It is a technique intended for low-cost evaluation of a programming language during its development. The technique requires very limited setup and can be used even before the language's compiler has been written. The method requires the test participant to implement a set of programming problems in the language. The test participants are equipped with a sample sheet, that gives code examples and brief explanations of how the language is structured. All the programs are written either in a text-editor or using pen and paper. These tools present no error-checking and code-completion. This leaves all errors present in the code for subsequent evaluation. The are then classified according to how much work it would require to fix them.
+Discount Method for Language Evaluation is a work-in-progress method based on \gls{IDA}\cite{kurtev2016discount} and the Discount Usability Evaluation Method \cite{benyon2014designing}. It is a technique intended for low-cost evaluation of a programming language during its development. The technique requires very limited setup and can be used even before the language's compiler has been written. The method requires the test participant to implement a set of programming problems in the language. The test participants are equipped with a sample sheet, that gives code examples and brief explanations of how the language is structured. All the programs are written either in a text-editor or using pen and paper. These tools present no error-checking and code-completion. This leaves all errors present in the code for subsequent evaluation. The errors are then classified according to how much work it would require to fix them.
 
 \subsection{Cognitive Dimensions} \label{sec:cog-dim}
 In order to talk about notation systems and their usability features in general, these features must be generalised to their fundamental dimensions. These dimensions are the cognitive dimensions, which dictate the usefulness of design strategies for various design problems. One such vocabulary is the cognitive dimensions framework\cite{green1996usability}. The framework itself consists of a set of thirteen dimensions, each of which represent a generic usability problem area. We will not go in detail with the dimensions as more detailed descriptions can be found in \cite{green1996usability} and \cite{p92018gameplay}. In previous work we used the cognitive dimensions framework to compare gameplay programming in C++ and C\#\cite{p92018gameplay}.
@@ -16,7 +16,7 @@ In order to understand how users interact with a programming system, their probl
 The cognitive demands consists of \textit{cost}, \textit{investment}, \textit{payoff} and \textit{risk}:
 \begin{labeling}{\quad\quad}
     \item[Cost] is the number of attention "units" required by a programming activity to be completed.
-    \item[Investment] is the actual attention spent by the user and may be greater then the cost.
+    \item[Investment] is the actual attention spent by the user and may be greater than the cost.
     \item[Payoff] is the reduced cost of undertaking the task in future, due to the assistance of the program.
     \item[Risk] is the chance that the program is not completed and the investment wasted.
 \end{labeling}
@@ -25,27 +25,27 @@ Additionally the model uses an agent architecture. This means that each course o
 
 The model can be used to give a broad stroke estimation of a user's attention expenditure when using a system. This can help designers improve the system by identifying problematic features. The model can also be applied with more rigour, to achieve a finer grain understanding of the attention economy of a system. This approach entails simulating the behaviour of the user in the agent architecture yielding even more information, but is significantly more costly.
 
-On the basis of this analysis the \textit{Attention Investment} model is proposed. It serves as a cognitive model of programming efforts that offers a consistent account of all programming behaviour, from professionals to end-users.
+On the basis of this analysis the \textit{Attention Investment} model is proposed. It serves as a cognitive model of programming efforts that offers a consistent account of all programming behaviour, from professionals to end-users.\tmc{!? Det forstår jeg slet ikke.}
 
 \subsection{Champagne Prototyping} \label{sec:champagne}
-The Champagne Prototyping method was developed for the testing of Microsoft Excel\cite{blackwell2004champagne}. The reason for it's development was lack of cheap prototyping techniques that could be deployed early in the project. The methodology is designed to answer a question about a feature or product. A cheap prototype is created specifically to answer this question. It is important to keep in mind that the prototype must be complete enough that it can be used to answer the question. The authors found the following points to be the minimum necessities:
+The Champagne Prototyping method was developed for the testing of Microsoft Excel\cite{blackwell2004champagne}. The reason for its development was lack of cheap prototyping techniques that could be deployed early in the project. The methodology is designed to answer a question about a feature or product. A cheap prototype is created specifically to answer this question. It is important to keep in mind that the prototype must be complete enough that it can be used to answer the question. The authors found the following points to be the minimum necessities:
 \begin{itemize}
-    \item The prototype must be fully functional\footnote{Functional as in operational, not as in functional programming.}. Useful usability data can only be gathered from a working system.
+    \item The prototype must be fully operational. Useful usability data can only be gathered from a working system.
     \item Therefore the prototype must be based on an existing product.
     \item Dysfunctional prototypes can be used for demonstration purposes and can be used to gauge the users reaction to the visuals, but cannot be used if the user is to interact with it.
 \end{itemize}
 A small number of credible participants are selected. It is important that these participants are experts in the relevant field and that they have no programming experience (unless it is relevant for the field). The participants are asked to perform some task in the prototype. The nature of the task should be dependent on the question being answered. Following task completion, the participants are subjected to a scenario-based interview. Finally the results are analysed using attention investment models and cognitive dimensions.
 
 \subsection{Expert Review Method} \label{sec:expert-review}
-Another approach to usability evaluation of programming languages is the expert review method \cite{nanz2013examining}. In this method there are two different roles; the test participant and the expert. The test participant must be an experienced programmer who have no experience in the language under test. The expert, in \cite{nanz2013examining}, is a prominent member of the languages' compiler team.
+Another approach to usability evaluation of programming languages is the expert review method\cite{nanz2013examining}. In this method there are two different roles; the test participant and the expert. The test participant must be an experienced programmer, who has no experience in the language under test. The expert must be highly skilled in the language under test. In \cite{nanz2013examining} the expert is a prominent member of the language's compiler team.
 
 In the expert review method a test participant solves a series of problems in each of the languages under test. In \cite{nanz2013examining} the authors use the Cowichan problems\cite{wilson1995assessing}. The method consists of four phases for each language:
 \begin{enumerate}
-    \item The test participant implements solutions to each of the problems in the languages under test.
-    \item The experts review the programs and write a list of comments and suggestions for improvements.
+    \item The test participant implements solutions to each of the problems in the language under test.
+    \item The expert reviews the programs and writes a list of comments and suggestions for improvements.
     \item The test participant incorporates the feedback from the expert.
     \item The expert reviews the solutions again to check that the feedback was not misunderstood.
 \end{enumerate}
-The feedback from phases two and four presents valuable feedback for possible pitfalls in the language and places for improvement.
+The feedback from phases two and four presents valuable information on possible pitfalls in the language and places for improvement.
 
 In \cite{nanz2013examining} the authors evaluate the programs using four metrics: code size, execution time, speed up and correction time. In other research by the same authors, they evaluate in greater depth the performance of the programs before and after the expert review phases\cite{nanz2013benchmarking}.

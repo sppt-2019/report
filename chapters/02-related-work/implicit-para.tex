@@ -1,5 +1,5 @@
 \section{Implicit Parallelisation}\label{sec:implicit-para}
-Functional programming has long claimed to be inherently parallelisable\cite{hudak1986functional, loidl1998granularity}. The claimed advantage of functional programs is the high degree of modularity, which simplifies the parallelisation process. A number of languages have attempted to implement programming systems that utilise this advantage, however few have reached mainstream use. In this section we will explores the theoretical background for implementing an implicitly parallelisable system in \fs.
+Functional programming has long claimed to be inherently parallelisable\cite{hudak1986functional, loidl1998granularity}. The claimed advantage of functional programs is the high degree of modularity, which simplifies the parallelisation process. A number of languages have attempted to implement programming systems that utilise this advantage, however few have reached mainstream use. In this section we will explore the theoretical background for implementing an implicitly parallelisable system in \fs.
 
 First different evaluation strategies are explored, since \fs supports both strict and non-strict evaluation. In addition to these two dominant evaluation strategies, another promising strategy, called lenient evaluation, is examined. Once the strategies are outlined, the question of when to parallelise is addressed with the work/span methodology.
 
@@ -7,4 +7,4 @@ First different evaluation strategies are explored, since \fs supports both stri
 \input{chapters/02-related-work/workspan.tex}
 
 \subsection{Lenient Parallelisation}
-Using a highly granular parallelisation system, such as .NET \m{Tasks}, each argument to a function could be evaluated as a task, unless the expression is too small. Determining the computational cost of an argument is calculated by estimating the work of the expression. This information, along with the span of the program, should provide enough information to the system to effectively parallelise a \fs program.
+Using a highly granular parallelisation system, such as .NET \m{Task}s, each argument to a function could be evaluated as a task, unless the expression is too small. Determining the computational cost of an argument is calculated by estimating the work of the expression. This information, along with the span of the program, should provide enough information to the system to effectively parallelise a \fs program.

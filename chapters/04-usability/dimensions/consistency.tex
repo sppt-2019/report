@@ -4,16 +4,16 @@ All participants had prior \cs experience which affected their expectations. Thi
 \begin{listing}[H]
 \begin{minted}{fsharp}
 [<SerializeField>]
-let mutable _velocity = 5.0f;
+let mutable _velocity = 5.0f
 [...]
 member this.HandleMoveForward() =
-  this.transform.position+=new Vector(0,0,this._velocity)
+  this.transform.position+=new Vector3(0,0,this._velocity)
 \end{minted}
-\caption{Type Confusion}
+\caption{Problem experienced with types in F\#. The \m{Vector3} constructor accepts \m{float}s and are invoked with \m{int}-parameters.}
 \label{lst:type-conf}
 \end{listing}
 
-In \lstref{type-conf} the participant correctly types the \ttt{\_velocity} variable on line 2. However, when attempting to set the object's position on line 5, the participant uses \ttt{0} instead of \ttt{0.0f}. When this caused an error the participant attempted to use \ttt{.0f} instead of \ttt{0.0f}, which is valid in \cs, but not in \fs. This is an instance of confusion surrounding the implicit type of variable and the typing of literals. Another issue encountered were lambda expressions.
+In \lstref{type-conf} the participant correctly types the \ttt{\_velocity} variable on line 2. However, when attempting to set the object's position on line 5, the participant first \ttt{0} and \ttt{.0f} instead of \ttt{0.0f}. Both attempts are valid in \cs, but not in \fs. This is an instance of confusion surrounding the automatic type inference of variables and the typing of literals.
 
 \begin{listing}[H]
 \begin{minted}{fsharp}
@@ -26,6 +26,6 @@ let moveMagneticBalls (objs:GameObject[]) (center:GameObject) =
 \label{lst:clos-mis}
 \end{listing}
 
-In \lstref{clos-mis} a participant has defined a function to move a number of objects towards a center point. The center point, \ttt{center}, is passed as a parameter but the participant became confused as to how to pass it to the lambda expressions. Therefore center was added on line 2 after \ttt{objs} and piped into the \ttt{map} function. This causes an error because \ttt{objs center} is now a function call to a non-existent function, \ttt{objs} with the argument \ttt{center}. Passing \ttt{center} to the lambda function is unnecessary, because they are both in the same closure.
+Some participants also experienced issues with closures. In \lstref{clos-mis} a participant has defined a function to move a number of objects towards a center point. The center point, \ttt{center}, is passed as a parameter, but the participant became confused as to how to pass it to the lambda expression. Therefore center was added on line 2 after \ttt{objs} and piped into the \ttt{map} function. This causes an error because \ttt{objs center} is now a function invocation to a non-existent function, \ttt{objs}, with the argument \ttt{center}. Passing \ttt{center} to the lambda function is unnecessary, because it is captured in the lambda's closure.
 
-The behaviour described is consistent within \fs, but not with the expectations of the participant. Arguably, this instance is a product of the participant's inexperience with \fs, however it is an example of disharmony between the largely consistent rules of \fs and the expectations of programmers. These consistency issues were primarily present in the \fs code, which is not surprising considering the participants' experience.
+The behaviour described is consistent within \fs, but not with the expectations of the participant. Arguably, this instance is a product of the participant's inexperience with functional programming, however it is an example of the disharmony between the largely consistent rules of \fs and the expectations of programmers. These consistency issues were primarily present in the \fs code, which is not surprising considering the participants' experience.

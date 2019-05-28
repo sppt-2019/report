@@ -1,7 +1,7 @@
 \subsubsection{Closeness of Mapping}
-The measure of how close to the problem domain a language can get is called the closeness of mapping. In order to solve a real problem, that problem must be expressible in the language and the closer the language is to the real world, the easier it is to express\cite{green1996usability}. Textual programming languages are abstractions over the real problem domain and therefore often does not map directly to the domain.
+The measure of how close to the problem domain a language can get is called the closeness of mapping. In order to solve a real problem, the problem must be expressible in the language and the closer the language is to the real world, the easier it is to express\cite{green1996usability}. Textual programming languages are abstractions over the real problem domain and therefore often does not map directly to the domain.
 
-Both languages have mechanisms to model the problem domain. In object-oriented programming, the world is represented as objects and the objects are abstracted over via classes\cite{kindler2011object}. Functional programming models the problem as behaviour (functions) which are applied to data\cite{hughes1989functional}. The advantage of the object oriented approach is that the object abstraction comes quite close the problem domain.
+Both languages have mechanisms to model the problem domain. In object-oriented programming, the world is represented as objects and the objects are abstracted over via classes\cite{kindler2011object}. Functional programming models the problem as behaviour (functions) which are applied to data\cite{hughes1989functional}. The advantage of the object-oriented approach is that the object abstraction comes quite close the problem domain.
 
 \quoteWithCite{The object expresses the user's view of reality [...]}{Object Oriented Analysis \& Design}{mathiassen2000object}
 
@@ -19,8 +19,8 @@ type Talent(strength, intellect, agility) =
   member val Intellect = intellect with get, set
 
 type Tree =
-| Node of TalentValue:Talent * Picked:bool * Children:Tree list
-| Leaf of TalentValue:Talent * Picked:bool
+| Node of TalentValue:Talent * Children:Tree list
+| Leaf of TalentValue:Talent
 
 let rec foldTree folding init tree =
   match tree with
@@ -36,10 +36,7 @@ let rec foldTree folding init tree =
 
 let sumPickedNodes root =
   foldTree (fun t1 t2 ->
-    if t1.Picked then
-      Talent(t1.Strength + t2.Strength, t1.Intellect + t2.Intellect, t1.Agility + t2.Agility)
-    else
-      t2) (Talent(0,0,0)) root
+    Talent(t1.Strength + t2.Strength, t1.Intellect + t2.Intellect, t1.Agility + t2.Agility)) (Talent(0,0,0)) root
   \end{minted}
   \begin{minted}{csharp}
 public class MyTalent
@@ -48,17 +45,15 @@ public class MyTalent
   public int Agility;
   public int Intelligence;
 
-  public bool Picked;
-
   public List<MyTalent> SubTalents = new List<MyTalent>();
 
-  public MyTalent SumPickedTalents() {
-    var t = Picked ? new MyTalent(Strength, Agility, Intelligence) : new MyTalent(0,0,0);
+  public MyTalent SumTalents() {
+    var t = new MyTalent(Strength, Agility, Intelligence);
     if(SubTalents?.Count == 0)
       return t;
 
     foreach (var child in SubTalents) {
-      var childTalentValues = child.SumPickedTalents();
+      var childTalentValues = child.SumTalents();
       t.Strength += childTalentValues.Strength;
       t.Agility += childTalentValues.Agility;
       t.Intelligence += childTalentValues.Intelligence;
@@ -71,4 +66,4 @@ public class MyTalent
   \label{lst:tree-imps}
 \end{listing}
 
-The example in \lstref{tree-imps} implements a class and a discriminated union in \fs, which together implement the behaviour of the \cs class. The \fs approach has separated the tree from the talent, where in the  \cs solution the tree emerges from the recursive nature of the type. The \cs solution is closer to the problem domain, but the \fs solution is closer to the mathematical concept of trees.
+The example in \lstref{tree-imps} implements a class and a discriminated union in \fs, which together implement the behaviour of the \cs class. The \fs approach has separated the tree from the talent, where in the  \cs solution the tree emerges from the recursive nature of the type. The \cs solution is closer to the problem domain, but the \fs solution is closer to the mathematical concept of trees.\tmc{Skal vi skrive noget om at man også godt kunne lave en generisk træ-struktur i C\#?}

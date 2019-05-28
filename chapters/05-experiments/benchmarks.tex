@@ -1,5 +1,5 @@
 \section{Benchmarks}\label{sec:benchmarks}
-In this section we explore the performance of the lenient evaluation strategy (see \secref{implicit-para}) and how well it parallelises. The reason for out study is that interest in the lenient evaluation strategy has been lacking to say the least. We could not find a reason as to why and decided to explore whether it was because \cite{DBLP:journals/cl/Tremblay-parallel} gave false promises.
+In this section we explore the performance of the lenient evaluation strategy (see \secref{implicit-para}) and how well it parallelises. The reason for our study is that interest in the lenient evaluation strategy has been lacking to say the least. We could not find a reason as to why and decided to explore whether it was because \cite{DBLP:journals/cl/Tremblay-parallel} gave false promises of the high implicit parallelisability of leniently evaluated programs.
 
 \subsection{Test cases}
 \cite{DBLP:journals/cl/Tremblay-parallel} presents two test cases that we reuse in this experiment:
@@ -12,7 +12,7 @@ In this section we explore the performance of the lenient evaluation strategy (s
 The difference between the two test cases is that there are no data-dependencies in the summation test, i.e. we can calculate the results of the left subtree and the right subtree in parallel. In the Binary Tree Accumulation and Sort benchmark the tree must be traversed in a left-to-right order and thus there is a data-dependency between the results from the left and right subtree.
 
 \subsection{Implementations}\label{sec:bench-impls}
-We implemented the benchmark suited in both F\# and C\#. In this test F\# will be the primary test subject, as we wish to examine how well it parallelises. The C\# implementation will be used as control, in the sense that we will compare, for the different strategies, which of the languages are fastest. We are well aware that F\# is not lenient, but we wanted to compare the strategies within the same language runtime and therefore attempted to map the lenient evaluation strategy onto F\# using it's async workflows. \lstref{lenient:to:task} gives a code example how to do so.
+We implemented the benchmark suite in both F\# and C\#. In this test F\# will be the primary test subject, as we wish to examine how well it parallelises. The C\# implementation will be used as control, in the sense that we will compare, for the different strategies, which of the languages is fastest. We are well aware that F\# is not lenient, but we wanted to compare the strategies within the same language runtime and therefore attempted to map the lenient evaluation strategy onto F\# using its async workflows. \lstref{lenient:to:task} gives a code example how to do so (a similar mapping could also be made to .NET's \m{Task}s).
 
 \begin{listing}[H]
 \begin{minted}{fsharp}
@@ -69,7 +69,7 @@ C\# runtime & \multicolumn{2}{| c |}{dotnet 2.2.104} \\ \hline
 We wish to analyse the following research questions:
 \begin{enumerate}
     \item Which of the four presented strategies handle increasing sizes of trees best?
-    \item Does F\# have performance than C\# when running equivalent (concurrent) code?
+    \item Does F\# have worse performance than C\# when running equivalent (concurrent) code?
 \end{enumerate}
 
 \subsection{Results}\label{sec:bench-res}
@@ -97,7 +97,7 @@ Much to our surprise, the sequential implementation was actually the fastest in 
 The execution times of the lenient strategy grows faster with problem size than those of the task strategy. This means that the lenient approach handle increasing sizes of trees worse. It is, however, not as bad as async workflows. We have only obtained data for async workflows up to trees containing 256 nodes, as the running times grew so rapidly that it was not feasible to continue. Strangely enough, the lenient strategy scales much better. The only difference between the two implementations are that workflows are started with \ttt{Async.StartChild} in the lenient implementation and \ttt{Async.Parallel} in the other. These types of results underline how small and seemingly irrelevant details may have a huge impact on the performance of parallel programs.
 
 \subsubsection{Language Performance with C\# Tasks}
-\figref{seq-binary-accumulation} and \figref{seq-binary-summation} shows the running time of the sequential implementation in C\# and F\#. These results show that F\# is faster in the accumulation benchmark up to tree sizes of roughly 256 nodes. In the summation benchmark C\# is faster all the way. Both data sets seem to decrease in running time up to tree sizes of 128 nodes. This is strange, as this means that the implementation handle more computations in less time. We are unsure what causes this.
+\figref{seq-binary-accumulation} and \figref{seq-binary-summation} shows the running time of the sequential implementation in C\# and F\#. These results show that F\# is faster in the accumulation benchmark up to tree sizes of roughly 256 nodes. In the summation benchmark C\# is faster all the way. Both data sets seem to decrease in running time up to tree sizes of 128 nodes. This is strange, as it means that the implementation handles more computations in less time. We are unsure what causes this.
 
 \barChart*[10][\binAcumSymbolics][Run Time (ns)][Number of Nodes]{Binary Accumulation in F\# and C\# using the sequential solutions}{seq-binary-accumulation}{
     \plotDataWithErrorAndLegend{Sequential}{\accumulationData}{F\#}

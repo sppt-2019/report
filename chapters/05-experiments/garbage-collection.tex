@@ -45,9 +45,9 @@ The problem of boxing occurs when a value-type should be used by reference, for 
 \subsubsection{Garbage Collection Algorithm}
 Unity uses the Boehm–Demers–Weiser \gls{GC}, which is a conservative mark-sweep \gls{GC}\cite{unity:heap}, originally created for automatic memory management in C and C++\cite{boehm2007transparent}. Mark-sweep algorithms are the simplest type of \glspl{GC} and has the primary disadvantages that they halt computation while running, increase in execution time as more objects are allocated and may fragment memory\cite{sestoft2017programming}.
 
-The dotnet runtime uses a generational \gls{GC} with three generations for smaller objects and a single generation for large objects\cite{dotnet:gc}. The younger generations are collected more often than the higher and all surviving objects are moved to the older generations. Each time an older generation is collected, all younger generations are also collected. Generational \glspl{GC} have the advantage that short-lived object allocations have a smaller performance penalty, but the disadvantage that they introduce additional overhead if old objects contain references to young objects\cite{sestoft2017programming}. Depending on the system the dotnet runtime may use different \gls{GC} strategies, including concurrent versions\cite{dotnet:gc}. Concurrent \glspl{GC} can collect garbage concurrently with the computation, meaning that \gls{GC} pauses are minimised or entirely removed\cite{dotnet:gc}.
+The dotnet runtime uses a generational \gls{GC} with three generations for smaller objects and a single generation for large objects\cite{dotnet:gc}. The younger generations are collected more often than the older and all surviving objects are moved to the older generations. Each time an older generation is collected, all younger generations are also collected. Generational \glspl{GC} have the advantage that short-lived object allocations have a smaller performance penalty, but the disadvantage that they introduce additional overhead if old objects contain references to young objects\cite{sestoft2017programming}. Depending on the system the dotnet runtime may use different \gls{GC} strategies, including concurrent versions\cite{dotnet:gc}. Concurrent \glspl{GC} can collect garbage concurrently with the computation, meaning that \gls{GC} pauses are minimised or entirely removed\cite{dotnet:gc}.
 
-Mono has previously used the Boehm–Demers–Weiser \gls{GC}, but has since moved to a concurrent, generational \gls{GC} called sgen\cite{mono:gc}. We have previously mentioned that Unity uses the Mono runtime, which may cause some confusion, so a clarification is due. Unity supports two different runtimes: Mono and IL2CPP. Unity's Mono runtime is a fork of the official Mono runtime\cite{unity:mono:github}, meaning that updates to the official Mono is not necessarily applied to the Unity's Mono runtime. The IL2CPP runtime \gls{AoT} compiles code in \gls{IL} to C++, which also uses the Boehm–Demers–Weiser \gls{GC}\cite{il2cpp:gc}. However, as part of Unity's 2019.1.0 release an experimental \textit{\dquote{incremental garbage collector, which should reduce stutters and time spikes}} was added\cite{unity:roadmap}.
+Mono has previously used the Boehm–Demers–Weiser \gls{GC}, but has since moved to a concurrent, generational \gls{GC} called sgen\cite{mono:gc}. We have previously mentioned that Unity uses the Mono runtime, which may cause some confusion, so a clarification is due. Unity supports two different runtimes: Mono and IL2CPP. Unity's Mono runtime is a fork of the official Mono runtime\cite{unity:mono:github}, meaning that updates to the official Mono is not necessarily applied to Unity's Mono runtime. The IL2CPP runtime \gls{AoT} compiles code in \gls{IL} to C++, which also uses the Boehm–Demers–Weiser \gls{GC}\cite{il2cpp:gc}. However, as part of Unity's 2019.1.0 release an experimental \textit{\dquote{incremental garbage collector, which should reduce stutters and time spikes}} was added\cite{unity:roadmap}.
 
 \subsubsection{Functional Programming and Garbage Collection}
 All these recommendations stand in direct contrast to the common practices employed in the pure functional programming paradigm. In functional programming it's typical to map over collections, which has two problems compared to this Unity performance guideline:
@@ -130,15 +130,16 @@ The results are listed in \tableref{unity:ai} and plotted in \figref{ai:benchmar
     \sisetup{round-mode=places}
     \rowcolors{1}{}{lightgray}
     \makebox[\textwidth][c]{
-    \begin{tabular}{P{4cm} | S[round-precision=2] | S[round-precision=2] | S[round-precision=2] | S[round-precision=2]}
-        \textbf{Number of Units} & \textbf{C\#} & \textbf{C\# Inverse} & \textbf{F\#} & \textbf{FRP Inverse}
+    \begin{tabular}{| P{4cm} | S[round-precision=2] | S[round-precision=2] | S[round-precision=2] | S[round-precision=2] |}
+        \hline
+        \textbf{Number of Units} & \textbf{C\#} & \textbf{C\# Inverse} & \textbf{F\#} & \textbf{FRP Inverse} \\ \hline
         \csvreader[head to column names]{00-data/ai-benchmark.csv}
         {1=\strategy, 2=\csharp, 3=\cinverse, 4=\fsharp, 5=\frp} % <Column number>=<Macro>
-        {\\\hline \strategy & \csharp & \cinverse & \fsharp & \frp}
+        {\strategy & \csharp & \cinverse & \fsharp & \frp \\ \hline}
     \end{tabular}}
     \caption{Average framerate when simulating the given number of units in Unity's Mono runtime.}
     \label{tab:unity:ai}
-\end{table}
+\end{table}\tmc{THOMAS!?!?! Fix det her :(}
 
 \barChart*[12][\symbolic{Strategy,500,1000,1500,2000,2500}][Average FPS][Number of Units]{Average FPS in Unit Management benchmark}{ai:benchmark}{
     \plotData{Csharp Normal}{\aiBenchmarkData}
@@ -156,11 +157,12 @@ Another interesting observation we made during the test is that there is a very 
     \sisetup{round-mode=places}
     \rowcolors{1}{}{lightgray}
     \makebox[\textwidth][c]{
-    \begin{tabular}{P{4cm} | S[round-precision=2] | S[round-precision=2]}
-        \textbf{Runtime} & \textbf{IL2CPP} & \textbf{Mono}
+    \begin{tabular}{| P{4cm} | S[round-precision=2] | S[round-precision=2] |}
+        \hline
+        \textbf{Runtime} & \textbf{IL2CPP} & \textbf{Mono} \\\hline
         \csvreader[head to column names]{00-data/ai-benchmark-runtimes.csv}
         {1=\strategy, 2=\iltocpp, 3=\mono} % <Column number>=<Macro>
-        {\\\hline \strategy & \iltocpp & \mono}
+        {\strategy & \iltocpp & \mono \\\hline}
     \end{tabular}}
     \caption{Average framerate in Unity's two runtimes measured with 250 unites in the scene.}
     \label{tab:unity:ai:runtime}
@@ -172,7 +174,7 @@ Another interesting observation we made during the test is that there is a very 
 }
 
 \subsubsection{Performance of the FRP-system}
-The results are plotted in \figref{ai:benchmark:overhead}. The results show that \gls{FRP} introduces additional overhead. This overhead results in a decrease of ten \gls{FPS} on average over the 900 frames. On the other hand, the \gls{FRP}-system yields a smoother curve, which means that the game will be subject to less stuttering and fewer lag spikes. Again we observe the poor performance of the \gls{FRP} system.
+The results are plotted in \figref{ai:benchmark:overhead}. The results show that \gls{FRP} introduces additional overhead. This overhead results in a decrease of ten \gls{FPS} on average over the 900 frames. On the other hand, the \gls{FRP}-system yields a smoother curve, which means that the game will be subject to less stuttering and fewer lag spikes.
 
 \lineChart[enlarge x limits=false,xtick={0,100, 200, 300, 400, 500, 600, 700, 800, 900}][FPS][Frame No.]{FPS for each frame in FRP and C\# Inverse}{ai:benchmark:overhead}{
     \plotUnmarkedData{Csharp}{\aiBenchmarkOverheadData}

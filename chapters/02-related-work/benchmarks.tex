@@ -1,15 +1,15 @@
 \section{Benchmarks}
-Estimating the general performance of a programming language is a difficult task. A programming language, even a \gls{DSL}, has broad problem domains compared to conventional programs. Therefore benchmarks suites are employed to test different aspects of the programming language. Such suites have been used to measure the Scheme programming language and it's derivatives \cite{bauman2015pycket, strickland2012chaperones} and popular game engines\cite{p92018gameplay}. When measuring the performance of managed languages, microbenchmarks are often employed to account for warm-up time and garbage collection\cite{sestoft2013microbenchmarks}.
+Estimating the general performance of a programming language is a difficult task. A programming language, even a \gls{DSL}, has broad problem domains compared to conventional programs. Therefore benchmarks suites are employed to test different aspects of the programming language. Such suites have been used to measure the Scheme programming language and its derivatives\cite{bauman2015pycket, strickland2012chaperones} and popular game engines\cite{p92018gameplay}. When measuring the performance of managed languages, microbenchmarks are often employed to account for warm-up time and garbage collection\cite{sestoft2013microbenchmarks}.
 
 \subsection{Benchmark Categories}
-There exists a number of different benchmarking techniques. This section will outline a few of these and clarify their differences. There different kinds of benchmarking are outlined in\cite{p92018gameplay}.
+There exists a number of different benchmarking techniques. This section will outline a few of these and clarify their differences. The different kinds of benchmarking are outlined in \cite{p92018gameplay}:
 \begin{itemize}
   \item Microbenchmarks
   \item Macrobenchmarks
   \item Application Benchmarks
 \end{itemize}
 
-Microbenchmarks are small tests that can be run repeatedly. They test a small part of the code and are sometimes referred to as component tests. These tests are comparable to unit tests in size. In the microbenchmarking methodology outlined in\cite{sestoft2013microbenchmarks}, these small tests are run several times to measure the arithmetic mean and standard deviation. The number of runs varies, the idea is that the code has run at least twice and at least for 0.25 wall-clock seconds.
+Microbenchmarks are small tests that can be run repeatedly. They test a small part of the code and are sometimes referred to as component tests. These tests are comparable to unit tests in size. In the microbenchmarking methodology outlined in \cite{sestoft2013microbenchmarks}, these small tests are run several times to measure the arithmetic mean and standard deviation. The number of runs varies, the idea is that the code has run at least twice and at least for 0.25 wall-clock seconds.
 
 Macrobenchmarks are considered tests of multiple microbenchmarks sequenced together. These are comparable to an automatic integration test or a test of a partial system. These tests measure the overhead of component composition. This methodology is still based on the same principles as microbenchmarking and therefore computes an arithmetic mean and standard deviation for the composed system.
 

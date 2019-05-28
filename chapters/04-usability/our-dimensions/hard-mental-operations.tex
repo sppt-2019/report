@@ -22,7 +22,7 @@ if (not expr1) && expr2 then
 \label{lst:hard:mental:operations}
 \end{listing}
 
-In F\# it is optional for the programmer to indicate types when he is writing functions. Sometimes it may be necessary to verify that the compilers inference is correct by looking at the deduced function signature. We argue that this is a hard mental operation in F\#. The function signatures will quickly get incomprehensible as the number of arguments grow. Take for example the function signature of the \ttt{ReactTo} function that we wrote as part of the \gls{FRP} plugin for Unity: 
+In F\# it is optional for the programmer to indicate types when he is writing functions. Sometimes it may be necessary to verify that the compilers inference is correct by looking at the deduced function signature. We argue that this may present hard mental operations in both languages, as the function signatures will quickly get incomprehensible as the number of arguments grow. Take for example the function signature of the \ttt{ReactTo} function that we wrote as part of the \gls{FRP} plugin for Unity: 
 \newline
 \fsinline{member FRPBehaviour.ReactTo : event:FRPEvent * condition:('T0 -> bool) * handler:('T0 -> unit) -> unit}.\newline
 We should underline that this function uses tupled arguments, because we wanted to overload it with a function to unconditionally react to events. But even without tupled arguments the definition would have been:\newline
