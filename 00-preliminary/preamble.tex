@@ -71,6 +71,7 @@
 \usetikzlibrary{arrows,arrows.meta, fit, backgrounds, positioning, automata, shapes, external}
 \tikzsetexternalprefix{prefix=diagrams/}
 \tikzset{external/system call={pdflatex -shell-escape -halt-on-error -interaction=nonstopmode -jobname "\image" "\texsource"}}
+\tikzexternalenable
 \usepackage{enumitem}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Mathematics
@@ -244,3 +245,10 @@
 \pgfplotstableread[col sep = comma]{00-data/csharp-incremental-vs-normal-collapsed.csv}\aiCsharpGCDataCol
 \pgfplotstableread[col sep = comma]{00-data/frp-incremental-vs-normal.csv}\aiBenchmarkFsharpGCData
 \pgfplotstableread[col sep = comma]{00-data/frp-incremental-vs-normal-collapsed.csv}\aiFsharpGCDataCol
+
+\usepackage{atbegshi}
+\newcommand\showtimer{%
+  \message{^^Jtimer: \the\numexpr\the\pdfelapsedtime*1000/65536\relax}%
+  \pdfresettimer}
+\AtBeginDocument{\showtimer}
+\AtBeginShipout {\showtimer}

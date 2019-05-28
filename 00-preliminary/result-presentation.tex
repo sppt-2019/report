@@ -65,7 +65,6 @@ symbolic x coords={,
 
 \begin{figure}[H]
 \makebox[\textwidth][c]{
-\tikzexternalenable
 \tikzsetnextfilename{#6}
 \begin{tikzpicture}
     \begin{axis}[
@@ -90,8 +89,7 @@ symbolic x coords={,
     ]
     #7
     \end{axis}
-\end{tikzpicture}
-\tikzexternaldisable}
+\end{tikzpicture}}
 \caption{#5}
 \label{fig:#6}
 \end{figure}
@@ -109,7 +107,6 @@ symbolic x coords={,
 \NewDocumentCommand\barChart{sO{12}O{}O{Run Time (ns)}O{Lower is better}mmm}{%
     \begin{figure}[H]
     \makebox[\textwidth][c]{
-    \tikzexternalenable
     \tikzsetnextfilename{#7}
     \begin{tikzpicture}
         \begin{axis}[
@@ -136,8 +133,7 @@ symbolic x coords={,
         ]
         #8
         \end{axis}
-    \end{tikzpicture}
-    \tikzexternaldisable}
+    \end{tikzpicture}}
     \caption{#6}
     \label{fig:#7}
 \end{figure}
