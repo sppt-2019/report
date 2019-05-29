@@ -7,23 +7,10 @@ In this experiment we estimate the minimum concurrent workload of .NET's \ttt{Ta
 \subsubsection{Test Setup}
 We use the binary tree summation benchmark presented in the previous section with a minor modification: Every time the algorithm finds a \ttt{Node}, it busy-waits for a given amount of time to simulate work. The busy-wait was implemented with a loop, whose number of iterations is gradually halved until the sequential solution executes faster than the parallel. The hypothesis is that the parallel solutions will be faster with higher iteration counts, because it is capable of busy-waiting multiple tasks at the same time.
 
-We implemented the test in two variations, which are both listed in \lstref{benchmark:strategies}. The first variation emulates a data dependency between the wait and the results the subtrees, i.e. the wait is intended to emulate a computation that must be carried out after the results of both subtrees have been computed. The other variation emulates a situation where the left and right subtree can be computed in parallel with the wait, i.e. no data dependency between the delay and the subtrees. The tree has a total of 60 leaf nodes. In addition to the binary tree summation, we also implemented a N-ary tree summation in the same variations as that of binary.
+We implemented the test in two variations, which are both listed in \lstref{benchmark:strategies} and \lstref{benchmark:strategies-helper}. The first variation emulates a data dependency between the wait and the results the subtrees, i.e. the wait is intended to emulate a computation that must be carried out after the results of both subtrees have been computed. The other variation emulates a situation where the left and right subtree can be computed in parallel with the wait, i.e. no data dependency between the delay and the subtrees. The tree has a total of 60 leaf nodes. In addition to the binary tree summation, we also implemented a N-ary tree summation in the same variations as that of binary.
 
-\begin{listing}
+\begin{listing}[H]
     \begin{minted}{csharp}
-public static int DoFakeWork(int workBias) {
-    //Start the 'work bias' before blocking wait on child computation, i.e. we're waiting while the children
-    //are computing
-    var fakeSum = 0;
-    for(var i = 0; i < workBias / 2; i++) {
-        fakeSum += i;
-    }
-    for (var i = 0; i < workBias / 2; i++) {
-        fakeSum -= i;
-    }
-    return fakeSum;
-}
-
 public static async Task<int> SumLeaves(Tree<int> tree, int workBias)
 {
     if (tree is Leaf<int> leaf)
@@ -47,26 +34,45 @@ public static async Task<int> SumLeaves(Tree<int> tree, int workBias)
     \label{lst:benchmark:strategies}
 \end{listing}
 
+\begin{listing}[H]
+    \begin{minted}{csharp}
+public static int DoFakeWork(int workBias) {
+    //Start the 'work bias' before blocking wait on child computation, i.e. we're waiting while the children
+    //are computing
+    var fakeSum = 0;
+    for(var i = 0; i < workBias / 2; i++) {
+        fakeSum += i;
+    }
+    for (var i = 0; i < workBias / 2; i++) {
+        fakeSum -= i;
+    }
+    return fakeSum;
+}
+\end{minted}
+\caption{The DoFakeWork Implementation}
+\label{lst:benchmark:strategies-helper}
+\end{listing}
+
 \subsubsection{Results}
 The results are plotted in \figureref{crit-work-dep} and \figureref{crit-work-no-dep} (and listed in \tableref{binary:tree:with:bias:dependency} and \tableref{binary:tree:with:bias:no:dependency} in \apxref{crit:work:data}).
 
 \newcommand{\workBiasSymbolics}{\symbolic{Work Bias (iterations),134217728,67108864,33554432,16777216,8388608,4194304,2097152,1048576,524288,262144,131072,65536,32768,16384,8192,4096,2048,1024}}
-\lineChart[][Run Time (ns)][Number of Busy-Wait Iterations]{Critical workload with data dependency.}{crit-work-dep}{
+\lineChart[xmode=log,log basis y=2,xmin=65536,abs log x ticks][Run Time (ns)][Number of Busy-Wait Iterations]{Critical workload with data dependency.}{crit-work-dep}{
     \plotData{Sequential}{\workWithDependencyData}
     \plotData{Fork Join}{\workWithDependencyData}
     \plotData{Lenient}{\workWithDependencyData}
 }
-\lineChart[][Run Time (ns)][Number of Busy-Wait Iterations]{Critical workload without data dependency.}{crit-work-no-dep}{
+\lineChart[xmode=log,log basis y=2,xmin=65536,abs log x ticks][Run Time (ns)][Number of Busy-Wait Iterations]{Critical workload without data dependency.}{crit-work-no-dep}{
     \plotData{Sequential}{\workWithoutDependencyData}
     \plotData{Fork Join}{\workWithoutDependencyData}
     \plotData{Lenient}{\workWithoutDependencyData}
 }
-\lineChart[][Run Time (ns)][Number of Busy-Wait Iterations]{Critical workload with data dependency, N-ary tree.}{crit-work-dep-nary}{
+\lineChart[xmode=log,log basis y=2,xmin=524000,abs log x ticks][Run Time (ns)][Number of Busy-Wait Iterations]{Critical workload with data dependency, N-ary tree.}{crit-work-dep-nary}{
     \plotData{Sequential}{\workWithDependencyDataNary}
     \plotData{Fork Join}{\workWithDependencyDataNary}
     \plotData{Lenient}{\workWithDependencyDataNary}
 }
-\lineChart[][Run Time (ns)][Number of Busy-Wait Iterations]{Critical workload with data dependency, N-ary tree.}{crit-work-no-dep-nary}{
+\lineChart[xmode=log,log basis y=2,xmin=524000,abs log x ticks][Run Time (ns)][Number of Busy-Wait Iterations]{Critical workload with data dependency, N-ary tree.}{crit-work-no-dep-nary}{
     \plotData{Sequential}{\workWithoutDependencyDataNary}
     \plotData{Fork Join}{\workWithoutDependencyDataNary}
     \plotData{Lenient}{\workWithoutDependencyDataNary}
@@ -117,7 +123,7 @@ In general, the results from this experiment is in alignment with those of the p
 
 After overcoming the initial overhead, the concurrent solutions handle increasing matrix sizes much better than their sequential counterparts. This is even more notable in \figureref{linpack-summation-line}, which plots the same data as a line and without logarithmic y-axis. As the matrix sizes continue to grow, it may be possible to split the columns in multiple separate tasks, possibly making the concurrent implementations faster yet.
 
-\lineChart[][Run Time (ns)][Size of matrix Columns and Rows]{Matrix Summation}{linpack-summation-line}{
+\lineChart[xmode=log,log basis y=2,xmin=256, abs log x ticks][Run Time (ns)][Size of matrix Columns and Rows]{Matrix Summation}{linpack-summation-line}{
     \plotData{Sequential}{\matrixSumData}
     \plotData{Map Reduce}{\matrixSumData}
     \plotData{Parallel Foreach}{\matrixSumData}
