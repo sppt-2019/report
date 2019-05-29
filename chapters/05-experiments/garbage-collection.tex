@@ -100,7 +100,7 @@ public void Update()
             var unit = statePair.sNew.unit;
             _initialiseState(statePair.sNew.state, statePair.sNew.unit);
             //Create a new list containing the updated unit
-            _stateList = _stateList.Select(s => s.unit == unit ? (state, unit) ? s);
+            //_stateList = _stateList.Select(s => s.unit == unit ? (state, unit) ? s);
         }
     }
 }
@@ -123,12 +123,12 @@ The following research questions outlines the intend of the experiment:
 \subsection{Results}
 In this section we discuss the results from the benchmarks. We use the questions presented in the previous section as baseline for the discussion.
 
+The results are listed in \tableref{unity:ai} and plotted in \figref{ai:benchmark}. The results indicate that F\# adds a small overhead, which increases as the number of units grow. This can be seen by comparing C\# Normal and F\# Normal. Furthermore, the C\# Inverse also adds a small overhead compared to C\# Normal. This could indicate that Unity has optimised the calls between native and managed code since v5.2.2. We also observe that the inverse \gls{FRP} state machine performs notably worse than the other approaches as the number of units grow. The reason is that each unit is in fact an entire \gls{FRP}-system with condition-checking and event-dispatching. We outline in \secref{fw:frp:optimisation} how a (potentially) more performant system could be structured.
 \subsubsection{Performance Penalty from Extensive Garbage Generation}
-The results are listed in \tableref{unity:ai} and plotted in \figref{ai:benchmark}. The results indicate that F\# adds a small overhead, which increases as the number of units grow. This can be seen by comparing C\# Normal and F\# Normal. Furthermore, the C\# Inverse also adds a small overhead compared to C\# Normal. This could indicate that Unity has optimised the calls between native and managed code since v5.2.2. We also observe that the inverse FRP state machine performs notably worse than the other approaches as the number of units grow. The reason is that each unit is in fact an entire \gls{FRP}-system with condition-checking and event-dispatching. We outline in \secref{fw:frp:optimisation} how a (potentially) more performant system could be structured.
 
 \begin{table}[H]
     \sisetup{round-mode=places}
-    \rowcolors{1}{}{lightgray}
+    \rowcolors{1}{}{rowgray}
     \makebox[\textwidth][c]{
     \begin{tabular}{| P{4cm} | S[round-precision=2] | S[round-precision=2] | S[round-precision=2] | S[round-precision=2] |}
         \hline
@@ -139,7 +139,7 @@ The results are listed in \tableref{unity:ai} and plotted in \figref{ai:benchmar
     \end{tabular}}
     \caption{Average framerate when simulating the given number of units in Unity's Mono runtime.}
     \label{tab:unity:ai}
-\end{table}\tmc{THOMAS!?!?! Fix det her :(}
+\end{table} \tmcc{Det ligner at være en fejl i csv reader pakken. Jeg kigger på det}
 
 \barChart*[12][\symbolic{Strategy,500,1000,1500,2000,2500}][Average FPS][Number of Units]{Average FPS in Unit Management benchmark using the Mono runtime (higher is better).}{ai:benchmark}{
     \plotData{Csharp Normal}{\aiBenchmarkData}
@@ -155,7 +155,7 @@ Another interesting observation we made during the test is that there is a very 
 
 \begin{table}[H]
     \sisetup{round-mode=places}
-    \rowcolors{1}{}{lightgray}
+    \rowcolors{1}{}{rowgray}
     \makebox[\textwidth][c]{
     \begin{tabular}{| P{4cm} | S[round-precision=2] | S[round-precision=2] |}
         \hline
