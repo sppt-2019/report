@@ -1,5 +1,3 @@
-
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % An example environment
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -18,9 +16,9 @@
 % 1: Table Latex
 % 2: Caption
 % 3: Label
-\definecolor{lightgray}{html}{#AAA}
+\definecolor{rowgray}{HTML}{E0E0E0}
 \newcommand{\makeTable}[3]{
-    \rowcolors{1}{}{lightgray}
+    \rowcolors{1}{}{rowgray}
     \begin{table}[H]
         \sisetup{round-mode=places}
         \alignCenter{
@@ -39,7 +37,7 @@
 % 3: Label
 \newcommand{\makeTablePB}[3]{
     \centering
-    \rowcolors{1}{}{lightgray}
+    \rowcolors{1}{}{rowgray}
     \begin{longtable}
         #1
         \caption{#2}
