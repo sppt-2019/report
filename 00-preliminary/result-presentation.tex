@@ -2,6 +2,27 @@
 \usepackage{xifthen}
 \usepackage{xparse}
 
+
+%%%%%%%%%%%%%%%%%%% PGF Styles%%%%%%%%%%%%%%%%%%%
+\pgfplotsset{
+  abs log x ticks/.style={
+      xticklabel={
+        \pgfkeys{/pgf/fpu=true}
+        \pgfmathparse{exp(\tick)}%
+        \pgfmathprintnumber[fixed relative, precision=3]{\pgfmathresult}
+        \pgfkeys{/pgf/fpu=false}
+      }
+  },
+  abs log y ticks/.style={
+      yticklabel={
+        \pgfkeys{/pgf/fpu=true}
+        \pgfmathparse{exp(\tick)}%
+        \pgfmathprintnumber[fixed relative, precision=3]{\pgfmathresult}
+        \pgfkeys{/pgf/fpu=false}
+      }
+  }
+}
+
 %%%%%%%%%%%%%%%%%%% Commands %%%%%%%%%%%%%%%%%%%
 \newcommand{\ifequals}[3]{\ifthenelse{\equal{#1}{#2}}{#3}{}}
 \newcommand{\case}[2]{#1 #2} % Dummy, so \renewcommand has something to overwrite...
