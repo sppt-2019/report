@@ -49,7 +49,7 @@ public static int DoFakeWork(int workBias) {
     return fakeSum;
 }
 \end{minted}
-\caption{The DoFakeWork Implementation}
+\caption{Implementation of the \m{DoFakeWork} method, which is used in \lstref{benchmark:strategies}.}
 \label{lst:benchmark:strategies-helper}
 \end{listing}
 
@@ -57,22 +57,22 @@ public static int DoFakeWork(int workBias) {
 The results are plotted in \figureref{crit-work-dep} and \figureref{crit-work-no-dep} (and listed in \tableref{binary:tree:with:bias:dependency} and \tableref{binary:tree:with:bias:no:dependency} in \apxref{crit:work:data}).
 
 \newcommand{\workBiasSymbolics}{\symbolic{Work Bias (iterations),134217728,67108864,33554432,16777216,8388608,4194304,2097152,1048576,524288,262144,131072,65536,32768,16384,8192,4096,2048,1024}}
-\lineChart[xmode=log,log basis y=2,xmin=65536,abs log x ticks][Run Time (ns)][Number of Busy-Wait Iterations]{Critical workload with data dependency.}{crit-work-dep}{
+\lineChart[xmode=log,log basis y=2,xmin=65536,abs log x ticks][Run Time (ns)][Number of Busy-Wait Iterations]{Minimum concurrent workload with data dependency benchmark results (lower is better).}{crit-work-dep}{
     \plotData{Sequential}{\workWithDependencyData}
     \plotData{Fork Join}{\workWithDependencyData}
     \plotData{Lenient}{\workWithDependencyData}
 }
-\lineChart[xmode=log,log basis y=2,xmin=65536,abs log x ticks][Run Time (ns)][Number of Busy-Wait Iterations]{Critical workload without data dependency.}{crit-work-no-dep}{
+\lineChart[xmode=log,log basis y=2,xmin=65536,abs log x ticks][Run Time (ns)][Number of Busy-Wait Iterations]{Minimum concurrent workload without data dependency benchmark results (lower is better).}{crit-work-no-dep}{
     \plotData{Sequential}{\workWithoutDependencyData}
     \plotData{Fork Join}{\workWithoutDependencyData}
     \plotData{Lenient}{\workWithoutDependencyData}
 }
-\lineChart[xmode=log,log basis y=2,xmin=524000,abs log x ticks][Run Time (ns)][Number of Busy-Wait Iterations]{Critical workload with data dependency, N-ary tree.}{crit-work-dep-nary}{
+\lineChart[xmode=log,log basis y=2,xmin=524000,abs log x ticks][Run Time (ns)][Number of Busy-Wait Iterations]{Minimum concurrent workload with data dependency on N-ary tree benchmark results (lower is better).}{crit-work-dep-nary}{
     \plotData{Sequential}{\workWithDependencyDataNary}
     \plotData{Fork Join}{\workWithDependencyDataNary}
     \plotData{Lenient}{\workWithDependencyDataNary}
 }
-\lineChart[xmode=log,log basis y=2,xmin=524000,abs log x ticks][Run Time (ns)][Number of Busy-Wait Iterations]{Critical workload with data dependency, N-ary tree.}{crit-work-no-dep-nary}{
+\lineChart[xmode=log,log basis y=2,xmin=524000,abs log x ticks][Run Time (ns)][Number of Busy-Wait Iterations]{Minimum concurrent workload without data dependency on N-ary tree benchmark results (lower is better).}{crit-work-no-dep-nary}{
     \plotData{Sequential}{\workWithoutDependencyDataNary}
     \plotData{Fork Join}{\workWithoutDependencyDataNary}
     \plotData{Lenient}{\workWithoutDependencyDataNary}
@@ -107,13 +107,13 @@ As the matrices are of size $N x N$, they contain a total of $N^2$ elements, whi
 The results are plotted in \figureref{linpack-summation-fs} and \figref{linpack-summation-cs}. The first thing to notice is that Map-Reduce seems to be roughly equal to the sequential in running time. This could indicate that the \ttt{Select}-method of C\#'s \gls{LINQ}, which was used to implement Map-Reduce, does not parallelise its iterations. We will thus treat Map-Reduce as a sequential solution for the rest of this result discussion.
 
 \newcommand{\linpackSymbolics}{\symbolic{Problem Size,2,4,8,16,32,64,128,256,512,1024,2048,4096}}
-\barChart*[7][\linpackSymbolics][Run Time (ns)][Size of matrix colums and rows]{Matrix Summation in F\#}{linpack-summation-fs}{
+\barChart*[7][\linpackSymbolics][Run Time (ns)][Size of matrix colums and rows]{Matrix summation benchmark results in F\#.}{linpack-summation-fs}{
     \plotDataWithError{Sequential}{\matrixSumData}
     \plotDataWithError{Map Reduce}{\matrixSumData}
     \plotDataWithError{Parallel Foreach}{\matrixSumData}
     \plotDataWithError{Tasks}{\matrixSumData}
 }
-\barChart*[7][\linpackSymbolics][Run Time (ns)][Size of matrix colums and rows]{Matrix Summation in C\#}{linpack-summation-cs}{
+\barChart*[7][\linpackSymbolics][Run Time (ns)][Size of matrix colums and rows]{Matrix summation benchmark results in C\#.}{linpack-summation-cs}{
     \plotDataWithError{Sequential}{\matrixSumDataCsharp}
     \plotDataWithError{Map Reduce}{\matrixSumDataCsharp}
     \plotDataWithError{Parallel Foreach}{\matrixSumDataCsharp}
@@ -123,7 +123,7 @@ In general, the results from this experiment is in alignment with those of the p
 
 After overcoming the initial overhead, the concurrent solutions handle increasing matrix sizes much better than their sequential counterparts. This is even more notable in \figureref{linpack-summation-line}, which plots the same data as a line and without logarithmic y-axis. As the matrix sizes continue to grow, it may be possible to split the columns in multiple separate tasks, possibly making the concurrent implementations faster yet.
 
-\lineChart[xmode=log,log basis y=2,xmin=256, abs log x ticks][Run Time (ns)][Size of matrix Columns and Rows]{Matrix Summation}{linpack-summation-line}{
+\lineChart[xmode=log,log basis y=2,xmin=256, abs log x ticks][Run Time (ns)][Size of matrix Columns and Rows]{Matrix summation benchmark results in F\#, here plotted as a line and without logarithmic y-axis.}{linpack-summation-line}{
     \plotData{Sequential}{\matrixSumData}
     \plotData{Map Reduce}{\matrixSumData}
     \plotData{Parallel Foreach}{\matrixSumData}
@@ -131,7 +131,7 @@ After overcoming the initial overhead, the concurrent solutions handle increasin
 }
 
 In \figref{linpack-summation-cs-vs-fs} we have plotted the concurrent implementations in C\# and F\#. This plot shows that the Task implementation in F\# is faster with smaller problem sizes. It remains the fastest up until N is around 128. After that point the C\# Task implementation becomes the fastest and continues to remain so. It seems to scale better with problem sizes than the other implementations. The parallel foreach implementations lie around the same running time, meaning that the languages are equally performant with that concurrency strategy.
-\barChart*[7][\linpackSymbolics][Run Time (ns)][Size of matrix colums and rows]{Matrix Summation in C\# compared to F\#}{linpack-summation-cs-vs-fs}{
+\barChart*[7][\linpackSymbolics][Run Time (ns)][Size of matrix colums and rows]{Matrix summation in C\# compared to F\#.}{linpack-summation-cs-vs-fs}{
     \plotDataWithErrorAndLegend{Parallel Foreach}{\matrixSumDataCsharp}{C\# Parallel Foreach}
     \plotDataWithErrorAndLegend{Tasks}{\matrixSumDataCsharp}{C\# Tasks}
     \plotDataWithErrorAndLegend{Parallel Foreach}{\matrixSumData}{F\# Parallel Foreach}

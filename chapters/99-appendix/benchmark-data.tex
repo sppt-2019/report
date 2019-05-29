@@ -6,14 +6,14 @@
         \csvreader[head to column names]{00-data/fsharp/accumulation.csv}
         {1=\ps, 2=\seq, 4=\aw, 6=\lenient}
         {\\\hline \ps & \seq & \aw & \lenient}}
-{Running time in ns in Binary Tree Accumulation benchmark}{accumulation:res}
+{Running time in ns in Binary Tree Accumulation benchmark for F\#.}{accumulation:res}
 
 \makeTable{{ p{2.8cm} | S[round-precision=2] | S[round-precision=2] | S[round-precision=2]}%
         \bfseries Problem Size (nodes) & \bfseries Sequential & \bfseries Async Workflows & \bfseries Lenient
         \csvreader[head to column names]{00-data/fsharp/sum.csv}
         {1=\ps, 2=\seq, 4=\aw, 6=\lenient}
         {\\\hline \ps & \seq & \aw & \lenient}}
-{Running time in ns in Binary Tree Summation benchmark}{summation:res}
+{Running time in ns in Binary Tree Summation benchmark for F\#.}{summation:res}
 
 \section{C\# - No Work Bias}
 \makeTable{{p{2.8cm} | S[round-precision=2] | S[round-precision=2] | S[round-precision=2]}
@@ -21,14 +21,14 @@
         \csvreader[head to column names]{00-data/csharp/accumulation.csv}
         {1=\ps, 2=\seq, 4=\forkjoin, 6=\lenient}
         {\\\hline \ps & \seq & \forkjoin & \lenient}}
-{Running time in ns in Binary Tree Accumulation benchmark}{accumulation:res:cs}
+{Running time in ns in Binary Tree Accumulation benchmark for C\#.}{accumulation:res:cs}
 
 \makeTable{{ p{2.8cm} | S[round-precision=2] | S[round-precision=2] | S[round-precision=2]}%
         \bfseries Problem Size (nodes) & \bfseries Sequential & \bfseries Fork Join & \bfseries Lenient
         \csvreader[head to column names]{00-data/csharp/sum.csv}
         {1=\ps, 2=\seq, 4=\forkjoin, 6=\lenient}
         {\\\hline \ps & \seq & \forkjoin & \lenient}}
-{Running time in ns in Binary Tree Summation benchmark}{summation:res:cs}
+{Running time in ns in Binary Tree Summation benchmark for C\#.}{summation:res:cs}
 
 \section{Critical Work Data} \label{app:crit:work:data}
 \makeTable{{ c | c | c | c }%

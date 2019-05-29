@@ -31,7 +31,7 @@ let CalculateCLenient a b = async {
     return c + b
 }
 \end{minted}
-\caption{Lenient evaluation in C\#} \label{lst:lenient:to:task}
+\caption{Lenient evaluation mapping using F\# Async Workflows.} \label{lst:lenient:to:task}
 \end{listing}
 The mapping shown in \lstref{lenient:to:task} involves wrapping all arguments to methods in Async Workflows and explicitly synchronise using the \ttt{let!} keyword whenever there is a data-dependency between them. This means that all values of arguments are calculated asynchronously from the method body. The method is marked as \ttt{async}, meaning that an Async Workflow is spawned for every invocation of the method, i.e. it runs asynchronously from the caller. This leaves the majority of the footwork to F\#'s scheduler, which must figure out in which order to execute them.
 
@@ -64,7 +64,7 @@ Memory Type &  \multicolumn{2}{| c |}{DDR3L 1600} \\ \hline
 \multicolumn{3}{|c|}{\textbf{Software}} \\ \hline
 Operating System & \multicolumn{2}{| c |}{Ubuntu 18.04 64bit}  \\ \hline
 C\# runtime & \multicolumn{2}{| c |}{dotnet 2.2.104} \\ \hline
-}{System specifications.}{sys-specs}\footnotetext{Logical cores are sometimes called threads. However logical cores is used here to avoid confusion with the software concept; threads, which is distinct from hardware threads.}
+}{System specifications of the test machine.}{sys-specs}\footnotetext{Logical cores are sometimes called threads. However logical cores is used here to avoid confusion with the software concept; threads, which is distinct from hardware threads.}
 
 We wish to analyse the following research questions:
 \begin{enumerate}
@@ -79,13 +79,13 @@ In this section we analyse and discuss the results based on the two research que
 The results are plotted in \figref{binary-accumulation} and \figref{binary-summation} (and listed in \tableref{accumulation:res} and \tableref{summation:res} in \apxref{benchmark:data}).
 
 \newcommand{\binAcumSymbolics}{\symbolic{Problem,1,4,8,16,32,64,128,256,512,1024,2048,4096,8192,16384,32768,65536}}
-\barChart*[5][\binAcumSymbolics][Run Time (ns)][Number of Nodes]{Binary Accumulation}{binary-accumulation}{
+\barChart*[5][\binAcumSymbolics][Run Time (ns)][Number of Nodes]{Binary accumulation benchmark results in F\# (lower is better).}{binary-accumulation}{
     \plotDataWithError{Sequential}{\accumulationData}
     \plotDataWithError{Async Workflow}{\accumulationData}
     \plotDataWithError{Task}{\accumulationData}
     \plotDataWithError{Lenient}{\accumulationData}
 }
-\barChart*[5][\binAcumSymbolics][Run Time (ns)][Number of Nodes]{Binary Summation}{binary-summation}{
+\barChart*[5][\binAcumSymbolics][Run Time (ns)][Number of Nodes]{Binary summation benchmark results in F\# (lower is better).}{binary-summation}{
     \plotDataWithError{Sequential}{\summationData}
     \plotDataWithError{Async Workflow}{\summationData}
     \plotDataWithError{Task}{\summationData}
@@ -99,22 +99,22 @@ The execution times of the lenient strategy grows faster with problem size than 
 \subsubsection{Language Performance with C\# Tasks}
 \figref{seq-binary-accumulation} and \figref{seq-binary-summation} shows the running time of the sequential implementation in C\# and F\#. These results show that F\# is faster in the accumulation benchmark up to tree sizes of roughly 256 nodes. In the summation benchmark C\# is faster all the way. Both data sets seem to decrease in running time up to tree sizes of 128 nodes. This is strange, as it means that the implementation handles more computations in less time. We are unsure what causes this.
 
-\barChart*[10][\binAcumSymbolics][Run Time (ns)][Number of Nodes]{Binary Accumulation in F\# and C\# using the sequential solutions}{seq-binary-accumulation}{
+\barChart*[10][\binAcumSymbolics][Run Time (ns)][Number of Nodes]{Binary Accumulation in F\# and C\# using the sequential solutions (lower is better).}{seq-binary-accumulation}{
     \plotDataWithErrorAndLegend{Sequential}{\accumulationData}{F\#}
     \plotDataWithErrorAndLegend{Sequential}{\accumulationDataCsharp}{C\#}
 }
-\barChart*[10][\binAcumSymbolics][Run Time (ns)][Number of Nodes]{Binary Summation in F\# and C\# using the sequential solutions}{seq-binary-summation}{
+\barChart*[10][\binAcumSymbolics][Run Time (ns)][Number of Nodes]{Binary Summation in F\# and C\# using the sequential solutions (lower is better).}{seq-binary-summation}{
     \plotDataWithErrorAndLegend{Sequential}{\summationData}{F\#}
     \plotDataWithErrorAndLegend{Sequential}{\summationDataCsharp}{C\#}
 }
 
 In \figref{task-binary-accumulation} and \figref{task-binary-summation} we have plotted the running times for F\# and C\# in the two test cases. Both the C\# and F\# implementation uses the Task strategy (i.e. divide-and-conquer that spawns two tasks in each recursion step). These results align with the previous in that F\# is fastest when there is a small number of nodes in the tree (up to 128 nodes in accumulation and 8 nodes in summation). After that point C\# is faster, and it seems that C\# handle increasing number of nodes better. The strange curve we observed in the sequential data sets are also present in C\# in the binary summation benchmark. Again, we're unsure what causes this behaviour.
 
-\barChart*[10][\binAcumSymbolics][Run Time (ns)][Number of Nodes]{Binary Accumulation in F\# and C\# using \ttt{Task} parallelisation}{task-binary-accumulation}{
+\barChart*[10][\binAcumSymbolics][Run Time (ns)][Number of Nodes]{Binary Accumulation in F\# and C\# using \ttt{Task} parallelisation (lower is better).}{task-binary-accumulation}{
     \plotDataWithErrorAndLegend{Task}{\accumulationData}{F\#}
     \plotDataWithErrorAndLegend{Fork Join}{\accumulationDataCsharp}{C\#}
 }
-\barChart*[10][\binAcumSymbolics][Run Time (ns)][Number of Nodes]{Binary Summation in F\# and C\# using \ttt{Task} parallelisation}{task-binary-summation}{
+\barChart*[10][\binAcumSymbolics][Run Time (ns)][Number of Nodes]{Binary Summation in F\# and C\# using \ttt{Task} parallelisation (lower is better).}{task-binary-summation}{
     \plotDataWithErrorAndLegend{Task}{\summationData}{F\#}
     \plotDataWithErrorAndLegend{Fork Join}{\summationDataCsharp}{C\#}
 }

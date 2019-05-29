@@ -9,7 +9,7 @@ In the cognitive dimensions framework consistency is the coherence between the l
 let x = 10s
 let y = 2 * x
 \end{minted}
-\caption{Type Incompatibility}
+\caption{An example of type incompatibility in F\#. 10s is an \m{int16} and 2 is an \m{int}.}
 \label{lst:type-incompat}
 \end{listing}
 
@@ -19,12 +19,12 @@ In addition to naming conventions causing confusion, \ttt{list}s have another pr
 
 \begin{listing}[H]
 \begin{minted}{csharp}
-private static List<T> GetParams<T>(Microsoft.FSharp.Collections.List<T> parameters)
+private static List<T> GetParams<T> (Microsoft.FSharp.Collections.List<T> parameters)
 {
     return new List<T>(parameters);
 }
 \end{minted}
-\caption{Conversion from \fs List to \cs List}
+\caption{Conversion from \fs List to \cs List.}
 \label{lst:list-conv}
 \end{listing}
 
@@ -40,7 +40,7 @@ let add x y = x + y
 // or alternatively with explicit types
 let add (x:int) (y:int) : int = x + y
 \end{minted}
-\caption{Function Signatures}
+\caption{Difference between reported and user-defined function signatures in F\#.}
 \label{lst:fun-sig}
 \end{listing}
 

@@ -71,7 +71,7 @@ type Candy(price:int) =
   member val Price = price with get
   let discountTuesday = this.Price / 2
 \end{minted}
-\caption{Incorrect Order}
+\caption{Incorrect order of function declarations. \m{let} declarations must come before \m{member}s.}
 \label{lst:let-mem-incor}
 \end{listing}
 

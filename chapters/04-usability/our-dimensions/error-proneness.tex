@@ -24,9 +24,9 @@ type Person(name: string, birthday: DateTime ) =
     let daysDiff = DateTime.Today.Subtract(birthday).Days
     daysDiff / 365
 \end{minted}
-\caption{Conciseness Comparison, examples taken from \cite{wlaschin2017FsharpForCsharpProgrammers}}
+\caption{Conciseness Comparison, examples taken from \cite{wlaschin2017FsharpForCsharpProgrammers}.}
 \label{lst:con-comp}
-\end{listing}
+\end{listing}\tmc{Er vi sikker på at den her skal være under Error-proneness?}
 
 The strong type system used in \fs can also cause unexpected errors. While the system prevents some errors down the line, C-family programmers would expect type coercion to assist with operations on integer values of different sizes. We gave an example of this in \lstref{type-incompat}, which yields an error because an \ttt{int} and \m{int16} are multiplied. This causes initial errors, but may prevent type errors later in development\cite{ray2014large}.
 
@@ -47,6 +47,6 @@ let sum = [1..10] |> List.reduce add
 let sum = [1..10] 
 |> List.reduce (fun acc elm -> addTupled (acc, elm)) 
 \end{minted}
-\caption{Parameter Error}
+\caption{Examples of functions with and without tupled parameters and it's influence on their applications as higher-order.}
 \label{lst:para-err}
 \end{listing}
