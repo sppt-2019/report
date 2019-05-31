@@ -29,7 +29,7 @@ Given this information about a parallel program, the speed-up gain from parallel
         T_1/(pT_\infty)
     \end{equation*}
 \end{labeling}
-Since no actual machine has an infinite number of processors, the above equations require slight modifications to simulate real machines. Any computation that can run on $N$ processors can be executed on smaller number or processors, $p < N$\cite{Gustafson2011}. This is achieved by dividing the work load onto the processors, instead of assigning one processor per task. Furthermore, running on fewer then $N$ processors the execution is bounded by:
+Since no actual machine has an infinite number of processors, the above equations require slight modifications to simulate real machines. Any computation that can run on $N$ processors can be executed on smaller number of processors, $p < N$\cite{Gustafson2011}. This is achieved by dividing the work load onto the processors, instead of assigning one processor per task. Furthermore, running on fewer then $N$ processors the execution is bounded by:
 \begin{equation*}
     T_p \leq T_N + \frac{T_1 - T_n}{p}
 \end{equation*}
@@ -37,3 +37,4 @@ The bound $T_p$ can be expressed with upper and lower bound\cite{brent1974parall
 \begin{equation*}
     \frac{T_1}{p} \leq T_p \leq \frac{T_1}{p} + T_\infty
 \end{equation*}
+\tmcc{Outro needed here too}
