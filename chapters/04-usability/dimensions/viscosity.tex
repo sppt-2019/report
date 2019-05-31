@@ -1,4 +1,4 @@
-\subsection{Viscosity}
+\subsubsection{Viscosity}
 % Participant 2, 40:40 samt 1:02:30
 In our test cases, viscosity is particularly visible in the \dquote{concurrent}-update category. The reason for this is that the participants were asked to develop a sequential solution first, followed by a concurrent implementation. Generally viscosity is low in both languages. In F\# we saw the magnetism task implemented using the pipe operator. Such an implementation can be extended to a concurrent solution by piping into \ttt{Async.Parallel} and then \ttt{Async.RunSynchronously} (see \lstref{fsharp:pipe:async}). A similar solution can be achieved in C\# using \gls{LINQ}.
 

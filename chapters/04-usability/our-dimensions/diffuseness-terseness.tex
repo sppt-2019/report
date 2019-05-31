@@ -7,9 +7,9 @@ To compare the conciseness of both languages, two solutions to a problem will be
 \begin{minted}{csharp}
 public void Solution1(IEnumerable<Item> Armour)
 {
-  int totalAgi = 0;
-  int totalStr = 0;
-  int totalInt = 0;
+  var totalAgi = 0;
+  var totalStr = 0;
+  var totalInt = 0;
 
   foreach (var item in Armour)
   {
@@ -38,7 +38,7 @@ The approach taken in \fs is somewhat different, the solution can be seen in \ls
   let totalStats (armour:Item[]) =
     armour
     |> Array.map (fun a -> (a.Agility, a.Intellect, a.Strength))
-    |> Array.reduce (fun acc elm -> sum acc elm)
+    |> Array.reduce sum
   
   [...]
   
