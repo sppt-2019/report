@@ -126,20 +126,14 @@ In this section we discuss the results from the benchmarks. We use the questions
 The results are listed in \tableref{unity:ai} and plotted in \figref{ai:benchmark}. The results indicate that F\# adds a small overhead, which increases as the number of units grow. This can be seen by comparing C\# Normal and F\# Normal. Furthermore, the C\# Inverse also adds a small overhead compared to C\# Normal. This could indicate that Unity has optimised the calls between native and managed code since v5.2.2. We also observe that the inverse \gls{FRP} state machine performs notably worse than the other approaches as the number of units grow. The reason is that each unit is in fact an entire \gls{FRP}-system with condition-checking and event-dispatching. We outline in \secref{fw:frp:optimisation} how a (potentially) more performant system could be structured.
 \subsubsection{Performance Penalty from Extensive Garbage Generation}
 
-\begin{table}[H]
-    \sisetup{round-mode=places}
-    \rowcolors{1}{}{rowgray}
-    \makebox[\textwidth][c]{
-    \begin{tabular}{| P{4cm} | S[round-precision=2] | S[round-precision=2] | S[round-precision=2] | S[round-precision=2] |}
+\makeTable{{| P{4cm} | S[round-precision=2] | S[round-precision=2] | S[round-precision=2] | S[round-precision=2] |}
         \hline
-        \textbf{Number of Units} & \textbf{C\#} & \textbf{C\# Inverse} & \textbf{F\#} & \textbf{FRP Inverse} \\ \hline
-        \csvreader[head to column names]{00-data/ai-benchmark.csv}
+        \bfseries Number of Units & \bfseries C\# & \bfseries C\# Inverse & \bfseries F\# & \bfseries FRP Inverse
+        \csvreader[head to column names]{00-data/ai-benchmark.csv}%
         {1=\strategy, 2=\csharp, 3=\cinverse, 4=\fsharp, 5=\frp} % <Column number>=<Macro>
-        {\strategy & \csharp & \cinverse & \fsharp & \frp \\ \hline}
-    \end{tabular}}
-    \caption{Average framerate when simulating the given number of units in Unity's Mono runtime.}
-    \label{tab:unity:ai}
-\end{table} \tmcc{Det ligner at være en fejl i csv reader pakken. Jeg kigger på det}
+        {\\\hline\strategy & \csharp & \cinverse & \fsharp & \frp}%
+        \\\hline}%
+{Average framerate when simulating the given number of units in Unity's Mono runtime.}{unity:ai}%
 
 \barChart*[12][\symbolic{Strategy,500,1000,1500,2000,2500}][Average FPS][Number of Units]{Average FPS in Unit Management benchmark using the Mono runtime (higher is better).}{ai:benchmark}{
     \plotData{Csharp Normal}{\aiBenchmarkData}
@@ -153,20 +147,17 @@ The results, listed in \tableref{unity:ai:runtime} and plotted in \figref{ai:ben
 
 Another interesting observation we made during the test is that there is a very large spike in the time it takes to generate the third frame. This spike is around 20 times the time it takes to generate the other frames. One could explain this spike in Mono as runtime-optimisation, but as it is also present in IL2CPP, which is \gls{AoT}, that cannot be the case. We do therefore not know what causes the spike.
 
-\begin{table}[H]
-    \sisetup{round-mode=places}
-    \rowcolors{1}{}{rowgray}
-    \makebox[\textwidth][c]{
-    \begin{tabular}{| P{4cm} | S[round-precision=2] | S[round-precision=2] |}
+\makeTable{{| P{4cm} | S[round-precision=2] | S[round-precision=2] |}
         \hline
-        \textbf{Runtime} & \textbf{IL2CPP} & \textbf{Mono} \\\hline
-        \csvreader[head to column names]{00-data/ai-benchmark-runtimes.csv}
+        \textbf{Runtime} & \textbf{IL2CPP} & \textbf{Mono}%
+        \csvreader[head to column names]{00-data/ai-benchmark-runtimes.csv}%
         {1=\strategy, 2=\iltocpp, 3=\mono} % <Column number>=<Macro>
-        {\strategy & \iltocpp & \mono \\\hline}
-    \end{tabular}}
-    \caption{Average framerate in Unity's two runtimes measured with 1500 units in the scene.}
-    \label{tab:unity:ai:runtime}
-\end{table}
+        {\\\hline \strategy & \iltocpp & \mono}%
+        \\\hline
+        }%
+{Average framerate in Unity's two runtimes measured with 1500 units in the scene.}%
+{unity:ai:runtime}%
+
 
 \barChart[12][\symbolic{Strategy,Csharp Normal,Csharp Inverse,Fsharp Normal,FRP Inverse}][Average FPS][Strategy]{Average FPS of the two different runtimes in the Unit Management benchmark (higher is better).}{ai:benchmark:runtime}{
     \plotData{Mono}{\aiBenchmarkRuntimesData}
