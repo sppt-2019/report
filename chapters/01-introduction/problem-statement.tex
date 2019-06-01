@@ -1,15 +1,19 @@
 \section{Problem Statement} \label{sec:problem_statement}
-The gurus John Carmack and Tim Sweeney present two different approaches to the use of functional programming in game development. On one hand Carmack recommends writing code in a functional style whenever possible, but he does not believe fully functional programming languages are practical tools for game development. The main features mentioned are higher-order and pure functions and action items.
+The gurus John Carmack and Tim Sweeney present two different approaches to the use of functional programming in game development. On one hand Carmack recommends writing code in a functional style whenever possible, but he does not believe fully functional programming languages are practical tools for game development. The main features mentioned are higher-order and pure functions along with action items.
 
 In contrast Sweeney argues for a pure functional language supporting multiple evaluation strategies explicitly controlled by the programmer. In addition, he argues for constructs that allow for explicit handling of the imperative nature of games, however the exact nature of such constructs is left to the language designers.
 
 Using the .NET platform both approaches can be put into practice. C\# presents a viable candidate of Carmack's suggested approach, while F\#, with support for lenient evaluation strategy, is a candidate for Sweeney's approach. Given candidates for both approaches their efficacy can be tested\tmcc{Maybe reformulate this to move focus away from the approaches and towards the languages.}. We propose the following research questions to examine the use of functional programming in game development:
+
+\tmc{Jeg synes vi bør nævne her at F\# ikke har effects typing constructs, men nærmere at vi bruger F\# som et alternativ.}
 
 \begin{center}
     \begin{enumerate}
         \item \textbf{How well do experienced game developers express gameplay code in F\# in comparison to C\#?}
         \item How can F\# be incorporated in game development?
         \item What are the performance impacts of using F\# in a game engine?
-        \item What is Required of F\# to be Adopted by Game Developers?
+        \item What is required of F\# to be adopted by game developers?
     \end{enumerate}
 \end{center}
+
+\tmc{Jeg synes spørgsmålene skal omformuleres så de handler om de to paradigmer i stedet for F\# mod C\#.}
