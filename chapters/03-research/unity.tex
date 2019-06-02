@@ -1,10 +1,10 @@
 \section{Concurrency in Unity} \label{sec:unity:concurrency}
-Initially Unity was single-threaded, but over the last two years, Unity Technologies has made an effort to implement currency in the form of a C\# Job System\cite{unity:csharp:job:system} and more recently an \gls{ECS}\cite{unity:ecs}. Unity does not support the \ttt{async}/\ttt{await}-model, that is usually seen on the .NET platform, when dealing with \ttt{MonoBehaviours}\cite{unity:async,csharp:async}.
+Initially Unity was single-threaded, but over the last two years, Unity Technologies has made an effort to implement concurrency in the form of a C\# Job System\cite{unity:csharp:job:system} and more recently an \gls{ECS}\cite{unity:ecs}. Unity does not support the \ttt{async}/\ttt{await}-model, that is usually seen on the .NET platform, when dealing with \ttt{MonoBehaviours}\cite{unity:async,csharp:async}.
 
 \subsection{C\# Job System}
 Unity's C\# Job System provides a \textit{\dquote{simple and safe}} way of writing multithreaded code in Unity. It can be used on top of the \dquote{traditional} way of writing Unity code, i.e. \ttt{MonoBehaviour}s. In the job system, the developer expresses concurrent code using jobs rather than threads. Unity is in charge of running the jobs on a group of worker threads, which is shared with the engine code\cite{unity:csharp:job:system}.
 
-Jobs in Unity must be implemented as \ttt{struct}s that implement one of the \ttt{IJob}-interfaces. This interface defines an \ttt{Execute}-method, in which the concurrent code must be written. Jobs can be scheduled by calling one of the \ttt{Schedule}-methods, which returns a \ttt{JobHandle}, which can be used to manage dependencies between jobs. The developer is in charge of figuring out the dependencies between the jobs, as Unity does not provide any means of dependency management\cite{unity:csharp:job:system}.
+Jobs in Unity must be implemented as \ttt{struct}s that implement one of the \ttt{IJob}-interfaces. This interface defines an \ttt{Execute}-method, in which the concurrent code must be written. Jobs can be scheduled by calling one of the \ttt{Schedule}-methods, which returns a \ttt{JobHandle}, that can be used to manage dependencies between jobs. The developer is in charge of figuring out the dependencies between the jobs, as Unity does not provide any means of dependency management\cite{unity:csharp:job:system}.
 
 \lstref{unity:job:example} shows an example that moves forward all bullets in a game using an \ttt{IParallelForTransform}-job.
 \begin{listing}[H]
