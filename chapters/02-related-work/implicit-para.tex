@@ -8,3 +8,4 @@ First different evaluation strategies are explored, since \fs supports both stri
 
 \subsection{Lenient Parallelisation}
 Using a highly granular parallelisation system, such as .NET \m{Task}s, each argument to a function could be evaluated as a task, unless the expression is too small. Determining the computational cost of an argument is calculated by estimating the work of the expression. This information, along with the span of the program, should provide enough information to the system to effectively parallelise a \fs program.
+\tmc{Det behøves ikke nødvendigvis være .NET Tasks of F\#. De er blot eksempler.}
