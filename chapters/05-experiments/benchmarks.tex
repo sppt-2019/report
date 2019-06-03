@@ -107,7 +107,7 @@ The execution times of the lenient strategy grows faster with problem size than 
     \plotDataWithErrorAndLegend{Sequential}{\summationData}{F\#}
     \plotDataWithErrorAndLegend{Sequential}{\summationDataCsharp}{C\#}
 }
-
+\tmcc{The sequential data is plotted, but the section talks about Task performance.}
 In \figref{task-binary-accumulation} and \figref{task-binary-summation} we have plotted the running times for F\# and C\# in the two test cases. Both the C\# and F\# implementation uses the Task strategy (i.e. divide-and-conquer that spawns two tasks in each recursion step). These results align with the previous in that F\# is fastest when there is a small number of nodes in the tree (up to 128 nodes in accumulation and 8 nodes in summation). After that point C\# is faster, and it seems that C\# handle increasing number of nodes better. The strange curve we observed in the sequential data sets are also present in C\# in the binary summation benchmark. Again, we're unsure what causes this behaviour.
 
 \barChart*[10][\binAcumSymbolics][Run Time (ns)][Number of Nodes]{Binary Accumulation in F\# and C\# using \ttt{Task} parallelisation (lower is better).}{task-binary-accumulation}{
