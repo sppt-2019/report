@@ -1,7 +1,7 @@
 \subsection{Setup}
-The test setup draws inspiration from the Champagne Prototyping method and Discount Method for Language Evaluation. The tasks, prototype and participants were selected according to the former, whereas the use of a cheat-sheet for the participant was inspired by the latter. Contrary to the suggestion of using a text editor in Discount Method for Language Evaluation, we chose to use \glspl{IDE}, as we're testing well established languages. We allowed the users to choose between JetBrain's Rider and Microsoft's Visual Studio, depending on what they were used to.
+The test setup draws inspiration from the Champagne Prototyping method and Discount Method for Language Evaluation. The tasks, prototype and participants were selected according to the former, whereas the use of a cheat-sheet for the participant was inspired by the latter. Contrary to the suggestion of using a text editor in Discount Method for Language Evaluation, we chose to use \glspl{IDE}, as we're testing well established languages. We allowed the users to choose JetBrain's Rider or Microsoft's Visual Studio, depending on what they were used to.
 
-For each participant a one and a half hour session was planned. We expected that actual coding time would be roughly one hour, as we conducted a questionnaire before the test to learn about the test participants' experience with Unity and an interview after the test to allow the participant to share their opinion on F\# in Unity, C\# and functional programming. Out of the one hour coding time, we intended to use 20 minutes on C\# and 40 minutes on F\#, as the participants were required to have experience with C\# in Unity and therefore likely would complete the C\# tasks faster.
+For each participant a one and a half hour session was planned. We expected that actual coding time would be roughly one hour, as we conducted a questionnaire before the test to learn about the test participants' experience with Unity and a debriefing interview after the test to allow the participant to share their opinion on F\# in Unity, C\# and functional programming. Out of the one hour coding time, we intended to use 20 minutes on C\# and 40 minutes on F\#, as the participants were required to have experience with C\# in Unity and therefore likely would complete the C\# tasks faster.
 
 The cheat-sheet served a two-fold purpose and was made available online\footnote{\url{https://sppt-2019.github.io/unity-fsharp-introduction/}. Please note that the document is in Danish, as all participants were Danes.} using Github pages. The first purpose of the document was to give the test participants an introduction to F\# in Unity prior to the test and second to act as a cheat-sheet during the test. Similarly, the tasks were also made available online during the test\footnote{\url{https://sppt-2019.github.io/unity-fsharp-introduction/tasks/}. Please note that the document is in Danish, as all participants were Danes.}. We also created a Github repository, in which the test-setups were stored\footnote{\url{https://github.com/sppt-2019/Unity-FSharp}}. The master branch of said repository holds a Unity project with eight scenes, one for each of the test cases. The purpose of this setup was to remove Unity as a factor in the experiment and avoid having the participants spend time setting up scenes. For each of the test participants we created a new branch in the repository, which would allow us to view each of the participants' code in isolation.
 
@@ -12,7 +12,7 @@ We created a total of eight test cases, which fall into four categories; player 
 
 \begin{labeling}{\quad\quad}
     \item[FPS Controller] The participant is to implement a \gls{FiPS} controller, i.e. a component which can be added to a player character to move it around the world with the WASD-keys and rotate the camera with the mouse.
-    \item[3rd Person Controller] This test case is similar to the previous test case, only that the camera must rotate around the player character.
+    \item[3rd Person Controller] This test case is similar to the previous test case, except that the camera must rotate around the player character.
     \item[Talent Tree-Walker] The participant is first asked to implement a data structure that can hold a talent tree. Afterwards the player is given a pre-made talent tree from which the participant must calculate two things. At first a character's bonuses in three attributes should be calculated by summing all talents that are \ttt{Picked} and afterwards the maximum achievable bonus of all attributes by summing all talents.
     \item[Armour Graph] In this test case, the participant is given a list of armour equipped on a character. The participant is to implement code that sums the character's bonus in three attributes from the armour. In the second half of the test, we assume that certain pieces of armour can scale the attributes from all other pieces of armour and ask the participant to calculate the scaled attribute bonuses.
     \item[Dialogue Tree] The participant is to first implement a data structure that can hold a dialogue tree. Afterwards the participant must parse a list of dialogue options into a tree using his own data structure. Finally the participant is to find all unique dialogue paths that has a certain outcome.
@@ -40,13 +40,13 @@ We chose to add support for F\# via the Unity F\# Integration plugin\cite{fsharp
 
 \begin{listing}[H]
     \begin{minted}{fsharp}
-member this.Start() = 
+member this.Start() =
     let balls = GameObject.FindGameObjectsWithTag("Magnetic")
 
     this.ReactTo (FRPEvent.Update,
-        (fun () -> 
+        (fun () ->
             let center:Vector3 = getCenter(balls)
-            let updatedBalls = 
+            let updatedBalls =
                 balls
                 |> Array.map (fun b -> lookAt(b, center))
                 |> Array.map step

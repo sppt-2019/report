@@ -24,10 +24,10 @@ x = 1;
 
 Furthermore, since \ttt{x = 1} is valid in F\#, no errors were encountered immediately. Instead the program behaved unexpectedly and the participants received a warning, that the value of a boolean expression was being ignored. None of the participants were able to deduce the source of the error without assistance from the monitor. The degree of assistance required ranged from a hint to the monitor explaining the problem so that the test could continue.
 
-Some participants encountered minor errors when declaring variables, because variables are implicitly immutable in F\#. This is the opposite of C\#, where the \ttt{const} keyword is used to explicitly declare a variable immutable. However, once the participants realised this, they had no issue using it.
+Some participants encountered minor errors incorrectlyhen declaring variables, because variables are implicitly immutable in F\#. This is the opposite of C\#, where the \ttt{const} keyword is used to explicitly declare a variable immutable. However, once the participants realised this, they had no issue using it.
 
 \subsubsection{Scopes and Indentation}
-Several of the participants did not connect indentation with scope. This meant that the scoping of variables at times presented a challenge. In most test cases the solutions were implemented in a class. As a consequence incorrectly indented function bodies incorrectly would work initially because the function body would be part of the class instead of the function. Such incorrectly indented functions may still be called within the scope of the class (see \lstref{scope-prob}).
+Several of the participants did not connect indentation with scope. This meant that the scoping of variables at times presented a challenge. In most test cases the solutions were implemented in a class. As a consequence improperly indented function bodies incorrectly would work initially because the function body would be part of the class instead of the function. Such incorrectly indented functions may still be called within the scope of the class (see \lstref{scope-prob}).
 
 \begin{listing}[H]
 \begin{minted}{fsharp}
@@ -45,7 +45,7 @@ type FRP_FPSController() =
 \label{lst:scope-prob}
 \end{listing}
 
-Lines 7 and 8 are indented incorrectly, but the code compiles and behaves as expected. The \gls{IDE} gives a warning on both lines, but no errors are thrown until new \ttt{member} functions are defined below \ttt{HandleMoveForward}.
+In \lstref{scope-prob}, lines 7 and 8 are indented incorrectly, but the code compiles and behaves as expected. The \gls{IDE} gives a warning on both lines, but no errors are thrown until new \ttt{member} functions are defined below \ttt{HandleMoveForward}.
 
 \subsubsection{Types and Type Inference}
 Many participants had problems with the type system and type inference. The functions provided in the sample sheet had explicitly typed parameters, which the participants partially mimicked when declaring their own functions. However, participants did not specify function return types nor did they utilise typing of their variables. An example of such a function can be seen in \lstref{part-func}.

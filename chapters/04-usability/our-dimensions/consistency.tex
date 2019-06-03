@@ -1,6 +1,6 @@
 \subsubsection{Consistency}
 % par 2 43:0 32:10, pipe operator
-In the cognitive dimensions framework consistency is the coherence between the language designer's understanding and the language user's intuition of the language\cite{green1996usability}. This does not mean that consistency is the difference in language knowledge, but rather the difficulty of extrapolating behaviour and syntax of language features based on knowledge of a subset of the language or other language features.
+In the \cognitive framework consistency is the coherence between the language designer's understanding and the language user's intuition of the language\cite{green1996usability}. This does not mean that consistency is the difference in language knowledge, but rather the difficulty of extrapolating behaviour and syntax of language features based on knowledge of a subset of the language or other language features.
 
 \fs uses a strict type system which infers types. This feature allows the programmer to omit explicit typing while still gaining the benefits of it. In some cases the type inference can cause confusion or act in an unexpected way, as when a \ttt{int16} value is used in the declaration of a \ttt{int} value. In \lstref{type-incompat} an example of this can be seen. Line 2 gives an error because an \ttt{int} literal and an \ttt{int16} name binding are multiplied. This behaviour is consistent with \fs's rules, but is surprising for programmers who are versed in C-style languages.
 
@@ -13,7 +13,7 @@ let y = 2 * x
 \label{lst:type-incompat}
 \end{listing}
 
-Naming conventions can present consistency difficulties for some languages. An example of this are the type modules in F\#, such as \ttt{List}. These modules supply helper functions for working with a particular type, an example of which is \ttt{List.append}. In C\#, equivalent functionality would have been placed as instance methods on said types. This may cause some confusion for C-family programmers, as they will not find the functionality they seek, where they're used to.
+Naming conventions can present consistency difficulties for some languages. An example of this are the type modules in F\#, such as \ttt{List}. These modules supply helper functions for working with a particular type, an example of which is \ttt{List.append}. In C\#, equivalent functionality would have been placed as instance methods on said types. This may cause some confusion for C-family programmers, as they will not find the functionality they seek, where they're used to\tmcc{Danish saying.}.
 
 In addition to naming conventions causing confusion, \ttt{list}s have another problem. \fs and \cs share the .NET runtime and can therefore use each other's language features. While this is an advantage, it also presents some disadvantages, most notably that \fs lists and \cs lists are not the same type. This clashes with programmer expectations and converting to the correct list type can be surprisingly difficult, which we have demonstrated in \lstref{list-conv}.
 
@@ -35,9 +35,9 @@ In functional programming languages function signatures can often be specified b
 // reported function signature
 val add: int -> int -> int
 
-// function definition and signature
+// function definition without explicit signature
 let add x y = x + y
-// or alternatively with explicit types
+// function definition with explicit signature
 let add (x:int) (y:int) : int = x + y
 \end{minted}
 \caption{Difference between reported and user-defined function signatures in F\#.}
