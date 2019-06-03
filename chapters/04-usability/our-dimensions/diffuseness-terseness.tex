@@ -1,7 +1,8 @@
 \subsubsection{Diffuseness/Terseness} %Antal af paranteser: Participant 6, 1:01:00 cirka
 This dimension measures the conciseness of a notation system on a scale from terse, meaning too brief, to diffuse, meaning not brief enough. The golden middle ground is referred to as concise. This measure is affected by the symbols used for operators as well as the notation system's naming conventions. If the notation is too brief, understanding its meaning may be quite difficult and small changes can have large consequences. On the other hand, notations that are too verbose, cannot be viewed on a single screen and are therefore more difficult to overview.
 
-To compare the conciseness of both languages, two solutions to a problem will be examined. The problem consists of calculating three sums based on properties of a list of objects. The objects are given and the sums must be printed to the console. In \lstref{cs-armour} the \cs solution can be seen. The method takes a collection of \m{Item}s and iterating over them, keeping a running tally of three sums. Once all objects have been summed, the results are printed to the console.
+To compare the conciseness of both languages, two solutions to a problem will be examined. The problem consists of calculating three sums based on properties of a list of objects. The objects are given and the sums must be printed to the console. In \lstref{cs-armour} the \cs solution can be seen. The method takes a collection of \m{Item}s and iterates over them, keeping a running tally of three sums. Once all objects have been summed, the results are printed to the console.
+\tmc{Er 'tally' noget? Eller en slåfejl?}
 
 \begin{listing}[H]
 \begin{minted}{csharp}
@@ -55,7 +56,7 @@ The approach taken in \fs is somewhat different, the solution can be seen in \ls
   \label{lst:fs-armour}
   \end{listing}
 
-The \fs is slightly longer then the \cs implementation, which is due to dividing the functionality into several smaller functions. This lengthened the implementation of the first solution, but reduced the overall length of the code. The \cs code ended up being 35 lines longer than the \fs code. The full examples can be seen in \appref{terse-diff-comp}.
+The \fs solution is slightly longer than the \cs solution, which is due to dividing the functionality into several smaller functions. This lengthened the implementation of the first solution, but reduced the overall length of the code. The \cs code ended up being 35 lines longer than the \fs code. The full examples can be seen in \appref{terse-diff-comp}.
 
 The most prominent syntactic differences between \cs and \fs are the operators, scope delimiters and line end delimiters. In \cs blocks are denoted using the \m{\{} and \m{\}} symbols, whereas \fs uses indentation. In addition statements are terminated using a \m{;} in \cs, where a newline character is used in \fs. These differences mean that \fs uses fewer symbols in general than \cs, however some programmers find the F\#'s syntax more difficult to read\cite{fsharp:light:love}.
 
