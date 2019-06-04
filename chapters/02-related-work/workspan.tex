@@ -5,9 +5,9 @@ This section will detail a formal method of estimating performance of parallel p
     \item[$T_p(n)$] denotes the total running time of the program when parallelised as much as possible.
 \end{labeling}
 In order to estimate $T_p(n)$ the \textit{work} and \textit{span} of the program must be identified. The work is the total running time of all processors, ignoring synchronisation overheads. This is equivalent to running the program on a single processor or sequentially. Therefore
-\begin{equation}
+\begin{equation*}
     \text{work} = T(n)
-\end{equation}
+\end{equation*}
 The span is the longest data dependent path in the program i.e. the longest path of strictly sequential computation. This is sometimes called the critical path or the computational depth\cite{Blelloch:1996:PPA:prog-para-algo}. The shorter the span, the more parallelisable the program. Finally the cost of the program can be calculated. This is the total running time across all processors including the time spent idling. The cost is denoted $pT_p$.
 
 Given this information about a parallel program, the speed-up gain from parallelisation can be calculated. This calculation assumes an infinite number of processors, $T_\infty$. A number of different metrics for this gain exist, they are as follows.
@@ -37,4 +37,5 @@ The bound $T_p$ can be expressed with upper and lower bound\cite{brent1974parall
 \begin{equation*}
     \frac{T_1}{p} \leq T_p \leq \frac{T_1}{p} + T_\infty
 \end{equation*}
-\tmcc{Outro needed here too}
+
+These metrics are calculable at compile time and therefore present a potential answer to the implicit parallelisation question.

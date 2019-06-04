@@ -12,8 +12,6 @@ In the final section of this chapter we measure the performance of the \gls{FRP}
 \section{Threats to Validity}
 In this section we examine threats to validity in the performance benchmarks that were presented in this chapter. Once again we use the methodology proposed by \cite{mcleod:validity}. The points discussed here are in general applicable to both the concurrency benchmarks, the critical work benchmarks and the Unity \gls{FRP} benchmarks.
 
-\tmc{Skal vi tilføje at vi har lavet en systematisk fejl i accumulation, hvor vi ikke har sorteret?}
-
 \subsection{Internal Threats}
 In this section we discuss internal threats. Internal threats may originate from the test cases, execution and data analysis. We both discuss the origin of the threats as well as what we did to counteract it.
 
@@ -22,6 +20,9 @@ One of the threats to validity is our experience with F\#. None of us had writte
 
 \subsubsection{Test Cases}
 In the F\# concurrency benchmark we reused the problems presented in \cite{DBLP:journals/cl/Tremblay-parallel}, as the author claimed that they were well suited for the lenient evaluation strategy. We discovered that it was not the case. In order to research how the lenient evaluation strategy fares when the amount of work grows, we introduced a modified version of the binary summation benchmark, which emulates work in each node. We also introduced a matrix summation test, where each column was summed concurrently. These tests allow only a rather limited peek into how well F\# parallelises in comparison to C\#, as they are very specialised problems. Furthermore, they do not provide any information about how the two languages parallelise in the context of a game, as we argue that it is not common to sum large matrices and accumulate leaves of trees in games.
+
+\subsubsection{Implementation of Binary Accumulation and Sort}
+We have made a systematic error in the implementation of the Binary Accumulation and Sort benchmark. \cite{DBLP:journals/cl/Tremblay-parallel} first accumulates the leaves of the tree and thereby sorts them. In our implementation we have only accumulated them and not sorted the leaves. This error is present in all implementations, so they are still mutually comparable. This may explain why our results differ from those of the paper.
 
 \subsection{External Threats}
 In this section we examine external threats. External threats are those that arise outside the testing environment and may affect how broadly applicable the test results are. We first present the origin on the threat and then outline how the tests could be altered in the future to provide more broadly applicable results.

@@ -13,7 +13,7 @@ let y = 2 * x
 \label{lst:type-incompat}
 \end{listing}
 
-Naming conventions can present consistency difficulties for some languages. An example of this are the type modules in F\#, such as \ttt{List}. These modules supply helper functions for working with a particular type, an example of which is \ttt{List.append}. In C\#, equivalent functionality would have been placed as instance methods on said types. This may cause some confusion for C-family programmers, as they will not find the functionality they seek, where they're used to\tmcc{Danish saying.}.
+Naming conventions can present consistency difficulties for some languages. An example of this are the type modules in F\#, such as \ttt{List}. These modules supply helper functions for working with a particular type, an example of which is \ttt{List.append}. In C\#, equivalent functionality would have been placed as instance methods on said types. This may cause some confusion for C-family programmers, as they may find functionality they seek in unexpected places.
 
 In addition to naming conventions causing confusion, \ttt{list}s have another problem. \fs and \cs share the .NET runtime and can therefore use each other's language features. While this is an advantage, it also presents some disadvantages, most notably that \fs lists and \cs lists are not the same type. This clashes with programmer expectations and converting to the correct list type can be surprisingly difficult, which we have demonstrated in \lstref{list-conv}.
 

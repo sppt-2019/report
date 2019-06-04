@@ -2,31 +2,31 @@
 Errors produced by the programmer fall into one of two categories, either the error is a slip or a mistake. Slips are instances where the programmer knows what to do, but did something else by accident and mistakes are instances when a programmer makes a logical error. These errors can be exacerbated by language features.
 
 According to \cite{green1996usability}, textual programming languages are inherently more error-prone than visual languages. The given examples are implicit declaration, line-ends and delimiters. Implicit declarations are not applicable in either \cs or \fs, however line-ends are used in both languages. \cs uses \m{;} to denote line-ends whereas \fs uses newlines. A C-family programmer may find it difficult to overview \fs code for this reason. In \cs a \m{;} need not be followed by a line-end and depending on the type of statement, practices may differ (it is not typical to break lines in \ttt{for}-loop declarations, but it is after variable declarations).
-The \fs approach of using newlines and indentation to delimit scopes and lines uses fewer characters and promotes more readable code \needcite\tmc{Jeg er ikke enig i denne observation, men hvis der findes en kilde som siger det kan vi godt lade den stå.}. An example of this can be seen in \lstref{con-comp}.
+%The \fs approach of using newlines and indentation to delimit scopes and lines uses fewer characters and promotes more readable code \needcite\tmc{Jeg er ikke enig i denne observation, men hvis der findes en kilde som siger det kan vi godt lade den stå.}. An example of this can be seen in \lstref{con-comp}.
 
-\begin{listing}[H]
-\begin{minted}{csharp}
-class Person(string name, DateTime, birthday)
-{
-  public string Name { get; } = name;
-  public DateTime Birthday { get; } = birthday;
-  public int Age() =>
-    DateTime.Today.Subtract(birthday).Days / 365;
-}
-\end{minted}
-\begin{minted}{fsharp}
-type Person(name: string, birthday: DateTime ) =
-  member this.Name =
-    name
-  member this.Birthday =
-    birthday
-  member this.Age() =
-    let daysDiff = DateTime.Today.Subtract(birthday).Days
-    daysDiff / 365
-\end{minted}
-\caption{Conciseness Comparison, examples taken from \cite{wlaschin2017FsharpForCsharpProgrammers}.}
-\label{lst:con-comp}
-\end{listing}\tmc{Er vi sikker på at den her skal være under Error-proneness?}
+%\begin{listing}[H]
+%\begin{minted}{csharp}
+%class Person(string name, DateTime, birthday)
+%{
+%  public string Name { get; } = name;
+%  public DateTime Birthday { get; } = birthday;
+%  public int Age() =>
+%    DateTime.Today.Subtract(birthday).Days / 365;
+%}
+%\end{minted}
+%\begin{minted}{fsharp}
+%type Person(name: string, birthday: DateTime ) =
+%  member this.Name =
+%    name
+%  member this.Birthday =
+%    birthday
+%  member this.Age() =
+%    let daysDiff = DateTime.Today.Subtract(birthday).Days
+%    daysDiff / 365
+%\end{minted}
+%\caption{Conciseness Comparison, examples taken from \cite{wlaschin2017FsharpForCsharpProgrammers}.}
+%\label{lst:con-comp}
+%\end{listing}\tmc{Er vi sikker på at den her skal være under Error-proneness?}
 
 The strong type system used in \fs can also cause unexpected errors. While the system prevents some errors down the line, C-family programmers would expect type coercion to assist with operations on integer values of different sizes. We gave an example of this in \lstref{type-incompat}, which yields an error because an \ttt{int} and \m{int16} are multiplied. This causes initial errors, but may prevent type errors later in development\cite{ray2014large}.
 

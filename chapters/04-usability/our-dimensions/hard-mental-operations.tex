@@ -30,4 +30,4 @@ We should underline that this function uses tupled arguments, because we wanted 
 \fsinline{member FRPBehaviour.ReactTo : event:FRPEvent -> condition:('T0 -> bool) -> handler:('T0 -> unit) -> unit}.\newline
 In C\# the equivalent would have been:\newline
 \csinline{public void ReactTo(FRPEvent event, Func<T, bool> condition, Action<T> handler)}\newline
-Whether one or the other is easier to comprehend than the other is a matter of opinion. The problem is more prominent in F\#, however, due to the type inference in the compiler.\tmcc{Lamda expressions in \fs and Actions in \cs are not entirely equivalent, is that relevant to clarify or discuss?}
+Whether one or the other is easier to comprehend than the other is a matter of opinion. The problem is more prominent in F\#, however, due to the type inference in the compiler.

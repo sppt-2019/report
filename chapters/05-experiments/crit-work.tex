@@ -7,8 +7,7 @@ In this experiment we estimate the minimum concurrent workload of .NET's \ttt{Ta
 \subsubsection{Test Setup}\label{sec:crit-work-setup}
 We use the binary tree summation benchmark presented in the previous section with a minor modification: Every time the algorithm finds a \ttt{Node}, it busy-waits for a given amount of time to simulate work. The busy-wait was implemented with a loop, whose number of iterations is gradually halved until the sequential solution executes faster than the concurrent. The hypothesis is that the concurrent solutions will be faster with higher iteration counts, because it is capable of busy-waiting multiple tasks at the same time.
 
-We implemented the test in two variations, which are both listed in \lstref{benchmark:strategies} and \lstref{benchmark:strategies-helper}\tmcc{Clarify that lst 27 contains both strategies, but they rely on lst 28}. The first variation emulates a data dependency between the wait and the results from the subtrees, i.e. the wait is intended to emulate a computation that must be carried out after the results of both subtrees have been computed. The other variation emulates a situation where the left and right subtree can be computed in parallel with the wait, i.e. no data dependency between the delay and the subtrees. The tree has a total of 60 leaf nodes. In addition to the binary tree summation, we also implemented a N-ary tree summation in the same variations as that of binary.
-\tmc{Skal vi skære det omkring N-ary ud? Er det ikke lidt lige meget?}
+We implemented the test in two variations, which are listed in \lstref{benchmark:strategies} (helper methods listed in \lstref{benchmark:strategies-helper}). The first variation emulates a data dependency between the wait and the results from the subtrees, i.e. the wait is intended to emulate a computation that must be carried out after the results of both subtrees have been computed. The other variation emulates a situation where the left and right subtree can be computed in parallel with the wait, i.e. no data dependency between the delay and the subtrees. The tree has a total of 60 leaf nodes. In addition to the binary tree summation, we also implemented a N-ary tree summation in the same variations as that of binary.
 
 \begin{listing}[H]
     \begin{minted}{csharp}
@@ -80,10 +79,11 @@ The results are plotted in \figureref{crit-work-dep} and \figureref{crit-work-no
 }
 
 \makeTable{
-    { c | c | c }
+    {| c | c | c |}
+    \hline
     & No data dependency & Data dependency \\\hline
-    Binary & 1024 & 4096 \\
-    N-ary & 2048 & 2048
+    Binary & 1024 & 4096 \\\hline
+    N-ary & 2048 & 2048 \\\hline
 }{Iterations of the busy-wait loop before the sequantial solution becomes the fastest.}{crit:work:iterations}
 
 The number of iterations in the busy-wait loop before the sequential solution is faster than the concurrent is listed in \tableref{crit:work:iterations}. These results are in alignment with our hypothesis. The plots show that the parallel solutions grow slower than the sequential solutions because they are capable of executing multiple busy-waits concurrently. Finally, we notice that the lenient and fork join strategy lie very close in execution speed. This is a promising result for the lenient evaluation strategy, as it shows that it may be as fast as a traditional concurrency strategy.
@@ -100,7 +100,7 @@ In this section we execute a matrix summation benchmark. This benchmark measures
     \item[Tasks] is similar to parallel foreach, with the only exception that we manually spawn a \ttt{Task} that calculates the sum of each column.
 \end{labeling}
 
-We have not included a lenient variation in this experiment, as an implementation in our mapping would be largely equivalent to the tasks-implementation. The most notable difference being that a lenient-evaluation strategy would most likely also construct the matrix in parallel with the summation. As the time it takes to construct a matrix is not included in the results here, this should have no effect on the validity of the results\tmc{Den her argumentation holder ikke efter vi har skiftet til F\#.}.
+We have not included a lenient variation in this experiment, as a lenient implementation would be largely equivalent to a \m{Task}-mapping of the lenient evaluation strategy. The most notable difference being that a lenient-evaluation strategy would most likely also construct the matrix in parallel with the summation. As the time it takes to construct a matrix is not included in the results here, this should have no effect on the validity of the results.
 
 As the matrices are of size $N \times N$, they contain a total of $N^2$ elements, which are initialised with random values between \ttt{Int64.Minvalue} and \ttt{Int64.MaxValue}. When running the test with large matrices we found that the result would overflow, which throws an exception because C\# and F\# are managed languages. In order to avoid this, we used the \ttt{unchecked}-keyword in C\#, which disables bounds-checking on an integral arithmetic operation\cite{csharp:unchecked}. \cite{csharp:unchecked} states that using \ttt{unchecked} \textit{\dquote{might improve performance}}, compared to checked integral arithmetic operations. The \ttt{unchecked} keyword does not exist in F\#, instead we found a StackOverflow post, which stated that implementing a custom operator would be our best choice (\fsline{let (+!) (x:int64) (y:int64) = Operators.(+) x y})\cite{fsharp:unchecked}.
 
@@ -140,6 +140,6 @@ In \figref{linpack-summation-cs-vs-fs} we have plotted the concurrent implementa
 }
 
 \subsection{Discussion}\label{sec:crit-work-dis}
-Our results show, first and foremost, that there is an initial overhead in concurrent programming. In order to speed up a computation the task sizes must exceed a certain threshold. Our results show that this threshold lies around the size of 1024-4096 iterations in a for-loop that increments a variable\tmc{Måske skal vi tælle nogle instruktioner her?}, but also that it varies with the type of problem. Furthermore, the results show that the concurrency of lenient evaluation strategy in these cases is similar to that of classic concurrency strategies, but that the choice of problems in \cite{DBLP:journals/cl/Tremblay-parallel} is not well suited to parallelisation. Finally, C\#'s \ttt{Task}-model seems to handle the matrix summation problem well, after exceeding the threshold of roughly 512 summations in each column.
+Our results show, first and foremost, that there is an initial overhead in concurrent programming. In order to speed up a computation the task sizes must exceed a certain threshold. Our results show that this threshold lies around the size of 1024-4096 iterations\footnote{According to \url{sharplab.io} each iteration results in 11 \gls{IL} instructions, so between 11264 and 45056 \gls{IL} instructions. The exact number of instructions is unknown, as the \gls{JIT} likely optimises the code during run time.} in a for-loop that increments a variable, but also that it varies with the type of problem. Furthermore, the results show that the concurrency of lenient evaluation strategy in these cases is similar to that of classic concurrency strategies, but that the choice of problems in \cite{DBLP:journals/cl/Tremblay-parallel} is not well suited to parallelisation. Finally, C\#'s \ttt{Task}-model seems to handle the matrix summation problem well, after exceeding the threshold of roughly 512 summations in each column.
 
 As part of the project we implemented a simple \gls{FRP} system in Unity, because this particular programming paradigm is well suited to gameplay programming in functional languages\cite{maraffi:frp,cheong2005functional,courtney2003yampa}. We had initially decided that this experiment would use either lenient evaluation or Async Workflows under the hood to update \ttt{MonoBehaviour}s concurrently, but discovered too late that Unity uses a custom concurrency strategy called Unity C\# Job System\cite{unity:csharp:job:system} (see \secref{unity:concurrency}). Unity therefore does not allow \ttt{MonoBehaviour} updates from \ttt{Task}s and Async Workflows\cite{unity:async}. The resulting \gls{FRP} system therefore runs sequentially.
