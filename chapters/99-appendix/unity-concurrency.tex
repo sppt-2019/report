@@ -1,0 +1,89 @@
+\chapter{Concurrency in Unity}\label{app:unity:conc}
+\begin{listing}[H]
+    \begin{minted}{csharp}
+    public class BulletJobSystem : MonoBehaviour {
+        //This array holds all bullets that need to be moved
+        private TransformAccessArray _transforms;
+        //This job handle may be used to synchronise with previously scheduled move jobs
+        private JobHandle _bulletMoveHandle;
+        public GameObject BulletPrefab;
+    
+        //This struct implements the actual job.
+        public struct MoveBulletsJob : IJobParallelForTransform {
+            public float _moveSpeed;
+            public float _deltaTime;
+    
+            //In the Execute-method we define how we want to apply an update to a single bullet.
+            public void Execute(int index, TransformAccess transform) {
+                transform.position += _moveSpeed * _deltaTime * (transform.rotation * new Vector3(0,0,1));
+            }
+        }
+    
+        void Start() {
+            //Create an array with 0 elements and unlimited capacity
+            _transforms = new TransformAccessArray(0, -1);
+        }
+    }
+    \end{minted}
+    \caption{Implementation of a job that moves bullets forward in Unity. \m{SpawnBullet} and \m{Update} listed in \lstref{unity:job:example:2}.} \label{lst:unity:job:example}
+    \end{listing}
+
+\begin{listing}
+    \begin{minted}{csharp}
+public void SpawnBullet(Transform shooter) {
+    //Instantiate the bullet as usual in Unity
+    var bullet = Instantiate(BulletPrefab);
+    bullet.transform.position = shooter.position;
+    bullet.transform.forward = shooter.forward;
+
+    //Synchronise with the job and add the new bullet to the _transforms array.
+    _bulletMoveHandle.Complete();
+    _transforms.capacity++;
+    _transforms.Add(bullet.transform);
+}
+
+void Update() {
+    //Complete the job, i.e. only apply one update at a time
+    _bulletMoveHandle.Complete();
+
+    //And schedule a new bullet update
+    var bulletMoveJob = new MoveBulletsJob (5f, Time.deltaTime);
+    _bulletMoveHandle = bulletMoveJob.Schedule(_transform);
+    JobHandle.ScheduleBatchedJobs();
+}
+    \end{minted}
+    \caption{Spawning bullets and updating when using Unity's C\# Job System, part of \lstref{unity:job:example}.}
+    \label{lst:unity:job:example:2}
+\end{listing}
+
+    \begin{listing}
+        \begin{minted}{csharp}
+//MoveForward component. Defines data that is needed to move forward
+struct MoveForward {
+    public float Speed;
+}
+
+//C# Job system that moves forward in parallel
+public class MoveForwardSystem : JobComponentSystem {
+    //The generic types of the interface implements the filter
+    struct MoveForwardJob : IJobForEach<Translation, Rotation, MoveForward> {
+        private readonly float _deltaTime;
+
+        //Move the entity forward. We do not have access to "standard" Unity methods, so we use the dedicated math-library
+        public void Execute(ref Translation trans, [ReadOnly]ref Rotation rotation, [ReadOnly]ref MoveForward moveForward) {
+            var forward = math.forward(rotation);
+            var step = math.mul(moveForward.Speed, _deltaTime);
+            var moveVec = math.mul(forward, new float3(step));
+            trans.Value += moveVec;
+        }
+    }
+}
+
+//On each update schedule the movement
+protected void JobHandle OnUpdate(JobHandle inputDeps) {
+    var job = new MoveForwardJob{_deltaTime = Time.deltaTime};
+    return job.Schedule(this, inputDeps);
+}
+        \end{minted}
+        \caption{Implementation of an \gls{ECS} that moves bullets forward in Unity.} \label{lst:unity:ecs:example}
+        \end{listing}

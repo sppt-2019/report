@@ -1,0 +1,12 @@
+\subsubsection{Premature Commitment}
+In F\# all \ttt{let} functions must be declared before the first \ttt{member} function. An example of this can be seen in \lstref{let-mem-incor}. This caused some initial confusion for participants, but it was quickly overcome. The reason for the strict order was not intuitive for the participants. The difference between the use of \ttt{let} and \ttt{member} is the accessibility of the method or function in question. The \ttt{let} keyword denotes a function in the class instance's scope, effectively a private function. The \ttt{member} keyword denotes an instance function, which is similar to methods in C\#.
+
+\begin{listing}[H]
+\begin{minted}{fsharp}
+type Candy(price:int) =
+  member val Price = price with get
+  let discountTuesday = this.Price / 2
+\end{minted}
+\caption{Incorrect order of function declarations. \m{let} declarations must come before \m{member}s.}
+\label{lst:let-mem-incor}
+\end{listing}

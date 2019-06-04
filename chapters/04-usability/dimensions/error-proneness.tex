@@ -1,0 +1,20 @@
+\subsubsection{Error-proneness}
+Several of the participants did not connect indentation with scope. This meant that the scoping of variables at times presented a challenge. In most test cases the solutions were implemented in a class. As a consequence improperly indented function bodies incorrectly would work initially because the function body would be part of the class instead of the function. Such incorrectly indented functions may still be called within the scope of the class (see \lstref{scope-prob}).
+
+\begin{listing}[H]
+\begin{minted}{fsharp}
+type FRP_FPSController() =
+    inherit FRPBehaviour()
+
+    member this.Start() =
+      this.HandleMoveForward()
+
+    member this.HandleMoveForward() =
+    let newPosition = this.transform.position + new Vector3(0.0f, 0.0f, _velocity)
+    this.transform.position <- newPosition
+\end{minted}
+\caption{Incorrect indentation of \m{HandleMoveForward}. A problem is reported when code is added after the function declaration.}
+\label{lst:scope-prob}
+\end{listing}
+
+In \lstref{scope-prob}, lines 7 and 8 are indented incorrectly, but the code compiles and behaves as expected. The \gls{IDE} gives a warning on both lines, but no errors are thrown until new \ttt{member} functions are defined below \ttt{HandleMoveForward}.
