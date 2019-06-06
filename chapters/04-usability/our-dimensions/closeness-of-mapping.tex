@@ -21,22 +21,6 @@ type Talent(strength, intellect, agility) =
 type Tree =
 | Node of TalentValue:Talent * Children:Tree list
 | Leaf of TalentValue:Talent
-
-let rec foldTree folding init tree =
-  match tree with
-  | Node (t, _, c) ->
-    let f = folding t init
-    let cf =
-      c
-      |> List.map (foldTree folding init)
-      |> List.fold folding init
-    folding f cf
-  | Leaf (t,_) ->
-    folding t init
-
-let sumPickedNodes root =
-  foldTree (fun t1 t2 ->
-    Talent(t1.Strength + t2.Strength, t1.Intellect + t2.Intellect, t1.Agility + t2.Agility)) (Talent(0,0,0)) root
   \end{minted}
   \begin{minted}{csharp}
 public class MyTalent
@@ -47,23 +31,48 @@ public class MyTalent
 
   public List<MyTalent> SubTalents = new List<MyTalent>();
 
-  public MyTalent SumTalents() {
-    var t = new MyTalent(Strength, Agility, Intelligence);
-    if(SubTalents?.Count == 0)
-      return t;
-
-    foreach (var child in SubTalents) {
-      var childTalentValues = child.SumTalents();
-      t.Strength += childTalentValues.Strength;
-      t.Agility += childTalentValues.Agility;
-      t.Intelligence += childTalentValues.Intelligence;
-    }
-    return t;
-  }
+  [...]
 }
   \end{minted}
-  \caption{Talent tree data structure and walker implementations (F\# on top, C\# below).}
-  \label{lst:tree-imps}
+  \caption{Talent tree data structure implementations (F\# on top, C\# below).}
+  \label{lst:tree-data-imps}
 \end{listing}
 
-The example in \lstref{tree-imps} implements a class and a discriminated union in \fs, which together implement the behaviour of the \cs class. The \fs approach has separated the tree from the talent, where in the  \cs solution the tree emerges from the recursive nature of the class. The \cs solution is closer to the problem domain, but the \fs solution is closer to the mathematical concept of trees. In C\#, with the use of more classes, a generalisable tree walker could also be implemented. We argue that this would yield higher reusability of the code.
+The example in \lstref{tree-data-imps} implements a class and a discriminated union in \fs, which together implement the behaviour of the \cs class. The \fs approach has separated the tree from the talent, where in the  \cs solution the tree emerges from the recursive nature of the class (see \lstref{tree-walker-imps}). The \cs solution is closer to the problem domain, but the \fs solution is closer to the mathematical concept of trees. In C\#, with the use of more classes, a generalisable tree walker could also be implemented. We argue that this would yield higher reusability of the code.
+
+\begin{listing}[H]
+  \begin{minted}{fsharp}
+let rec foldTree folding init tree =
+match tree with
+| Node (t, _, c) ->
+  let f = folding t init
+  c
+  |> List.map (foldTree folding f)
+  |> List.fold folding f
+| Leaf (t,_) ->
+  folding t init
+
+let sumPickedNodes root =
+foldTree (fun t1 t2 ->
+  Talent(t1.Strength + t2.Strength, t1.Intellect + t2.Intellect, t1.Agility + t2.Agility)) (Talent(0,0,0)) root
+\end{minted}
+\begin{minted}{csharp}
+[...]
+public MyTalent SumTalents() {
+  var t = new MyTalent(Strength, Agility, Intelligence);
+  if(SubTalents?.Count == 0)
+    return t;
+
+  foreach (var child in SubTalents) {
+    var childTalentValues = child.SumTalents();
+    t.Strength += childTalentValues.Strength;
+    t.Agility += childTalentValues.Agility;
+    t.Intelligence += childTalentValues.Intelligence;
+  }
+  return t;
+}
+}
+\end{minted}
+\caption{Talent walker implementations (F\# on top, C\# below).}
+\label{lst:tree-walker-imps}
+\end{listing}
