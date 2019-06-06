@@ -1,12 +1,12 @@
 \subsubsection{Role-expressiveness}
 \paragraph{Unit and Void}
-In F\# the last expression in a function body is implicitly returned. In some cases that should not be the case and the function should return \ttt{Unit} (equivalent to C\#'s \ttt{void}). This can be done by adding \ttt{()} as the last line of the function body. This confused some of the participants, as they felt that it was unnecessary to explicitly indicate a non-existing return type. One of the participants even asked directly what \ttt{Unit} was and the monitor answered with an explanation. Approximately fifteen minutes later the participant encountered another \ttt{Unit}-type problem and was unable to recover without an additional explanation.
+In F\# the last expression in a function body is implicitly returned. In some cases that should not be the case and the function should return \ttt{Unit} (equivalent to C\#'s \ttt{void}). If the last line in the function body is not of type \m{Unit}, programmer must add an additional line containing only \ttt{()}. This confused some of the participants, as they felt that it was unnecessary to explicitly indicate a non-existing return type. One of the participants even asked directly what \ttt{Unit} was and the monitor answered with an explanation. Approximately fifteen minutes later the participant encountered another \ttt{Unit}-type problem and was unable to recover without an additional explanation.
 
 \paragraph{Let Declarations}
-Another role-expressiveness problem we encountered was that some participants attempted to \ttt{let} declare multiple values without initialising them. Some participants assumed that \ttt{let} declarations without assignment would result in default values (such as \ttt{null} for classes). Another problem faced by the participants were related to class type declarations, where the participants did not realise that the brackets after the type's name could be used to pass constructor arguments.
+Another role-expressiveness problem we encountered was that some participants attempted to \ttt{let} declare multiple bindings without initialising them. Some participants assumed that \ttt{let} declarations without assignment would result in default values (such as \ttt{null} for classes).
 
 \paragraph{Pipe Operators}
-A single participant also noted that he found F\# pipe operations \textit{\dquote{not nice to read}}. He stated that he would prefer the SQL-like variation of \gls{LINQ} in C\# because it is closer to plain English. The monitor asked if it was related to the names of the functions (\ttt{map} and \ttt{reduce} or \ttt{Select} and \ttt{Aggregate}), to which the participant stated that it was solely related to the way pipe operations were structured.
+A single participant also noted that he found F\#'s pipe operations \textit{\dquote{not nice to read}}. He stated that he would prefer the SQL-like variation of \gls{LINQ} in C\# because it is closer to plain English. The monitor asked if it was related to the names of the functions (\ttt{map} and \ttt{reduce} or \ttt{Select} and \ttt{Aggregate}), to which the participant stated that it was solely related to the way pipe operations were structured.
 
 \paragraph{Bindings and Operators}
 In F\# the \ttt{=} symbol is used to denote two different operators; the value-binding operator, and the equality operator. Notably the symbol is not used for rebinding (F\#'s equivalent of assignments), which it is in C\#. A comparison of the two different rebinding/assignment styles can be seen in \lstref{ass-comp}. Rebindings are only allowed on \ttt{mutable} variables, which should be limited to a scope.
@@ -34,7 +34,7 @@ Furthermore, since \ttt{x = 1} is valid in F\#, no errors were encountered immed
 Some participants encountered minor errors when declaring variables, because variables are implicitly immutable in F\#. This is the opposite of C\#, where the \ttt{const} keyword is used to explicitly declare a variable immutable. However, once the participants realised this, they had no issue using it.
 
 \paragraph{Types and Type Inference}
-Many participants had problems with the type system and type inference. The functions provided in the sample sheet had explicitly typed parameters, which the participants partially mimicked when declaring their own functions. However, participants did not specify function return types nor did they utilise typing of their variables. An example of such a function can be seen in \lstref{part-func}.
+Many participants had problems with the type system and type inference. The functions provided in the sample sheet had explicitly typed parameters, which the participants partially mimicked when declaring their own functions. However, participants did not specify function return types nor did they utilise typing of their namebindings. An example of such a function can be seen in \lstref{part-func}.
 
 \begin{listing}[H]
 \begin{minted}{fsharp}
@@ -47,6 +47,8 @@ let getTotalWithMod (items:Item list) (attribute:Item->int) (attributeMod:Item->
 \end{listing}
 
 In addition several participants remarked that they preferred strictly typed languages, even though they had encountered several type errors. Some of the participants had Python experience, which may explain this assumption, because Python 3.x annotates function parameters similarly to F\# and Python is dynamically typed.
+
+Another problem faced by the participants were related to class type declarations, where the participants did not realise that the brackets after a type's name could be used to pass constructor arguments.
 
 \paragraph{Function Declarations}
 Some participants also expressed frustration with how functions are defined. The issue may stem from a problem with our sample sheet, which did not contain an example of a simple function definition. Plenty of functions were defined, but only ever as part of examples of other language features. Furthermore, functions share the \ttt{let} keyword with name bindings, which contributed to the confusion during the test.

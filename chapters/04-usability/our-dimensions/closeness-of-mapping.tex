@@ -43,18 +43,19 @@ The example in \lstref{tree-data-imps} implements a class and a discriminated un
 \begin{listing}[H]
   \begin{minted}{fsharp}
 let rec foldTree folding init tree =
-match tree with
-| Node (t, _, c) ->
-  let f = folding t init
-  c
-  |> List.map (foldTree folding f)
-  |> List.fold folding f
-| Leaf (t,_) ->
-  folding t init
+  match tree with
+  | Node (t, c) ->
+    let f = folding t init
+    let cf =
+      c
+      |> List.map (foldTree folding init)
+      |> List.fold folding init
+    folding f cf
+  | Leaf (t) ->
+    folding t init
 
-let sumPickedNodes root =
-foldTree (fun t1 t2 ->
-  Talent(t1.Strength + t2.Strength, t1.Intellect + t2.Intellect, t1.Agility + t2.Agility)) (Talent(0,0,0)) root
+let sumNodes root =
+  foldTree (fun t1 t2 -> Talent(t1.Strength + t2.Strength, t1.Intellect + t2.Intellect, t1.Agility + t2.Agility)) (Talent(0,0,0)) root
 \end{minted}
 \begin{minted}{csharp}
 [...]
