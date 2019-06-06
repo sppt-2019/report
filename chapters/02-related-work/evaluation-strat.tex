@@ -14,22 +14,22 @@ The lenient evaluation strategy does not restrict the order of parameter evaluat
 
 The most notable instantiation of this evaluation strategy is call-by-future\cite{baker1977incremental}. In this implementation the main thread of the program executes the program and every time it encounters a function invocation, it spawns a future for each argument to the function. The main thread then continues to execute the function-body, synchronising with the futures as arguments are needed in the function-body. This has the result that functions and arguments are computed concurrently. The parallelisability of programs may vary greatly, depending on how the program is written and what it is intended to do. Therefore, we examine static analysis methods to determine when to parallelise.
 
-A visualisation of parallelism in the different evaluation strategies can be seen in \figref{eval-para}. Here two cases are compared: a summation of a binary tree (\figref{eval-para-1}) and sorting and summation of a list (\figref{eval-para-2}). The X axis represents time and the Y axis represents the number items that can be computed in parallel at that given point in time.
+A visualisation of parallelism in the different evaluation strategies can be seen in \figref{eval-para}. Here two cases are compared: a summation of a binary tree (\figref{eval-para-1}) and sorting and summation of a list (\figref{eval-para-2}). The X-axis represents time and the Y-axis represents the number items that can be computed in parallel at that given point in time.
 
 \begin{figure}[H]%
 \alignCenter{\begin{minipage}[c]{1.2\textwidth}%
 \begin{subfigure}{.45\textwidth}%
   \includegraphics[width=1.1\textwidth]{00-images/eval-para-1.png}%
-  \caption{Parallelism profiles for computing the sum of the leaves of a binary tree}%
+  \caption{Parallelism profiles for computing the sum of the leaves of a binary tree.}%
   \label{fig:eval-para-1}%
 \end{subfigure}%
 \hfill
 \begin{subfigure}{.45\textwidth}%
   \includegraphics[width=1.1\textwidth]{00-images/eval-para-2.png}%
-  \caption{Parallelism profiles for sorting a list and computing its sum}
+  \caption{Parallelism profiles for sorting a list and computing its sum.}
   \label{fig:eval-para-2}%
 \end{subfigure}%
 \end{minipage}}
-\caption{Parallelism profiles for evaluation strategies\cite{DBLP:journals/cl/Tremblay-parallel}}%
+\caption{Parallelism profiles for evaluation strategies, graphs taken from \cite{DBLP:journals/cl/Tremblay-parallel}.}%
 \label{fig:eval-para}%
 \end{figure}%
