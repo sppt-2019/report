@@ -6,7 +6,6 @@
 \lstset{basicstyle=\ttfamily}
 \usepackage{syntax}
 \usepackage{tikz}
-\usetikzlibrary{arrows,arrows.meta, fit, backgrounds, positioning, automata, shapes}
 \usepackage{pifont}
 \usepackage{svg}
 \usepackage{framed}
@@ -19,7 +18,11 @@
 \usepackage[autostyle]{csquotes}
 \usepackage[backend=biber, style=ieee, urldate=long]{biblatex} % biblatex - bibliography tool %
 \bibliography{../../00-preliminary/bib}
-
+\usepackage{pgfplots}
+\usepackage{pgfplotstable}
+\pgfplotsset{compat=1.15}
+\usepackage{tikz}
+\usetikzlibrary{arrows,arrows.meta, fit, backgrounds, positioning, automata, shapes} %, external}
 \input{../../00-preliminary/result-presentation.tex}
 
 % Table macro.
