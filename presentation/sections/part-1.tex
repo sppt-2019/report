@@ -46,12 +46,12 @@
 		\item State machine has a list of units.
 		\item When a unit collides with a shot, the unit is added to the list again.
 		\item Many units =\textgreater\ many collisions =\textgreater\ performance degradation
-	\end{itemize} 
+	\end{itemize}
 \end{frame}
 
 \begin{frame}[fragile]{\secname}{\subsecname}
 	Comparison of Incorrect and Correct Implementation
-	\barChart*[12][\symbolic{Strategy,500,1000,1500,2000,2500}, width=\textwidth][Average FPS][Number of Units]{Comparison of Correct and Incorrect implementation of Unit Management benchmark using the Mono runtime (higher is better).}{ai:benchmark}{
+	\barChart*[12][\symbolic{Strategy,500,1000,1500,2000,2500}, width=\textwidth,height=.5\textheight][Average FPS][Number of Units]{Comparison of Correct and Incorrect implementation of Unit Management benchmark using the Mono runtime (higher is better).}{ai:benchmark}{
 		\plotData{CSharp Correct}{\sequentialAverageData}
 		\plotData{CSharp Incorrect}{\sequentialAverageData}
 	}
@@ -73,7 +73,7 @@
 	Setup - Sequential
 	\begin{figure}[h!]
         \centering
-        \includesvg[width=.7\textwidth]{pictures/sequential.png}
+        \includegraphics[width=.7\textwidth]{pictures/sequential.png}
         \caption{A model of sequential execution of inverse State Machine.}
     \end{figure}
 \end{frame}
@@ -82,7 +82,7 @@
 	Setup - Concurrent
 	\begin{figure}[h!]
         \centering
-        \includesvg[width=.7\textwidth]{pictures/concurrent.png}
+        \includegraphics[width=.7\textwidth]{pictures/concurrent.png}
         \caption{A model of sequential execution of inverse State Machine.}
     \end{figure}
 \end{frame}

@@ -5,19 +5,24 @@
 \usepackage{pifont}
 \usepackage{svg}
 \usepackage{framed}
-\usepackage[cache, outputdir=build]{minted}
+\ifcsname tikzexternalrealjob\endcsname
+    \usepackage[draft, outputdir=build]{minted}
+\else
+    \usepackage[cache, outputdir=build]{minted}
+\fi
 \usepackage[export]{adjustbox}
 \usepackage{xspace}
 \usepackage{array}
+\usepackage{float}
 \usepackage[autostyle]{csquotes}
 \usepackage[backend=biber, style=ieee, urldate=long]{biblatex} % biblatex - bibliography tool %
-\bibliography{../../00-preliminary/bib}
+\renewcommand*{\bibfont}{\tiny}
+\bibliography{../00-preliminary/bib}
 \usepackage{pgfplots}
 \usepackage{pgfplotstable}
 \pgfplotsset{compat=1.15}
 \usepackage{tikz}
-\usetikzlibrary{arrows,arrows.meta, fit, backgrounds, positioning, automata, shapes} %, external}
-\input{../../00-preliminary/result-presentation.tex}
+\usetikzlibrary{arrows,arrows.meta, fit, backgrounds, positioning, automata, shapes, external}
 
 % Table macro.
 % 1: Table Latex
@@ -174,24 +179,7 @@
     }\label{fig:#1}
 }
 
-%\pgfplotstableread[col sep = comma]{00-data/fsharp/accumulation.csv}\accumulationData
-%\pgfplotstableread[col sep = comma]{00-data/fsharp/sum.csv}\summationData
-%\pgfplotstableread[col sep = comma]{00-data/csharp/accumulation.csv}\accumulationDataCsharp
-%\pgfplotstableread[col sep = comma]{00-data/csharp/sum.csv}\summationDataCsharp
-%\pgfplotstableread[col sep = comma]{00-data/fsharp/matrix.csv}\matrixSumData
-%\pgfplotstableread[col sep = comma]{00-data/csharp/matrix.csv}\matrixSumDataCsharp
-%\pgfplotstableread[col sep = comma]{00-data/work-bias-wait-after-join.csv}\workWithDependencyData
-%\pgfplotstableread[col sep = comma]{00-data/work-bias-wait-before-join.csv}\workWithoutDependencyData
-%\pgfplotstableread[col sep = comma]{00-data/nary-work-bias-wait-after-join.csv}\workWithDependencyDataNary
-%\pgfplotstableread[col sep = comma]{00-data/nary-work-bias-wait-before-join.csv}\workWithoutDependencyDataNary
-
-%\pgfplotstableread[col sep = comma]{00-data/ai-benchmark-runtimes.csv}\aiBenchmarkRuntimesData
-%\pgfplotstableread[col sep = comma]{../00-data/ai-benchmark.csv}\aiBenchmarkData
-%\pgfplotstableread[col sep = comma]{00-data/csharp-vs-frp.csv}\aiBenchmarkOverheadData
-%\pgfplotstableread[col sep = comma]{00-data/csharp-incremental-vs-normal.csv}\aiBenchmarkCsharpGCData
-%\pgfplotstableread[col sep = comma]{00-data/csharp-incremental-vs-normal-collapsed.csv}\aiCsharpGCDataCol
-%\pgfplotstableread[col sep = comma]{00-data/frp-incremental-vs-normal.csv}\aiBenchmarkFsharpGCData
-%\pgfplotstableread[col sep = comma]{00-data/frp-incremental-vs-normal-collapsed.csv}\aiFsharpGCDataCol
+\input{../00-preliminary/result-presentation.tex}
 
 %\pgfplotstableread[col sep = comma]{data/sequential.csv}\sequentialData
 \pgfplotstableread[col sep = comma]{data/concurrent.csv}\concurrentData
