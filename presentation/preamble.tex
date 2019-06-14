@@ -15,7 +15,6 @@
 \usepackage{xspace}
 \usepackage{array}
 \usepackage{float}
-\usepackage[table,xcdraw]{xcolor}
 \usepackage[autostyle]{csquotes}
 \usepackage[backend=biber, style=ieee, urldate=long]{biblatex} % biblatex - bibliography tool %
 \renewcommand*{\bibfont}{\tiny}
@@ -185,4 +184,6 @@
 
 %\pgfplotstableread[col sep = comma]{data/sequential.csv}\sequentialData
 \pgfplotstableread[col sep = comma]{data/concurrent.csv}\concurrentData
+\pgfplotstableread[col sep = comma]{data/sequential.csv}\sequentialData
 \pgfplotstableread[col sep = comma]{data/seq-avg.csv}\sequentialAverageData
+\pgfplotstableread[col sep = comma]{data/ai-avg.csv}\aiAverageData

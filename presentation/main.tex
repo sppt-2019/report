@@ -1,10 +1,11 @@
 \documentclass[10pt]{beamer}
+\usepackage{xcolor}
 \usetheme[
 %%% options passed to the outer theme
 %    hidetitle,           % hide the (short) title in the sidebar
 %    hideauthor,          % hide the (short) author in the sidebar
 %    hideinstitute,       % hide the (short) institute in the bottom of the sidebar
-%    shownavsym,          % show the navigation symbols
+%    shownavsym,       \usepackage[table,xcdraw]{xcolor}   % show the navigation symbols
 %    width=2cm,           % width of the sidebar (default is 2 cm)
     hideothersubsections,% hide all subsections but the subsections in the current section
 %    hideallsubsections,  % hide all subsections
@@ -24,7 +25,6 @@
 % Change the normal text color background:
 %\setbeamercolor{normal text}{bg=gray!10}
 % ... and you can of course change a lot more - see the beamer user manual.
-
 \usepackage{mdframed}
 \usepackage[utf8]{inputenc}
 \usepackage[english]{babel}
@@ -75,7 +75,30 @@
 }
 
 \input{preamble.tex}
+
+%%%%%%%% Beamer Bullshit %%%%%%%%
+\newenvironment{changemargin}[2]{%
+  \begin{list}{}{%
+    \setlength{\topsep}{0pt}%
+    \setlength{\leftmargin}{#1}%
+    \setlength{\rightmargin}{#2}%
+    \setlength{\listparindent}{\parindent}%
+    \setlength{\itemindent}{\parindent}%
+    \setlength{\parsep}{\parskip}%
+  }%
+  \item[]}{\end{list}}
+
 \begin{document}
+\begin{frame}[plain,noframenumbering]
+  \begin{changemargin}{-1.6cm}{0cm}
+  \begin{center}
+  \begin{figure}[H]
+      \includesvg[height=.6\textheight]{../00-images/battle-of-langs}
+      \caption{Made using icons by \href{https://www.freepik.com/}{Freepik} and \href{https://www.flaticon.com/authors/nikita-golubev}{Nikita Golubev} from \href{https://www.flaticon.com/}{\color{blue}www.flaticon.com}}
+  \end{figure}
+  \end{center}
+  \end{changemargin}
+\end{frame}
 % the titlepage
 {\aauwavesbg%
 \begin{frame}[plain,noframenumbering] % the plain option removes the sidebar and header from the title page

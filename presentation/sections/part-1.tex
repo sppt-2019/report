@@ -24,19 +24,29 @@
 \end{frame}
 
 \begin{frame}{\secname}{\subsecname}
-	Unity Performance
+	Unity Technologies advices against functional coding style
 	\begin{itemize}
-		\item Unity Technologies advices against functional coding style
-		\begin{itemize}
-			\item High order functions
-			\item Closures
-			\item Manipulate existing collections rather than mapping
-		\end{itemize}
-		\item Unit Management Benchmark
-		\begin{itemize}
-			\item F\# is marginally slower than C\# in Unity (5-7\%, \cite{maggiore2012formal,bolhuis2019gameplay})
-			\item FRP system introduces per-\texttt{GameObject} overhead
-		\end{itemize}
+		\item High order functions
+		\item Closures
+		\item Manipulate existing collections rather than mapping
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{\secname}{\subsecname}
+	Unity Performance - What is Unit Management?
+	\inlineMovie[]{pictures/unit-management-demo.avi}{pictures/rts-screenshot.png}{width=\textwidth}
+	\begin{figure}[h!]
+        \centering
+        \includegraphics[width=\textwidth]{pictures/rts-screenshot.png}
+        \caption{Screenshot from Unit Management scene.}
+    \end{figure}
+\end{frame}
+
+\begin{frame}{\secname}{\subsecname}
+	Unit Management Benchmark
+	\begin{itemize}
+		\item F\# is marginally slower than C\# in Unity (5-7\%, \cite{maggiore2012formal,bolhuis2019gameplay})
+		\item FRP system introduces per-\texttt{GameObject} overhead
 	\end{itemize}
 \end{frame}
 
@@ -51,7 +61,7 @@
 
 \begin{frame}[fragile]{\secname}{\subsecname}
 	Comparison of Incorrect and Correct Implementation
-	\barChart*[12][\symbolic{Strategy,500,1000,1500,2000,2500}, width=\textwidth,height=.5\textheight][Average FPS][Number of Units]{Comparison of Correct and Incorrect implementation of Unit Management benchmark using the Mono runtime (higher is better).}{ai:benchmark}{
+	\barChart[12][\symbolic{Strategy,500,1000,1500,2000,2500}, width=\textwidth,height=.5\textheight][Average FPS][Number of Units]{Comparison of Correct and Incorrect implementation of Unit Management benchmark using the Mono runtime (higher is better).}{ai:benchmark}{
 		\plotData{CSharp Correct}{\sequentialAverageData}
 		\plotData{CSharp Incorrect}{\sequentialAverageData}
 	}
@@ -60,12 +70,24 @@
 \subsection{Concurrent Unit Management Benchmark}
 
 \begin{frame}{\secname}{\subsecname}
+	Unity Concurrency Terminology
+	\begin{itemize}
+		\item \texttt{Job} = A definition of how to update a single entity out of a collection. Jobs are executed on worker threads and may be batched. 
+		\item \texttt{JobSystem} = A \ttt{MonoBehaviour}, which is in charge of creating and scheduling \texttt{Job}s.
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{\secname}{\subsecname}
 	Setup
 	\begin{itemize}
 		\item Examine if a concurrent implementation of inverse state machine is faster than sequential
-		\item Bullets moved forward in a \texttt{Job}
-		\item Each state's behaviour handled as a separate \texttt{Job}
+		\item Four \ttt{JobSystem}s:
+		\begin{itemize}
+			\item Moving Bullets forward
+			\item Updating each of the three states (moving, fleeing \& attacking)
+		\end{itemize}
 		\item Moving between states sequentially
+		\item Measure the frame rate over 900 frames
 	\end{itemize}
 \end{frame}
 
@@ -73,8 +95,8 @@
 	Setup - Sequential
 	\begin{figure}[h!]
         \centering
-        \includegraphics[width=.7\textwidth]{pictures/sequential.png}
-        \caption{A model of sequential execution of inverse State Machine.}
+        \includegraphics[width=\textwidth]{pictures/sequential.png}
+        \caption{A model of sequential execution of inverse state machine.}
     \end{figure}
 \end{frame}
 
@@ -83,18 +105,148 @@
 	\begin{figure}[h!]
         \centering
         \includegraphics[width=.7\textwidth]{pictures/concurrent.png}
-        \caption{A model of sequential execution of inverse State Machine.}
+        \caption{A model of concurrent execution of inverse state machine.}
+    \end{figure}
+\end{frame}
+
+\begin{frame}[fragile]{\secname}{\subsecname}
+	Setup - Converting from \ttt{JobSystem} representation to \ttt{Job} representation
+	\begin{itemize}
+		\item \ttt{JobSystem}s store units (and similar data) in lists
+		\item \ttt{Job}s only accept value-type data collections in a \ttt{NativeContainer} (e.g. \ttt{NativeArray})
+		\item Units are class instances, i.e. reference
+		\item We need to map from a list of references to an array of value-types
+	\end{itemize}
+\csinline{new TransformAccessArray(}
+\csinline{	units.Select(u => u.transform).ToArray(),}
+\csinline{	Allocation.TempJob)}
+\end{frame}
+
+\begin{frame}{\secname}{\subsecname}
+	Setup - Converting from \ttt{JobSystem} representation to \ttt{Job} representation
+	\begin{figure}[h!]
+        \centering
+        \includegraphics[width=.7\textwidth]{pictures/concurrent-memory-layout.png}
+        \caption{Mapping from list of references to array of value-types.}
     \end{figure}
 \end{frame}
 
 \begin{frame}{\secname}{\subsecname}
-	Experience with Unity C\# Job System
+	Setup - Test Machine
+	\makeTable{{| l | R{6em} | p{3em} |}
+	\hline
+	\multicolumn{3}{| c |}{\textbf{Processor}} \\ \hline
+	Model & \multicolumn{2}{| c |}{Intel Core i7 4702HQ} \\ \hline
+	Clock Frequency & 2.2 & GHz \\ \hline
+	Max Turbo & 3.2 & GHz \\ \hline
+	Physical & 4 & Cores \\ \hline
+	Logical & 8 & Cores \\ \hline
+	\multicolumn{3}{|c|}{\textbf{Memory}} \\ \hline
+	Memory Size & 16 & GiB  \\ \hline
+	Memory Speed & 1600 & MHz \\ \hline
+	Memory Type &  \multicolumn{2}{| c |}{DDR3L 1600} \\ \hline
+	\multicolumn{3}{|c|}{\textbf{Software}} \\ \hline
+	Operating System & \multicolumn{2}{| c |}{Ubuntu 18.04 64bit}  \\ \hline
+	C\# runtime & \multicolumn{2}{| c |}{dotnet 2.2.104} \\ \hline
+	}{System specifications of the test machine.}{sys-specs}
 \end{frame}
 
 \begin{frame}{\secname}{\subsecname}
 	Results
+	\begin{itemize}
+		\item On average roughly equivalent
+		\item Sometimes sequential is slower, sometimes not
+		\item Concurrent uses a bit more memory (1500 units):
+		\begin{itemize}
+			\item Sequential: 1.27Gb
+			\item Concurrent: 1.36Gb
+		\end{itemize}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{\secname}{\subsecname}
+	Average frame rate over 900 frames
+	\barChart[12][\symbolic{Strategy,500,1000,1500,2000,2500}, width=\textwidth, height=.5\textheight][Average FPS][Number of Units]{Average frame rate in the sequential and concurrent implementation of Unit Management (higher is better).}{ai:benchmark:avg}{
+		\plotData{Sequential}{\aiAverageData}
+		\plotData{Concurrent}{\aiAverageData}
+	}
+\end{frame}
+
+\begin{frame}[fragile]{\secname}{\subsecname}
+	\lineChart[enlarge x limits=false, width=\textwidth, height=.6\textheight, xtick={100,200,300,400,500,600,700,800}][FPS][Frame No.]{FPS for each frame with 500 units (higher is better).}{ai:benchmark:500}{
+    \plotUnmarkedData{Sequential 500}{\sequentialData}
+    \plotUnmarkedData{Concurrent 500}{\concurrentData}
+}
+\end{frame}
+
+\iffalse
+\begin{frame}[fragile]{\secname}{\subsecname}
+	\lineChart[enlarge x limits=false, width=\textwidth, height=.6\textheight, xtick={100,200,300,400,500,600,700,800}][FPS][Frame No.]{FPS for each frame with 1000 units (higher is better).}{ai:benchmark:1000}{
+    \plotUnmarkedData{Sequential 1000}{\sequentialData}
+    \plotUnmarkedData{Concurrent 1000}{\concurrentData}
+}
+\end{frame}
+\fi
+
+\begin{frame}[fragile]{\secname}{\subsecname}
+	\lineChart[enlarge x limits=false, width=\textwidth, height=.6\textheight, xtick={100,200,300,400,500,600,700,800}][FPS][Frame No.]{FPS for each frame with 1500 units (higher is better).}{ai:benchmark:1500}{
+    \plotUnmarkedData{Sequential 1500}{\sequentialData}
+    \plotUnmarkedData{Concurrent 1500}{\concurrentData}
+}
+\end{frame}
+
+\begin{frame}[fragile]{\secname}{\subsecname}
+	\lineChart[enlarge x limits=false, width=\textwidth, height=.6\textheight, xtick={100,200,300,400,500,600,700,800}][FPS][Frame No.]{FPS for each frame with 2000 units (higher is better).}{ai:benchmark:2000}{
+    \plotUnmarkedData{Sequential 2000}{\sequentialData}
+    \plotUnmarkedData{Concurrent 2000}{\concurrentData}
+}
+\end{frame}
+
+\iffalse
+\begin{frame}[fragile]{\secname}{\subsecname}
+	\lineChart[enlarge x limits=false, width=\textwidth, height=.6\textheight, xtick={100,200,300,400,500,600,700,800}][FPS][Frame No.]{FPS for each frame with 2500 units (higher is better).}{ai:benchmark:2500}{
+    \plotUnmarkedData{Sequential 2500}{\sequentialData}
+    \plotUnmarkedData{Concurrent 2500}{\concurrentData}
+}
+\end{frame}
+\fi
+
+\begin{frame}{\secname}{\subsecname}
+	Threats to Validity
+	\begin{itemize}
+		\item Experience
+		\begin{itemize}
+			\item Optimal way of scheduling?
+			\item Optimal data representation?
+		\end{itemize}
+		\item Limited generalisability (only tested on one machine)
+	\end{itemize}
 \end{frame}
 
 \begin{frame}{\secname}{\subsecname}
 	Threats to Validity
+	\begin{itemize}
+		\item A lot of time is spent on Physics
+	\end{itemize}
+	\begin{figure}[h!]
+		\centering
+		\includegraphics[width=\textwidth]{pictures/profiling.png}
+		\caption{CPU utilization output from Unity's Profiler}
+		\label{fig:unity:profiler}
+	\end{figure}
+\end{frame}
+
+\begin{frame}{\secname}{\subsecname}
+	Experience with Unity C\# Job System
+	\begin{itemize}
+		\item (Almost) writing C++ in C\#
+		\begin{itemize}
+			\item Manually scheduling \texttt{Job}s
+			\item Memory leaks if \texttt{NativeContainer}s are not \texttt{Dispose}d
+		\end{itemize}
+		\item No simple way of handling dependencies between \texttt{JobSystem}s
+		\item A lot of converting between representations
+		\item Some expensive operations, such as \texttt{Instantiate} must happen on main thread
+		\item \textbf{A lot of effort for no/limited performance gain}
+	\end{itemize}
 \end{frame}
