@@ -34,13 +34,16 @@
 
 \begin{frame}{\secname}{\subsecname}
 	Unity Performance - What is Unit Management?
-	\inlineMovie[]{pictures/unit-management-demo.avi}{pictures/rts-screenshot.png}{width=\textwidth}
+	%\inlineMovie[loop&autostart]{pictures/unit-management-demo.avi}{pictures/rts-screenshot.png}{width=\textwidth}
 	\begin{figure}[h!]
         \centering
         \includegraphics[width=\textwidth]{pictures/rts-screenshot.png}
         \caption{Screenshot from Unit Management scene.}
     \end{figure}
 \end{frame}
+
+\fullFrameMovie[loop&autostart]{unit-management-demo.avi}{pictures/rts-screenshot.png}{width=\textwidth}
+
 
 \begin{frame}{\secname}{\subsecname}
 	Unit Management Benchmark
@@ -72,7 +75,7 @@
 \begin{frame}{\secname}{\subsecname}
 	Unity Concurrency Terminology
 	\begin{itemize}
-		\item \texttt{Job} = A definition of how to update a single entity out of a collection. Jobs are executed on worker threads and may be batched. 
+		\item \texttt{Job} = A definition of how to update a single entity out of a collection. Jobs are executed on worker threads and may be batched.
 		\item \texttt{JobSystem} = A \ttt{MonoBehaviour}, which is in charge of creating and scheduling \texttt{Job}s.
 	\end{itemize}
 \end{frame}

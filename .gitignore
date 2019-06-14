@@ -27,7 +27,7 @@ build/
 svg-inkscape/
 
 # Big files
-presentation/pictures/unit-management-demo.avi
+unit-management-demo.avi
 
 
 ## Bibliography auxiliary files (bibtex/biblatex/biber):
