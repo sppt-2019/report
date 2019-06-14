@@ -1,0 +1,38 @@
+%%%%%%%%%%%%%%%%%%% Packages %%%%%%%%%%%%%%%%%%%
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{listings}
+\lstset{basicstyle=\ttfamily}
+\usepackage{syntax}
+\usepackage{tikz}
+\usetikzlibrary{arrows,arrows.meta, fit, backgrounds, positioning, automata, shapes}
+\usepackage{pifont}
+\usepackage{svg}
+\usepackage{framed}
+\usepackage{nameref}
+\usepackage{syntax}
+\usepackage[cache, outputdir=build]{minted}
+\usepackage[export]{adjustbox}
+\usepackage{xifthen}
+\usepackage{xparse}
+
+\newcommand{\diagram}[2]{
+    \makebox[\textwidth][c]{
+        \begin{tikzpicture}
+        #2
+        \end{tikzpicture}
+    }\label{fig:#1}
+}
+
+\usepackage{zref-titleref}
+\makeatletter
+\newcommand*{\currentname}{\zref@getcurrent{title}}
+% or \newcommand*{\currentname}{\zref@titleref@current}
+\makeatother
+
+\NewDocumentCommand\slide{O{\subsec}O{\secname}m}{%
+\begin{frame}[fragile]{#2}{#1}
+#3
+\end{frame}
+}
