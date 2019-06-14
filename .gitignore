@@ -26,6 +26,10 @@ main.pdf
 build/
 svg-inkscape/
 
+# Big files
+presentation/pictures/unit-management-demo.avi
+
+
 ## Bibliography auxiliary files (bibtex/biblatex/biber):
 *.bbl
 *.bcf
