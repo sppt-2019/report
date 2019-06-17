@@ -50,8 +50,18 @@
 	\begin{itemize}
 		\item State machine has a list of units.
 		\item When a unit collides with a shot, the unit is added to the list again.
-		\item Many units =\textgreater\ many collisions =\textgreater\ performance degradation
+		\item Many units =\textgreater\ many collisions =\textgreater\ performance degradation.
 	\end{itemize}
+\end{frame}
+
+\begin{frame}{\secname}{\subsecname}
+	Incorrect Code in Inverse Implementation of Unit Management Benchmark
+	\begin{figure}[h!]
+		\centering
+		\includegraphics[width=\textwidth]{pictures/statemachine.png}
+		\caption{Illustration of incorrect implementation of inverse state machine.}
+		\label{fig:incorrect:statemachine}
+	\end{figure}
 \end{frame}
 
 \begin{frame}[fragile]{\secname}{\subsecname}
@@ -62,8 +72,8 @@
 	}
 \end{frame}
 
-\subsection{Concurrent Unit Management Benchmark}
-
+\section{Concurrent Unit Management Benchmark}
+\subsection{Setup}
 \begin{frame}{\secname}{\subsecname}
 	Unity Concurrency Terminology
 	\begin{itemize}
@@ -73,7 +83,6 @@
 \end{frame}
 
 \begin{frame}{\secname}{\subsecname}
-	Setup
 	\begin{itemize}
 		\item Examine if a concurrent implementation of inverse state machine is faster than sequential
 		\item Four \ttt{JobSystem}s:
@@ -87,7 +96,7 @@
 \end{frame}
 
 \begin{frame}{\secname}{\subsecname}
-	Setup - Sequential
+	Sequential Implementation
 	\begin{figure}[h!]
         \centering
         \includegraphics[width=\textwidth]{pictures/sequential.png}
@@ -96,7 +105,7 @@
 \end{frame}
 
 \begin{frame}{\secname}{\subsecname}
-	Setup - Concurrent
+	Concurrent Implementation
 	\begin{figure}[h!]
         \centering
         \includegraphics[width=.7\textwidth]{pictures/concurrent.png}
@@ -105,7 +114,7 @@
 \end{frame}
 
 \begin{frame}[fragile]{\secname}{\subsecname}
-	Setup - Converting from \ttt{JobSystem} representation to \ttt{Job} representation
+	Converting from \ttt{JobSystem} representation to \ttt{Job} representation
 	\begin{itemize}
 		\item \ttt{JobSystem}s store units (and similar data) in lists
 		\item \ttt{Job}s only accept value-type data collections in a \ttt{NativeContainer} (e.g. \ttt{NativeArray})
@@ -118,7 +127,7 @@
 \end{frame}
 
 \begin{frame}{\secname}{\subsecname}
-	Setup - Converting from \ttt{JobSystem} representation to \ttt{Job} representation
+	Converting from \ttt{JobSystem} representation to \ttt{Job} representation
 	\begin{figure}[h!]
         \centering
         \includegraphics[width=.7\textwidth]{pictures/concurrent-memory-layout.png}
@@ -127,7 +136,7 @@
 \end{frame}
 
 \begin{frame}{\secname}{\subsecname}
-	Setup - Test Machine
+	Test Machine
 	\makeTable{{| l | R{6em} | p{3em} |}
 	\hline
 	\multicolumn{3}{| c |}{\textbf{Processor}} \\ \hline
@@ -146,8 +155,9 @@
 	}{System specifications of the test machine.}{sys-specs}
 \end{frame}
 
+\subsection{Results}
 \begin{frame}{\secname}{\subsecname}
-	Results
+	Over all:
 	\begin{itemize}
 		\item On average roughly equivalent
 		\item Sometimes sequential is slower, sometimes not
@@ -206,13 +216,14 @@
 \end{frame}
 \fi
 
+\subsection{Discussion}
 \begin{frame}{\secname}{\subsecname}
 	Threats to Validity
 	\begin{itemize}
 		\item Experience
 		\begin{itemize}
 			\item Optimal way of scheduling?
-			\item Optimal data representation?
+			\item Optimal data representation? (\texttt{NativeArray} instead of \texttt{NativeList})
 		\end{itemize}
 		\item Limited generalisability (only tested on one machine)
 	\end{itemize}
