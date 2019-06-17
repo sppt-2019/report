@@ -1,3 +1,13 @@
+\begin{frame}{\secname}{Disposition}
+	Topics
+	\begin{itemize}
+		\item Usability Findings
+		\item Cognitive Dimensions Analysis
+		\item Attention Investment Analysis
+		\item Future Work
+	\end{itemize}
+\end{frame}
+
 \section{Usability Findings}
 \begin{frame}{\secname}{Disposition}
 	Usability findings in the project.
@@ -38,7 +48,26 @@
 	\end{itemize}
 \end{frame}
 
+\subsection{In Conclusion}
+\begin{frame}{\secname}{\subsecname}
+	We found that:
+	\begin{itemize}
+		\item<2-> \fs is not meaningfully slower than \cs
+		\item<3-> Remaining barriers are psychological or habitual
+		\item<4-> \dquote{\textit{Productivity is King}}
+	\end{itemize}
+\end{frame}
+
 \section{Coginitive Dimensions Analysis}
+\begin{frame}{\secname}{Disposition}
+	Analysis Method
+	\begin{itemize}
+		\item Unit Management implementation recorded
+		\item Implementation was in a think-aloud style
+		\item Recording analysed using \cognitive and \attention
+	\end{itemize}
+\end{frame}
+
 \begin{frame}{\secname}{Disposition}
 	Notable Instances
 	\begin{itemize}
@@ -64,26 +93,67 @@
 \begin{frame}{\secname}{\subsecname}
 	Departure from Composite Pattern
 	\begin{itemize}
-		\item Scene behaviour vs. Management Object Singleton
-		\item Object properties on system instead of object
+		\item<2-> Scene behaviour vs. Management Object Singleton
+		\item<3-> Object properties on system instead of object
 		\begin{itemize}
-			\item System controls object target
+			\item<3-> System controls object target
 		\end{itemize}
 	\end{itemize}
+\end{frame}
+
+\begin{frame}{\secname}{\subsecname}
+	Object properties on system instead of object
+\begin{tikzpicture}
+	\tikzstyle{class}=[rectangle, draw=black, rounded corners, rectangle split, , rectangle split parts=3,
+        text centered, anchor=north, text=black, text width=3cm]
+	\tikzstyle{system}=[rectangle, draw=black, rounded corners, rectangle split, , rectangle split parts=2,
+        text centered, anchor=north, text=black, text width=3cm]
+	\tikzstyle{box}=[draw, rectangle, inner sep = 1em]
+
+	\def \x {5}
+	\def \y {-2.5}
+
+	    \node (obj1) [class] at (0,0){
+	            \textbf{Object}
+	            \nodepart{second}\m{speed:float}\newline
+							\m{timer:float}\newline
+							\nodepart{third}\m{OnCollision()}
+	    };
+
+			\node (sys1) [system] at (0,\y){
+	            \textbf{System}
+	            \nodepart{second}\m{objects:List}\newline
+	    };
+
+			\node (obj2) [class] at (\x,0){
+	            \textbf{Object}
+	            \nodepart{second}\m{speed:float}\newline
+							\nodepart{third}\m{OnCollision()}
+	    };
+
+			\node (sys2) [system] at (\x,\y){
+	            \textbf{System}
+	            \nodepart{second}\m{objects:List}\newline
+							\m{speed:float}\newline
+	    };
+
+			\node[box, fit = (obj1) (sys1), label={below:Object Property}](op){};
+			\node[box, fit = (obj2) (sys2), label={below:System Property}](sp){};
+\end{tikzpicture}
 \end{frame}
 
 \subsection{Consistency}
 \begin{frame}{\secname}{\subsecname}
 	Unexpected Features
 	\begin{itemize}
-		\item \m{NativeArray}
+		\item<2-> \m{NativeArray}
 		\begin{itemize}
-			\item Requires non-nullable type
-			\item Cannot be extended
-			\item Requires manual memory management
+			\item<3-> Requires non-nullable type
+			\item<4-> Cannot be extended
+			\item<5-> Requires manual memory management
 		\end{itemize}
-		\item \m{TransformAccess} does not have the same methods as \m{Transform}
-		\item \m{UnityEngine.Random.Range} can only be called on the main thread
+		\item<6-> \m{TransformAccess} does not have the same methods as \m{Transform}
+		\item<7-> \m{UnityEngine.Random.Range} can only be called on the main thread
 	\end{itemize}
 \end{frame}
 
@@ -91,8 +161,8 @@
 \begin{frame}{\secname}{\subsecname}
 	Sources of Problems
 	\begin{itemize}
-		\item Job Scheduling
-		\item Ideal code structure is not obvious
+		\item<2-> Job Scheduling
+		\item<3-> Ideal code structure is not obvious
 	\end{itemize}
 \end{frame}
 
@@ -100,14 +170,14 @@
 \begin{frame}{\secname}{\subsecname}
 	Mental Tongue Twisters
 	\begin{itemize}
-		\item Manual vector calculation
-		\item Dependency determination
-		\item Job management
+		\item<2-> Manual vector calculation
+		\item<3-> Dependency determination
+		\item<4-> Job management
 		\begin{itemize}
-			\item Job responsibility
-			\item System responsibility
+			\item<5-> Job responsibility
+			\item<6-> System responsibility
 		\end{itemize}
-		\item Memory management
+		\item<7-> Memory management
 	\end{itemize}
 \end{frame}
 
@@ -115,12 +185,13 @@
 \begin{frame}{\secname}{\subsecname}
 	The Editor
 	\begin{itemize}
-		\item Editor Errors
+		\item<2-> Editor Errors
 		\begin{itemize}
-			\item Exceptions carry over from previous runs
-			\item Requires restart
+			\item<3-> Exceptions carry over from previous runs
+			\item<4-> Requires restart
+			\item<5-> Memory management
 		\end{itemize}
-		\item Editor Crashes
+		\item<6-> Editor Crashes
 	\end{itemize}
 \end{frame}
 
@@ -128,10 +199,10 @@
 \begin{frame}{\secname}{\subsecname}
 	Breaking from Convention
 	\begin{itemize}
-		\item Nonconventional names
+		\item<2-> Nonconventional names
 		\begin{itemize}
-			\item \m{NativeContainer} should be \m{NativeCollection}
-			\item \m{System} is a vague name
+			\item<3-> \m{NativeContainer} should be \m{NativeCollection}
+			\item<4-> \m{System} is a vague name
 		\end{itemize}
 	\end{itemize}
 \end{frame}
@@ -151,10 +222,10 @@
 \begin{frame}{\secname}{\subsecname}
 	Cost
 	\begin{itemize}
-		\item Lower abstraction (closer to machine)
-		\item Scheduling
-		\item Division of work
-		\item Additional management systems
+		\item<2-> Lower abstraction (closer to machine)
+		\item<3-> Scheduling
+		\item<4-> Division of work
+		\item<5-> Additional management systems
 	\end{itemize}
 \end{frame}
 
@@ -162,8 +233,8 @@
 \begin{frame}{\secname}{\subsecname}
 	Investment
 	\begin{itemize}
-		\item Schedule understanding
-		\item Objects into systems
+		\item<2-> Schedule understanding
+		\item<3-> Objects into systems
 	\end{itemize}
 \end{frame}
 
@@ -171,8 +242,8 @@
 \begin{frame}{\secname}{\subsecname}
 	Pay-off
 	\begin{itemize}
-		\item Increased performance
-		\item Greater resource utilisation
+		\item<2-> Increased performance
+		\item<3-> Greater resource utilisation
 	\end{itemize}
 \end{frame}
 
@@ -180,12 +251,12 @@
 \begin{frame}{\secname}{\subsecname}
 	Risk
 	\begin{itemize}
-		\item No pay-off
-		\item Error introduction
+		\item<2-> No pay-off
+		\item<3-> Error introduction
 		\begin{itemize}
-			\item Memory leaks
+			\item<4-> Memory leaks
 		\end{itemize}
-		\item Failed implementation
+		\item<5-> Failed implementation
 	\end{itemize}
 \end{frame}
 
@@ -200,11 +271,11 @@
 
 \subsection{Gameplay Programming vs. Engine Programming}
 \begin{frame}{\secname}{\subsecname}
-	Different Priorities
+	Different Priorities?
 	\begin{itemize}
-		\item Responsible for performance
-		\item Engine life time
-		\item Architecture
+		\item<2-> Responsible for performance
+		\item<3-> Engine life time
+		\item<4-> Architecture
 	\end{itemize}
 \end{frame}
 
@@ -212,8 +283,8 @@
 \begin{frame}{\secname}{\subsecname}
 	Separate Conflict
 	\begin{itemize}
-		\item Runtime Coupling
-		\item C++ vs. C#
-		\item JIT vs. AOT
+		\item<2-> Runtime Coupling
+		\item<3-> C++ vs. C#
+		\item<4-> JIT vs. AOT
 	\end{itemize}
 \end{frame}
