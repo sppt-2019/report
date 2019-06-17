@@ -1,3 +1,4 @@
+\section{Usability}
 \begin{frame}{\secname}{Disposition}
 	Topics
 	\begin{itemize}
@@ -8,13 +9,14 @@
 	\end{itemize}
 \end{frame}
 
-\section{Usability Findings}
-\begin{frame}{\secname}{Disposition}
+\subsection{Usability Findings}
+\begin{frame}{\secname}{\subsecname}
 	Usability findings in the project.
 	\begin{itemize}
-		\item<2-> High Perceived Cost
-		\item<3-> Cultural Shock
-		\item<4-> Difference of Priority
+		\item<2-> Think-aloud sessions
+		\item<3-> High Perceived Cost
+		\item<4-> Cultural Shock
+		\item<5-> Difference of Priority
 	\end{itemize}
 \end{frame}
 
@@ -93,8 +95,7 @@
 \begin{frame}{\secname}{\subsecname}
 	Departure from Composite Pattern
 	\begin{itemize}
-		\item<2-> Scene behaviour vs. Management Object Singleton
-		\item<3-> Object properties on system instead of object
+		\item<2-> Object properties on system instead of object
 		\begin{itemize}
 			\item<3-> System controls object target
 		\end{itemize}
@@ -117,7 +118,8 @@
 	            \textbf{Object}
 	            \nodepart{second}\m{speed:float}\newline
 							\m{timer:float}\newline
-							\nodepart{third}\m{OnCollision()}
+							\nodepart{third}\m{OnCollision()}\newline
+							\m{Move()}\newline
 	    };
 
 			\node (sys1) [system] at (0,\y){
@@ -128,7 +130,8 @@
 			\node (obj2) [class] at (\x,0){
 	            \textbf{Object}
 	            \nodepart{second}\m{speed:float}\newline
-							\nodepart{third}\m{OnCollision()}
+							\nodepart{third}\m{OnCollision()}\newline
+							\m{Move()}\newline
 	    };
 
 			\node (sys2) [system] at (\x,\y){
@@ -149,7 +152,7 @@
 		\item<2-> \m{NativeArray}
 		\begin{itemize}
 			\item<3-> Requires non-nullable type
-			\item<4-> Cannot be extended
+			\item<4-> Cannot be appended
 			\item<5-> Requires manual memory management
 		\end{itemize}
 		\item<6-> \m{TransformAccess} does not have the same methods as \m{Transform}
@@ -208,7 +211,7 @@
 \end{frame}
 
 \section{Attention Investment}
-\begin{frame}{\secname}{\subsecname}
+\begin{frame}{\secname}{Disposition}
 	Attention Investment Metrics
 	\begin{itemize}
 		\item Cost
@@ -284,7 +287,7 @@
 	Separate Conflict
 	\begin{itemize}
 		\item<2-> Runtime Coupling
-		\item<3-> C++ vs. C#
+		\item<3-> \cpp vs. \cs
 		\item<4-> JIT vs. AOT
 	\end{itemize}
 \end{frame}
