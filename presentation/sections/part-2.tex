@@ -106,38 +106,36 @@
 	Object properties on system instead of object
 \begin{tikzpicture}
 	\tikzstyle{class}=[rectangle, draw=black, rounded corners, rectangle split, , rectangle split parts=3,
-        text centered, anchor=north, text=black, text width=3cm]
-	\tikzstyle{system}=[rectangle, draw=black, rounded corners, rectangle split, , rectangle split parts=2,
-        text centered, anchor=north, text=black, text width=3cm]
+        text centered, anchor=north, text=black, text width=2.5cm]
 	\tikzstyle{box}=[draw, rectangle, inner sep = 1em]
 
 	\def \x {5}
-	\def \y {-2.5}
+	\def \y {-3.5}
 
 	    \node (obj1) [class] at (0,0){
 	            \textbf{Object}
-	            \nodepart{second}\m{speed:float}\newline
+	            \nodepart{second}\m{\color{red}speed:float}\newline
 							\m{timer:float}\newline
 							\nodepart{third}\m{OnCollision()}\newline
-							\m{Move()}\newline
+							\m{\color{red}Move()}\newline
 	    };
 
-			\node (sys1) [system] at (0,\y){
+			\node (sys1) [class] at (0,\y){
 	            \textbf{System}
 	            \nodepart{second}\m{objects:List}\newline
 	    };
 
 			\node (obj2) [class] at (\x,0){
 	            \textbf{Object}
-	            \nodepart{second}\m{speed:float}\newline
+	            \nodepart{second}\m{timer:float}\newline
 							\nodepart{third}\m{OnCollision()}\newline
-							\m{Move()}\newline
 	    };
 
-			\node (sys2) [system] at (\x,\y){
+			\node (sys2) [class] at (\x,.75*\y){
 	            \textbf{System}
 	            \nodepart{second}\m{objects:List}\newline
-							\m{speed:float}\newline
+							\m{\color{red}speed:float}\newline
+							\nodepart{third}\m{\color{red}Move()}\newline
 	    };
 
 			\node[box, fit = (obj1) (sys1), label={below:Object Property}](op){};
@@ -171,7 +169,7 @@
 
 \subsection{Hard Mental Operations}
 \begin{frame}{\secname}{\subsecname}
-	Mental Tongue Twisters
+	Mental \dqoute{Tongue Twisters}
 	\begin{itemize}
 		\item<2-> Manual vector calculation
 		\item<3-> Dependency determination
@@ -268,7 +266,7 @@
 	Research Topics
 	\begin{itemize}
 		\item Gameplay Programming vs. Engine Programming
-		\item Imperative vs. Object Oriented Conflict
+		\item Low Level vs. High Level
 	\end{itemize}
 \end{frame}
 
@@ -282,9 +280,9 @@
 	\end{itemize}
 \end{frame}
 
-\subsection{Imperative vs. Object Oriented Conflict}
+\subsection{Low Level vs. High Level}
 \begin{frame}{\secname}{\subsecname}
-	Separate Conflict
+	Separate Hidden Conflict
 	\begin{itemize}
 		\item<2-> Runtime Coupling
 		\item<3-> \cpp vs. \cs
