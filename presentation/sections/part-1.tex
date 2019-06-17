@@ -21,9 +21,8 @@
 		\item<2-> Sequential code faster in binary tree benchmarks
 		\item<3-> Concurrent code faster with larger problem sizes:
 		\begin{itemize}
-			\item 11000 IL instructions in binary tree with no data dependency
-			\item 44000 IL instructions in binary tree with data dependency
-			\item Column sizes of 512 in matrix summation
+			\item 11000-44000 IL instructions in binary tree
+			\item Matrix sizes of 512 in matrix summation
 		\end{itemize}
 		\item<4-> Async Workflow concurrency is fragile
 	\end{itemize}
@@ -46,13 +45,13 @@
 \begin{frame}{\secname}{\subsecname}
 	Unit Management
 	\begin{itemize}
-		\item<2-> F\# is marginally slower than C\# in Unity (5-7\%, \cite{maggiore2012formal,bolhuis2019gameplay})
+		\item<2-> F\# is marginally slower than C\# in Unity (5-7\% according to \cite{maggiore2012formal,bolhuis2019gameplay})
 		\item<3-> FRP system introduces per-\texttt{GameObject} overhead
 	\end{itemize}
 \end{frame}
 
 \begin{frame}{\secname}{\subsecname}
-	Incorrect Code in Inverse Implementation of Unit Management
+	Errorneous Code in Inverse Implementation of Unit Management
 	\begin{itemize}
 		\item<1-> State machine has a list of units.
 		\item<2-> When a unit collides with a shot, the unit is added to the list again.
@@ -61,7 +60,7 @@
 \end{frame}
 
 \begin{frame}{\secname}{\subsecname}
-	Incorrect Code in Inverse Implementation of Unit Management
+	Errorneous Code in Inverse Implementation of Unit Management
 	\begin{figure}[h!]
 		\centering
 		\includegraphics[width=.7\textwidth]{pictures/statemachine.png}
@@ -71,8 +70,8 @@
 \end{frame}
 
 \begin{frame}[fragile]{\secname}{\subsecname}
-	Comparison of Incorrect and Correct Implementation
-	\barChart[12][\symbolic{Strategy,500,1000,1500,2000,2500}, width=\textwidth,height=.5\textheight][Average FPS][Number of Units]{Comparison of Correct and Incorrect implementation of Unit Management using the Mono runtime (higher is better).}{ai:benchmark}{
+	Comparison of Errorneous and Correct Implementation
+	\barChart[12][\symbolic{Strategy,500,1000,1500,2000,2500}, width=\textwidth,height=.5\textheight][Average FPS][Number of Units]{Comparison of Correct and Errorneous Implementation of Unit Management using the Mono Runtime (higher is better).}{ai:benchmark}{
 		\plotData{CSharp Correct}{\sequentialAverageData}
 		\plotData{CSharp Incorrect}{\sequentialAverageData}
 	}
@@ -166,7 +165,7 @@
 \subsection{Results}
 \begin{frame}{\secname}{\subsecname}
 	\begin{itemize}
-		\item On average roughly equivalent
+		\item Concurrent solution is often slower
 		\item<2-> Sometimes sequential is slower, sometimes not
 		\item<3-> Concurrent uses a bit more memory (1500 units):
 		\begin{itemize}
