@@ -1,34 +1,40 @@
-\section{Performance Benchmarking}
+\section{Performance}
+\iffalse
 \begin{frame}{\secname}{Disposition}
-	Disposition
     \begin{itemize}
         \item Report Summary
-        \item Concurrent Unit Management Benchmark
+        \item Concurrent Unit Management
+        \begin{itemize}
+			\item Setup
+			\item Results
+			\item Discussion
+		\end{itemize}
 	\end{itemize}
 \end{frame}
+\fi
 
 \subsection{Report Summary}\label{sec:authors}
 \begin{frame}{\secname}{\subsecname}
 	.NET Concurrency
 	\begin{itemize}
-		\item Lenient mapping to Async Workflows and \texttt{Task}s %up to speed?
-		\item Sequential code faster in binary tree benchmarks
-		\item Concurrent code faster with larger problem sizes:
+		\item<1-> Lenient mapping to Async Workflows and \texttt{Task}s %up to speed?
+		\item<2-> Sequential code faster in binary tree benchmarks
+		\item<3-> Concurrent code faster with larger problem sizes:
 		\begin{itemize}
 			\item 11000 IL instructions in binary tree with no data dependency
 			\item 44000 IL instructions in binary tree with data dependency
 			\item Column sizes of 512 in matrix summation
 		\end{itemize}
-		\item Async Workflow concurrency is fragile
+		\item<4-> Async Workflow concurrency is fragile
 	\end{itemize}
 \end{frame}
 
 \begin{frame}{\secname}{\subsecname}
 	Unity Technologies advices against functional coding style
 	\begin{itemize}
-		\item High order functions
-		\item Closures
-		\item Manipulate existing collections rather than mapping
+		\item<2-> High order functions
+		\item<3-> Closures
+		\item<4-> Manipulate existing collections rather than mapping
 	\end{itemize}
 \end{frame}
 
@@ -40,17 +46,17 @@
 \begin{frame}{\secname}{\subsecname}
 	Unit Management Benchmark
 	\begin{itemize}
-		\item F\# is marginally slower than C\# in Unity (5-7\%, \cite{maggiore2012formal,bolhuis2019gameplay})
-		\item FRP system introduces per-\texttt{GameObject} overhead
+		\item<2-> F\# is marginally slower than C\# in Unity (5-7\%, \cite{maggiore2012formal,bolhuis2019gameplay})
+		\item<3-> FRP system introduces per-\texttt{GameObject} overhead
 	\end{itemize}
 \end{frame}
 
 \begin{frame}{\secname}{\subsecname}
 	Incorrect Code in Inverse Implementation of Unit Management Benchmark
 	\begin{itemize}
-		\item State machine has a list of units.
-		\item When a unit collides with a shot, the unit is added to the list again.
-		\item Many units =\textgreater\ many collisions =\textgreater\ performance degradation.
+		\item<1-> State machine has a list of units.
+		\item<2-> When a unit collides with a shot, the unit is added to the list again.
+		\item<3-> Many units =\textgreater\ many collisions =\textgreater\ performance degradation.
 	\end{itemize}
 \end{frame}
 
@@ -72,26 +78,26 @@
 	}
 \end{frame}
 
-\section{Concurrent Unit Management Benchmark}
+\section{Concurrent Unit Management}
 \subsection{Setup}
 \begin{frame}{\secname}{\subsecname}
-	Unity Concurrency Terminology
+	Terminology
 	\begin{itemize}
-		\item \texttt{Job} = A definition of how to update a single entity out of a collection. Jobs are executed on worker threads and may be batched.
-		\item \texttt{JobSystem} = A \ttt{MonoBehaviour}, which is in charge of creating and scheduling \texttt{Job}s.
+		\item<1-> \texttt{Job} = A definition of how to update a single entity out of a collection. Jobs are executed on worker threads and may be batched.
+		\item<2-> \texttt{JobSystem} = A \ttt{MonoBehaviour}, which is in charge of creating and scheduling \texttt{Job}s.
 	\end{itemize}
 \end{frame}
 
 \begin{frame}{\secname}{\subsecname}
 	\begin{itemize}
-		\item Examine if a concurrent implementation of inverse state machine is faster than sequential
-		\item Four \ttt{JobSystem}s:
+		\item<1-> Examine if a concurrent implementation of inverse state machine is faster than sequential
+		\item<2-> Four \ttt{JobSystem}s:
 		\begin{itemize}
 			\item Moving Bullets forward
 			\item Updating each of the three states (moving, fleeing \& attacking)
 		\end{itemize}
-		\item Moving between states sequentially
-		\item Measure the frame rate over 900 frames
+		\item<3-> Moving between states sequentially
+		\item<4-> Measure the frame rate over 900 frames
 	\end{itemize}
 \end{frame}
 
@@ -116,14 +122,16 @@
 \begin{frame}[fragile]{\secname}{\subsecname}
 	Converting from \ttt{JobSystem} representation to \ttt{Job} representation
 	\begin{itemize}
-		\item \ttt{JobSystem}s store units (and similar data) in lists
-		\item \ttt{Job}s only accept value-type data collections in a \ttt{NativeContainer} (e.g. \ttt{NativeArray})
-		\item Units are class instances, i.e. reference
-		\item We need to map from a list of references to an array of value-types
+		\item<2-> \ttt{JobSystem}s store units (and similar data) in lists
+		\item<3-> \ttt{Job}s only accept value-type data collections in a \ttt{NativeContainer} (e.g. \ttt{NativeArray})
+		\item<4-> Units are class instances, i.e. reference
+		\item<5-> We need to map from a list of references to an array of value-types
 	\end{itemize}
-\csinline{new TransformAccessArray(}
-\csinline{	units.Select(u => u.transform).ToArray(),}
-\csinline{	Allocation.TempJob)}
+	\onslide<6->{
+		\csinline{new TransformAccessArray(}
+		\csinline{	units.Select(u => u.transform).ToArray(),}
+		\csinline{	Allocation.TempJob)}
+	}
 \end{frame}
 
 \begin{frame}{\secname}{\subsecname}
@@ -157,11 +165,10 @@
 
 \subsection{Results}
 \begin{frame}{\secname}{\subsecname}
-	Over all:
 	\begin{itemize}
 		\item On average roughly equivalent
-		\item Sometimes sequential is slower, sometimes not
-		\item Concurrent uses a bit more memory (1500 units):
+		\item<2-> Sometimes sequential is slower, sometimes not
+		\item<3-> Concurrent uses a bit more memory (1500 units):
 		\begin{itemize}
 			\item Sequential: 1.27Gb
 			\item Concurrent: 1.36Gb
@@ -220,12 +227,12 @@
 \begin{frame}{\secname}{\subsecname}
 	Threats to Validity
 	\begin{itemize}
-		\item Experience
+		\item<2-> Experience
 		\begin{itemize}
 			\item Optimal way of scheduling?
 			\item Optimal data representation? (\texttt{NativeArray} instead of \texttt{NativeList})
 		\end{itemize}
-		\item Limited generalisability (only tested on one machine)
+		\item<3-> Limited generalisability (only tested on one machine)
 	\end{itemize}
 \end{frame}
 
@@ -245,14 +252,14 @@
 \begin{frame}{\secname}{\subsecname}
 	Experience with Unity C\# Job System
 	\begin{itemize}
-		\item (Almost) writing C++ in C\#
+		\item<2-> (Almost) writing C++ in C\#
 		\begin{itemize}
 			\item Manually scheduling \texttt{Job}s
 			\item Memory leaks if \texttt{NativeContainer}s are not \texttt{Dispose}d
 		\end{itemize}
-		\item No simple way of handling dependencies between \texttt{JobSystem}s
-		\item A lot of converting between representations
-		\item Some expensive operations, such as \texttt{Instantiate} must happen on main thread
-		\item \textbf{A lot of effort for no/limited performance gain}
+		\item<3-> No simple way of handling dependencies between \texttt{JobSystem}s
+		\item<4-> A lot of converting between representations
+		\item<5-> Some expensive operations, such as \texttt{Instantiate} must happen on main thread
+		\item<6-> \textbf{A lot of effort for no/limited performance gain}
 	\end{itemize}
 \end{frame}
