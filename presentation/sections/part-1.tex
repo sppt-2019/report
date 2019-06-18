@@ -121,16 +121,10 @@
 \begin{frame}[fragile]{\secname}{\subsecname}
 	Converting from \ttt{JobSystem} representation to \ttt{Job} representation
 	\begin{itemize}
-		\item<2-> \ttt{JobSystem}s store units (and similar data) in lists
-		\item<3-> \ttt{Job}s only accept value-type data collections in a \ttt{NativeContainer} (e.g. \ttt{NativeArray})
-		\item<4-> Units are class instances, i.e. reference
-		\item<5-> We need to map from a list of references to an array of value-types
+		\item<2-> \ttt{JobSystem}s store reference-typed data in lists
+		\item<3-> \ttt{Job}s only accept value-type in a \ttt{NativeContainer}s
+		\item<4-> Map between representations in each \texttt{Update}
 	\end{itemize}
-	\onslide<6->{
-		\csinline{new TransformAccessArray(}
-		\csinline{	units.Select(u => u.transform).ToArray(),}
-		\csinline{	Allocation.TempJob)}
-	}
 \end{frame}
 
 \begin{frame}{\secname}{\subsecname}
@@ -166,8 +160,7 @@
 \begin{frame}{\secname}{\subsecname}
 	\begin{itemize}
 		\item Concurrent solution is often slower
-		\item<2-> Sometimes sequential is slower, sometimes not
-		\item<3-> Concurrent uses a bit more memory (1500 units):
+		\item<2-> Concurrent uses a bit more memory (1500 units):
 		\begin{itemize}
 			\item Sequential: 1.27Gb
 			\item Concurrent: 1.36Gb
